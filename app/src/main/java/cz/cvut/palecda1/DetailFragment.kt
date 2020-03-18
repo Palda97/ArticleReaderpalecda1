@@ -1,23 +1,18 @@
 package cz.cvut.palecda1
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.*
 import android.widget.TextView
-import androidx.appcompat.widget.ShareActionProvider
-import androidx.core.app.ShareCompat
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
+import cz.cvut.palecda1.Article.DataStorage
+import cz.cvut.palecda1.Article.MyStorage
 import java.util.*
-
-import androidx.appcompat.app.AppCompatActivity
 
 class DetailFragment : Fragment() {
 
     private lateinit var articleTextView: TextView
-    //var listener: DetailFragmentListener? = null
     private var myid: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,23 +26,21 @@ class DetailFragment : Fragment() {
         articleTextView = view.findViewById(R.id.textViewForArticle) as TextView
 
         myid = Objects.requireNonNull<Bundle>(arguments).getInt(ID)
-        //val id = Objects.requireNonNull<Bundle>(arguments).getInt(ID)
         showArticle()
-        //showArticle(id)
-
 
         return view
     }
 
     fun showArticle(){
-        articleTextView.text = Html.fromHtml(getText())
+        articleTextView.text = Html.fromHtml(getBody())
     }
-    /*fun showArticle(id: Int){
-        articleTextView.text = Html.fromHtml(DataStorage.articleArray[id])
-    }*/
-    fun getText(): String{
-        return DataStorage.articleArray[myid]
+    fun getBody(): String{
+        return MyStorage.articleSupplier.articleById(myid).body
     }
+    fun getAddress(): String{
+        return MyStorage.articleSupplier.articleById(myid).address
+    }
+
 
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -60,12 +53,12 @@ class DetailFragment : Fragment() {
             return when (item.itemId) {
                 R.id.shareItem -> {
                     val sharingIntent = Intent(Intent.ACTION_SEND)
-                    sharingIntent.setType("text/plain")
-                    val body = getText()
+                    sharingIntent.setType(TEXT_PLAIN)
+                    val body = getAddress()
                     //val subject = ""
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
                     //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                    startActivity(Intent.createChooser(sharingIntent, "Share Using"))
+                    startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)))
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
@@ -94,6 +87,7 @@ class DetailFragment : Fragment() {
     companion object {
 
         private const val ID = "ID"
+        private const val TEXT_PLAIN = "text/plain"
 
         fun newInstance(number: Int): DetailFragment {
             val fragment = DetailFragment()

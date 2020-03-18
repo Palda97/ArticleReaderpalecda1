@@ -7,14 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import cz.cvut.palecda1.Article.Article
+import cz.cvut.palecda1.Article.DataStorage
+import cz.cvut.palecda1.Article.MyStorage
 import kotlinx.android.synthetic.main.text_field_in_layout.view.*
-import java.util.*
 
 class ArticleFragment : Fragment() {
 
-    //private lateinit var headlineTextView: TextView
     var listener: ArticleFragmentListener? = null
     lateinit var pLayout: LinearLayout
 
@@ -26,7 +26,7 @@ class ArticleFragment : Fragment() {
 
         pLayout = view.findViewById(R.id.insert_articles_here) as LinearLayout
 
-        showArticles(inflater, container, DataStorage.articles)
+        showArticles(inflater, container, MyStorage.articleSupplier.arrayOfArticles())
 
         return view
     }
@@ -46,17 +46,10 @@ class ArticleFragment : Fragment() {
         listener = null
     }
 
-    fun showArticles(inflater: LayoutInflater, container: ViewGroup?, articles: List<String>){
-        /*articles.forEach {
-            val lView = inflater.inflate(R.layout.text_field_in_layout, container)
-            lView.textViewInLayout.text = Html.fromHtml(it)
-            //.setOnClickListener { mListener?.clearHeadline() }
-            lView.textViewInLayout.setOnClickListener{listener?.showDetail()}
-            pLayout.addView(lView, pLayout.childCount)
-        }*/
+    fun showArticles(inflater: LayoutInflater, container: ViewGroup?, articles: Array<Article>){
         articles.forEachIndexed { index, s ->
             val lView = inflater.inflate(R.layout.text_field_in_layout, container)
-            lView.textViewInLayout.text = Html.fromHtml(s)
+            lView.textViewInLayout.text = Html.fromHtml(s.body)
             lView.textViewInLayout.setOnClickListener{listener?.showDetail(index)}
             pLayout.addView(lView, pLayout.childCount)
         }
