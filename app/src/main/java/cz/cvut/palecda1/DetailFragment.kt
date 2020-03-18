@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.*
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import cz.cvut.palecda1.Article.DataStorage
 import cz.cvut.palecda1.Article.MyStorage
@@ -31,13 +32,14 @@ class DetailFragment : Fragment() {
         return view
     }
 
-    fun showArticle(){
-        articleTextView.text = Html.fromHtml(getBody())
+    private fun showArticle(){
+        //articleTextView.text = Html.fromHtml(getBody())
+        articleTextView.text = HtmlCompat.fromHtml(getBody(), HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
-    fun getBody(): String{
+    private fun getBody(): String{
         return MyStorage.articleSupplier.articleById(myid).body
     }
-    fun getAddress(): String{
+    private fun getAddress(): String{
         return MyStorage.articleSupplier.articleById(myid).address
     }
 
@@ -53,7 +55,7 @@ class DetailFragment : Fragment() {
             return when (item.itemId) {
                 R.id.shareItem -> {
                     val sharingIntent = Intent(Intent.ACTION_SEND)
-                    sharingIntent.setType(TEXT_PLAIN)
+                    sharingIntent.type = TEXT_PLAIN
                     val body = getAddress()
                     //val subject = ""
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
@@ -66,23 +68,6 @@ class DetailFragment : Fragment() {
         }else
             return super.onOptionsItemSelected(item)
     }
-
-    /*override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if(context is DetailFragmentListener){
-            listener = context
-        }else{
-            throw UnsupportedOperationException("Context is not DetailFragmentListener!")
-        }
-    }
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface DetailFragmentListener {
-        fun getAc(): AppCompatActivity
-    }*/
 
     companion object {
 
