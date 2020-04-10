@@ -2,13 +2,11 @@ package cz.cvut.palecda1
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.view.*
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import cz.cvut.palecda1.Article.DataStorage
-import cz.cvut.palecda1.Article.MyStorage
+import cz.cvut.palecda1.article.MyStorage
 import java.util.*
 
 class DetailFragment : Fragment() {

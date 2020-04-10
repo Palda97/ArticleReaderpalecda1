@@ -2,16 +2,14 @@ package cz.cvut.palecda1
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import cz.cvut.palecda1.Article.Article
-import cz.cvut.palecda1.Article.DataStorage
-import cz.cvut.palecda1.Article.MyStorage
+import cz.cvut.palecda1.article.Article
+import cz.cvut.palecda1.article.MyStorage
 import kotlinx.android.synthetic.main.text_field_in_layout.view.*
 
 class ArticleFragment : Fragment() {

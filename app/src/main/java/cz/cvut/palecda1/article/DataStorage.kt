@@ -1,4 +1,4 @@
-package cz.cvut.palecda1.Article
+package cz.cvut.palecda1.article
 
 import java.util.*
 
