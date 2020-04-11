@@ -35,10 +35,10 @@ class DetailFragment : Fragment() {
         articleTextView.text = HtmlCompat.fromHtml(getBody(), HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
     private fun getBody(): String{
-        return MyStorage.articleSupplier.articleById(myid).body
+        return MyStorage.ARTICLE_SUPPLIER.articleById(myid).body
     }
     private fun getAddress(): String{
-        return MyStorage.articleSupplier.articleById(myid).address
+        return MyStorage.ARTICLE_SUPPLIER.articleById(myid).address
     }
 
 

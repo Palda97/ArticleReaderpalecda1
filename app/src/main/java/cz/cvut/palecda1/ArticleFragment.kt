@@ -22,7 +22,7 @@ class ArticleFragment : Fragment() {
 
         pLayout = view.findViewById(R.id.insert_articles_here) as LinearLayout
 
-        showArticles(inflater, container, MyStorage.articleSupplier.arrayOfArticles())
+        showArticles(inflater, container, MyStorage.ARTICLE_SUPPLIER.arrayOfArticles())
 
         return view
     }

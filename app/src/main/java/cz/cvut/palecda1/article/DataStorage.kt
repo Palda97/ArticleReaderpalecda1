@@ -3,7 +3,7 @@ package cz.cvut.palecda1.article
 import java.util.*
 
 class DataStorage : ArticleSupplier {
-    private val articleArray: Array<Article>
+    val articleArray: Array<Article>
     init {
         articleArray = Array(10) {
             val currentTime = Calendar.getInstance().time.toString()
