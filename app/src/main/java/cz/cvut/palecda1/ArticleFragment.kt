@@ -11,8 +11,12 @@ import androidx.fragment.app.Fragment
 import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.article.MyStorage
 import kotlinx.android.synthetic.main.text_field_in_layout.view.*
+import androidx.databinding.DataBindingUtil
+import cz.cvut.palecda1.databinding.FragmentArticleBinding
 
 class ArticleFragment : Fragment() {
+
+    internal lateinit var mBinding: FragmentArticleBinding
 
     var listener: ArticleFragmentListener? = null
     lateinit var pLayout: LinearLayout
