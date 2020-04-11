@@ -19,7 +19,11 @@ class DetailFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
         articleTextView = view.findViewById(R.id.textViewForArticle) as TextView
@@ -30,41 +34,42 @@ class DetailFragment : Fragment() {
         return view
     }
 
-    private fun showArticle(){
+    private fun showArticle() {
         //articleTextView.text = Html.fromHtml(getBody())
         articleTextView.text = HtmlCompat.fromHtml(getBody(), HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
-    private fun getBody(): String{
+
+    private fun getBody(): String {
         return MyStorage.ARTICLE_SUPPLIER.articleById(myid).body
     }
-    private fun getAddress(): String{
+
+    private fun getAddress(): String {
         return MyStorage.ARTICLE_SUPPLIER.articleById(myid).address
     }
 
 
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.my_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.my_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item != null) {
-            return when (item.itemId) {
-                R.id.shareItem -> {
-                    val sharingIntent = Intent(Intent.ACTION_SEND)
-                    sharingIntent.type = TEXT_PLAIN
-                    val body = getAddress()
-                    //val subject = ""
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
-                    //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                    startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)))
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //if (item != null) {
+        return when (item.itemId) {
+            R.id.shareItem -> {
+                val sharingIntent = Intent(Intent.ACTION_SEND)
+                sharingIntent.type = TEXT_PLAIN
+                val body = getAddress()
+                //val subject = ""
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
+                //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+                startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)))
+                true
             }
-        }else
-            return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
+        }
+        //}else
+        //    return super.onOptionsItemSelected(item)
     }
 
     companion object {

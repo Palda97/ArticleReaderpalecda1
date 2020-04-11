@@ -12,15 +12,15 @@ import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.article.MyStorage
 import kotlinx.android.synthetic.main.text_field_in_layout.view.*
 
-class ArticleFragment : Fragment() {
+class ArticleFragmentOln : Fragment() {
 
     var listener: ArticleFragmentListener? = null
     lateinit var pLayout: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_article, container, false)
+        val view = inflater.inflate(R.layout.fragment_article_old, container, false)
 
-        pLayout = view.findViewById(R.id.insert_articles_here) as LinearLayout
+        //pLayout = view.findViewById(R.id.insert_articles_here) as LinearLayout
 
         showArticles(inflater, container, MyStorage.ARTICLE_SUPPLIER.arrayOfArticles())
 
