@@ -15,20 +15,21 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     val articlesLiveData: LiveData<MailPackage<List<Article>>>
         get() = observableArticles
+    val articleLiveData: LiveData<MailPackage<Article>>
+        get() = observableArticle
 
     init {
         observableArticles.value = null //TODO zkusit co se stane bez tehle radky
         observableArticle.value = null
-        loadArticles()
     }
 
     fun loadArticles() {
         val articles = repository.getArticleList()
-        observableArticles.addSource(articles) {observableArticles.value = it}
+        observableArticles.addSource(articles) { observableArticles.value = it }
     }
 
-    fun loadArticleById(id: Int){
+    fun loadArticleById(id: Int) {
         val article = repository.getArticleById(id)
-        observableArticle.addSource(article) {observableArticle.value = it}
+        observableArticle.addSource(article) { observableArticle.value = it }
     }
 }

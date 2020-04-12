@@ -4,7 +4,7 @@ class MailPackage<content>(val articles: content?, private val status: Int, val 
     val isLoading: Boolean
         get() = status == LOADING
     val isOk: Boolean
-        get() = status == OK
+        get() = status == OK && articles != null
     val isError: Boolean
         get() = status == ERROR
 

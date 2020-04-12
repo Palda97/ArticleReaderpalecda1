@@ -12,21 +12,39 @@ import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.article.MyStorage
 import kotlinx.android.synthetic.main.text_field_in_layout.view.*
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import cz.cvut.palecda1.databinding.FragmentArticleBinding
+import cz.cvut.palecda1.view.ArticleRecyclerAdapter
+import cz.cvut.palecda1.viewmodel.ArticleViewModel
 
 class ArticleFragment : Fragment() {
 
-    internal lateinit var mBinding: FragmentArticleBinding
-
     var listener: ArticleFragmentListener? = null
-    lateinit var pLayout: LinearLayout
+    internal lateinit var binding: FragmentArticleBinding
+    internal lateinit var viewModel: ArticleViewModel
+    internal lateinit var articleRecyclerAdapter: ArticleRecyclerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_article, container, false)
 
-        pLayout = view.findViewById(R.id.insert_articles_here) as LinearLayout
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
+        val view = binding.root
 
-        showArticles(inflater, container, MyStorage.ARTICLE_SUPPLIER.arrayOfArticles())
+        articleRecyclerAdapter = ArticleRecyclerAdapter { listener!!.showDetail(it) }
+        binding.insertArticlesHere.adapter = articleRecyclerAdapter
+
+        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        viewModel.loadArticles()
+
+        viewModel.articlesLiveData.observe(this, Observer {
+            if (it != null && it.isOk){
+                articleRecyclerAdapter.updateArticleList(it.articles!!)
+            }
+            binding.executePendingBindings()
+        })
+
+        binding.viewmodel = viewModel
+
 
         return view
     }
@@ -44,7 +62,7 @@ class ArticleFragment : Fragment() {
         listener = null
     }
 
-    private fun showArticles(inflater: LayoutInflater, container: ViewGroup?, articles: Array<Article>){
+    /*private fun showArticles(inflater: LayoutInflater, container: ViewGroup?, articles: Array<Article>){
         articles.forEachIndexed { index, s ->
             val lView = inflater.inflate(R.layout.text_field_in_layout, container)
             //lView.textViewInLayout.text = Html.fromHtml(s.body)
@@ -52,9 +70,9 @@ class ArticleFragment : Fragment() {
             lView.textViewInLayout.setOnClickListener{listener?.showDetail(index)}
             pLayout.addView(lView, pLayout.childCount)
         }
-    }
+    }*/
 
     interface ArticleFragmentListener {
-        fun showDetail(id: Int)
+        fun showDetail(article: Article)
     }
 }
