@@ -5,13 +5,15 @@ import cz.cvut.palecda1.article.DataStorage
 
 class ArticleDaoFake : ArticleDao {
     val dataStorage = DataStorage()
+    val mapByUrl: MutableMap<String, Article> = HashMap()
+
+    init {
+        dataStorage.articleArray.forEach {
+            mapByUrl[it.address] = it
+        }
+    }
 
     override fun articleList(): List<Article> = dataStorage.arrayOfArticles().toList()
 
-    override fun articleById(id: Int): Article? {
-        return if(id < dataStorage.articleArray.size && id >= 0)
-            dataStorage.articleById(id)
-        else
-            null
-    }
+    override fun articleById(id: String): Article? = mapByUrl[id]
 }

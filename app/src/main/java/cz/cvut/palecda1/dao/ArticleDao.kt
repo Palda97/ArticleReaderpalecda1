@@ -4,6 +4,6 @@ import cz.cvut.palecda1.article.Article
 
 interface ArticleDao {
     fun articleList(): List<Article>
-    fun articleById(id: Int): Article?
+    fun articleById(id: String): Article?
 
 }

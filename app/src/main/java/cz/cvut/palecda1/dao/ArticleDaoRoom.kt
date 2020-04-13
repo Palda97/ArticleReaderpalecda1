@@ -11,9 +11,9 @@ abstract class ArticleDaoRoom : ArticleDao{
     abstract override fun articleList(): List<Article>
 
     @Query("SELECT * from roomarticle WHERE lol = 0")
-    abstract fun articleByIdSafe(id: Int): List<Article>
+    abstract fun articleByIdSafe(id: String): List<Article>
 
-    override fun articleById(id: Int): Article? {
+    override fun articleById(id: String): Article? {
         val list = articleByIdSafe(id)
         return if(list.size == 1){
             list[0]

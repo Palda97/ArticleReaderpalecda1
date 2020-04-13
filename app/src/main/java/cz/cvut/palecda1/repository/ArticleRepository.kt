@@ -17,7 +17,7 @@ class ArticleRepository {
         return data
     }
 
-    fun getArticleById(id: Int): LiveData<MailPackage<Article>> {
+    fun getArticleById(id: String): LiveData<MailPackage<Article>> {
         val data = MutableLiveData<MailPackage<Article>>()
         val article = articleDao.articleById(id)
         val status = if (article != null) MailPackage.OK else MailPackage.ERROR
