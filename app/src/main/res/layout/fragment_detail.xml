@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="androidx.core.text.HtmlCompat" />
+        <variable
+            name="article"
+            type="cz.cvut.palecda1.article.Article" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="vertical">
-            <TextView
-                    android:text="TextView"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textViewForArticle"/>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                    android:text="@{HtmlCompat.fromHtml(article.body, HtmlCompat.FROM_HTML_MODE_LEGACY)}" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

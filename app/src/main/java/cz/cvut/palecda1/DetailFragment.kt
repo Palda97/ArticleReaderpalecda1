@@ -4,49 +4,51 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.core.text.HtmlCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import cz.cvut.palecda1.article.MyStorage
-import java.util.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.databinding.FragmentDetailBinding
+import cz.cvut.palecda1.viewmodel.ArticleViewModel
+import java.util.Objects
 
 class DetailFragment : Fragment() {
 
     private lateinit var articleTextView: TextView
-    private var myid: Int = 0
+    private lateinit var articleId: String
+
+    internal lateinit var binding: FragmentDetailBinding
+    internal lateinit var viewModel: ArticleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        //val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
-        articleTextView = view.findViewById(R.id.textViewForArticle) as TextView
+        articleId = Objects.requireNonNull<Bundle>(arguments).getString(ID, "")
 
-        myid = Objects.requireNonNull<Bundle>(arguments).getInt(ID)
-        showArticle()
+        //MVVM init + databinding
 
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        val view = binding.root
+
+        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        viewModel.loadArticleById(articleId)
+
+        viewModel.articleLiveData.observe(this, Observer {
+            if (it != null && it.isOk){
+                binding.article = it.articles
+            }
+            binding.executePendingBindings()
+        })
+
+        //binding.viewmodel = viewModel
+        //MVVM END
         return view
     }
-
-    private fun showArticle() {
-        //articleTextView.text = Html.fromHtml(getBody())
-        articleTextView.text = HtmlCompat.fromHtml(getBody(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-    }
-
-    private fun getBody(): String {
-        return MyStorage.ARTICLE_SUPPLIER.articleById(myid).body
-    }
-
-    private fun getAddress(): String {
-        return MyStorage.ARTICLE_SUPPLIER.articleById(myid).address
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.my_menu, menu)
@@ -54,12 +56,11 @@ class DetailFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //if (item != null) {
         return when (item.itemId) {
             R.id.shareItem -> {
                 val sharingIntent = Intent(Intent.ACTION_SEND)
                 sharingIntent.type = TEXT_PLAIN
-                val body = getAddress()
+                val body = articleId
                 //val subject = ""
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
                 //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
@@ -68,8 +69,6 @@ class DetailFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-        //}else
-        //    return super.onOptionsItemSelected(item)
     }
 
     companion object {
@@ -77,10 +76,10 @@ class DetailFragment : Fragment() {
         private const val ID = "ID"
         private const val TEXT_PLAIN = "text/plain"
 
-        fun newInstance(number: Int): DetailFragment {
+        fun newInstance(url: String): DetailFragment {
             val fragment = DetailFragment()
             val args = Bundle()
-            args.putInt(ID, number)
+            args.putString(ID, url)
             fragment.arguments = args
             return fragment
         }
