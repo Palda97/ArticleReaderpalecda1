@@ -8,7 +8,7 @@ class ArticleDaoRome: ArticleDao {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun articleById(id: String): Article? {
+    override fun articleById(url: String): Article? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -1,13 +1,23 @@
 package cz.cvut.palecda1.repository
 
+import android.annotation.SuppressLint
+import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.article.MailPackage
 import cz.cvut.palecda1.dao.ArticleDao
 import cz.cvut.palecda1.dao.ArticleDaoFake
+import cz.cvut.palecda1.dao.ArticleDaoRoom
+import cz.cvut.palecda1.model.RoomArticle
 
 class ArticleRepository(private val articleDao: ArticleDao) {
+
+    init {
+        if(articleDao is ArticleDaoRoom){
+            doAsync { articleDao.deleteAll() }
+        }
+    }
 
     fun getArticleList(): LiveData<MailPackage<List<Article>>> {
         val data = MutableLiveData<MailPackage<List<Article>>>()
@@ -24,16 +34,15 @@ class ArticleRepository(private val articleDao: ArticleDao) {
         return data
     }
 
-    //
+    // temporary memory leak is fine
+    @SuppressLint("StaticFieldLeak")
+    fun doAsync(run: () -> Unit) {
+        object : AsyncTask<Void, Void, Void>() {
 
-    /*companion object {
-        @Volatile
-        private var instance: ArticleRepository? = null
-
-        fun getInstance(articleDao: ArticleDao): ArticleRepository {
-            return instance ?: synchronized(this){
-                instance ?: ArticleRepository(articleDao).also { instance = it }
+            override fun doInBackground(vararg voids: Void): Void? {
+                run()
+                return null
             }
-        }
-    }*/
+        }.execute()
+    }
 }

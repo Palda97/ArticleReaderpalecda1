@@ -2,6 +2,7 @@ package cz.cvut.palecda1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
@@ -21,6 +22,8 @@ class FeedFragment : Fragment() {
     internal lateinit var viewModel: FeedViewModel
     internal lateinit var feedRecyclerAdapter: FeedRecyclerAdapter
 
+    var counter = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -39,13 +42,16 @@ class FeedFragment : Fragment() {
         feedRecyclerAdapter = FeedRecyclerAdapter { editFeed(it) }
         binding.insertFeedsHere.adapter = feedRecyclerAdapter
 
-        viewModel = ViewModelProviders.of(this, MyInjector.FEED_VIEW_MODEL_FACTORY).get(FeedViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this, MyInjector.FEED_VIEW_MODEL_FACTORY).get(FeedViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(FeedViewModel::class.java)
         viewModel.loadFeeds()
 
         viewModel.feedsLiveData.observe(this, Observer {
             if (it != null && it.isOk){
                 feedRecyclerAdapter.updateFeedList(it.articles!!)
+                Log.d(TAG, "it.isOk = true")
             }
+            binding.mail = it
             binding.executePendingBindings()
         })
 
@@ -59,7 +65,8 @@ class FeedFragment : Fragment() {
         TODO("editFeed has not been implemented yet")
     }
     fun addFeed(){
-        viewModel.addFeed(RoomFeed("testurl", "yikes"))
+        viewModel.addFeed(RoomFeed("testurl/$counter", "bit $counter oof"))
+        counter++
         viewModel.loadFeeds()
     }
 
@@ -79,6 +86,8 @@ class FeedFragment : Fragment() {
     }
 
     companion object {
+
+        const val TAG = "FeedFragment"
 
         fun newInstance(): FeedFragment {
             val fragment = FeedFragment()

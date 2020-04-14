@@ -1,14 +1,35 @@
 package cz.cvut.palecda1
 
+import android.app.Application
 import cz.cvut.palecda1.dao.ArticleDaoFake
-import cz.cvut.palecda1.dao.FeedDaoFake
-import cz.cvut.palecda1.dao.FeedDaoRoom
+import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.ArticleRepository
 import cz.cvut.palecda1.repository.FeedRepository
-import cz.cvut.palecda1.viewmodel.ArticleViewModelFactory
-import cz.cvut.palecda1.viewmodel.FeedViewModelFactory
 
 object MyInjector {
-    val ARTICLE_VIEW_MODEL_FACTORY = ArticleViewModelFactory(ArticleRepository(ArticleDaoFake()))
-    val FEED_VIEW_MODEL_FACTORY = FeedViewModelFactory(FeedRepository(FeedDaoFake()))
+
+    private var articleRepository: ArticleRepository? = null
+    fun getArticleRepo(application: Application): ArticleRepository{
+        if(articleRepository == null){
+            synchronized(this){
+                if(articleRepository == null){
+                    articleRepository = ArticleRepository(ArticleDaoFake())
+                    //articleRepository = ArticleRepository(AppDatabase.getInstance(application).articleDao())
+                }
+            }
+        }
+        return articleRepository!!
+    }
+
+    private var feedRepository: FeedRepository? = null
+    fun getFeedRepo(application: Application): FeedRepository{
+        if(feedRepository == null){
+            synchronized(this){
+                if(feedRepository == null){
+                    feedRepository = FeedRepository(AppDatabase.getInstance(application).feedDao())
+                }
+            }
+        }
+        return feedRepository!!
+    }
 }

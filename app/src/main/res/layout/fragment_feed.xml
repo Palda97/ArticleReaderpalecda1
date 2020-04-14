@@ -2,9 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewmodel"
             type="cz.cvut.palecda1.viewmodel.FeedViewModel" />
+        <variable
+            name="mail"
+            type="cz.cvut.palecda1.article.MailPackage" />
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -15,6 +19,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/insert_feeds_here"
+            android:visibility="@{mail.ok ? View.VISIBLE : View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <LinearLayout
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="@{mail.loading ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loading ..."/>
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

@@ -3,6 +3,7 @@ package cz.cvut.palecda1
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import cz.cvut.palecda1.article.Article
@@ -33,13 +34,15 @@ class ArticleFragment : Fragment() {
         articleRecyclerAdapter = ArticleRecyclerAdapter { listener!!.showDetail(it) }
         binding.insertArticlesHere.adapter = articleRecyclerAdapter
 
-        viewModel = ViewModelProviders.of(this, MyInjector.ARTICLE_VIEW_MODEL_FACTORY).get(ArticleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         viewModel.loadArticles()
 
         viewModel.articlesLiveData.observe(this, Observer {
             if (it != null && it.isOk){
                 articleRecyclerAdapter.updateArticleList(it.articles!!)
+                Log.d(TAG, "it.isOk = true")
             }
+            binding.mail = it
             binding.executePendingBindings()
         })
 
@@ -80,5 +83,9 @@ class ArticleFragment : Fragment() {
     interface ArticleFragmentListener {
         fun showDetail(article: Article)
         fun configFeeds()
+    }
+
+    companion object{
+        const val TAG = "ArticleFragment"
     }
 }

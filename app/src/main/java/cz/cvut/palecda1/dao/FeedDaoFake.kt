@@ -25,4 +25,8 @@ class FeedDaoFake: FeedDao {
     override fun deleteFeed(roomFeed: RoomFeed) {
         map.remove(roomFeed.url)
     }
+
+    override fun deleteAll() {
+        map.clear()
+    }
 }

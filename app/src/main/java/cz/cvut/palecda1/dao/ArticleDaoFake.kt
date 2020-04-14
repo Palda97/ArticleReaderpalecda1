@@ -17,5 +17,5 @@ class ArticleDaoFake : ArticleDao {
 
     override fun articleList(): List<Article> = dataStorage.arrayOfArticles().toList()
 
-    override fun articleById(id: String): Article? = mapByUrl[id]
+    override fun articleById(url: String): Article? = mapByUrl[url]
 }

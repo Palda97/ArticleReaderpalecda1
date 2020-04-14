@@ -35,7 +35,7 @@ class DetailFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         val view = binding.root
 
-        viewModel = ViewModelProviders.of(this, MyInjector.ARTICLE_VIEW_MODEL_FACTORY).get(ArticleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         viewModel.loadArticleById(articleId)
 
         viewModel.articleLiveData.observe(this, Observer {
