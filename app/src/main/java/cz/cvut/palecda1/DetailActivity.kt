@@ -27,7 +27,7 @@ class DetailActivity : AppCompatActivity() {
 
         fun start(act: AppCompatActivity, article: Article){
             val intent = Intent(act, DetailActivity::class.java)
-            intent.putExtra(ID, article.address)
+            intent.putExtra(ID, article.url)
             act.startActivity(intent)
         }
     }

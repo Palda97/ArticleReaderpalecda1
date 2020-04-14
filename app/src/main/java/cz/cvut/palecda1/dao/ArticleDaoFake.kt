@@ -10,7 +10,7 @@ class ArticleDaoFake : ArticleDao {
 
     init {
         dataStorage.articleArray.forEach {
-            mapByUrl[it.address] = it
+            mapByUrl[it.url] = it
         }
         Log.d("ADF", "xD")
     }

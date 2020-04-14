@@ -1,8 +1,8 @@
 package cz.cvut.palecda1.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
-class RoomArticle {
-    val lol: Int = 0
-}
+data class RoomArticle(@PrimaryKey(autoGenerate = false) val url: String,
+                       val body: String)

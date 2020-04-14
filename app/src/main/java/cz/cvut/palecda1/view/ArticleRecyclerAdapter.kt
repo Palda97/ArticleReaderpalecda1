@@ -29,13 +29,13 @@ class ArticleRecyclerAdapter(private val listener: (Article) -> Unit): RecyclerV
                 }
 
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    return articleList!![oldItemPosition].address == newArticleList[newItemPosition].address
+                    return articleList!![oldItemPosition].url == newArticleList[newItemPosition].url
                 }
 
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                     val newIssue = newArticleList[newItemPosition]
                     val oldIssue = articleList!![oldItemPosition]
-                    return newIssue.address == oldIssue.address
+                    return newIssue.url == oldIssue.url
                 }
             })
             articleList = newArticleList
