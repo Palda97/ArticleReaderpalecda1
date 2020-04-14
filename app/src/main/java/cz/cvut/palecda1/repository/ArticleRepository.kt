@@ -7,8 +7,7 @@ import cz.cvut.palecda1.article.MailPackage
 import cz.cvut.palecda1.dao.ArticleDao
 import cz.cvut.palecda1.dao.ArticleDaoFake
 
-class ArticleRepository {
-    val articleDao: ArticleDao = ArticleDaoFake()
+class ArticleRepository(private val articleDao: ArticleDao) {
 
     fun getArticleList(): LiveData<MailPackage<List<Article>>> {
         val data = MutableLiveData<MailPackage<List<Article>>>()
@@ -24,4 +23,17 @@ class ArticleRepository {
         data.value = MailPackage(article, status, "")
         return data
     }
+
+    //
+
+    /*companion object {
+        @Volatile
+        private var instance: ArticleRepository? = null
+
+        fun getInstance(articleDao: ArticleDao): ArticleRepository {
+            return instance ?: synchronized(this){
+                instance ?: ArticleRepository(articleDao).also { instance = it }
+            }
+        }
+    }*/
 }

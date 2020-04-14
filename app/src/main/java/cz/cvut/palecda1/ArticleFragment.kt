@@ -29,7 +29,7 @@ class ArticleFragment : Fragment() {
         articleRecyclerAdapter = ArticleRecyclerAdapter { listener!!.showDetail(it) }
         binding.insertArticlesHere.adapter = articleRecyclerAdapter
 
-        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, MyInjector.ARTICLE_VIEW_MODEL_FACTORY).get(ArticleViewModel::class.java)
         viewModel.loadArticles()
 
         viewModel.articlesLiveData.observe(this, Observer {
