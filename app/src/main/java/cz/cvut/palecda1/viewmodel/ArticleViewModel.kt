@@ -20,7 +20,7 @@ class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() 
         get() = observableArticle
 
     init {
-        observableArticles.value = null //TODO zkusit co se stane bez tehle radky
+        observableArticles.value = null
         observableArticle.value = null
     }
 

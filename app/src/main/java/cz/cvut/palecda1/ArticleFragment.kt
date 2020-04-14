@@ -1,10 +1,9 @@
 package cz.cvut.palecda1
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import cz.cvut.palecda1.article.Article
 import androidx.databinding.DataBindingUtil
@@ -20,6 +19,11 @@ class ArticleFragment : Fragment() {
     internal lateinit var binding: FragmentArticleBinding
     internal lateinit var viewModel: ArticleViewModel
     internal lateinit var articleRecyclerAdapter: ArticleRecyclerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -58,17 +62,23 @@ class ArticleFragment : Fragment() {
         listener = null
     }
 
-    /*private fun showArticles(inflater: LayoutInflater, container: ViewGroup?, articles: Array<Article>){
-        articles.forEachIndexed { index, s ->
-            val lView = inflater.inflate(R.layout.text_field_in_layout, container)
-            //lView.textViewInLayout.text = Html.fromHtml(s.body)
-            lView.textViewInLayout.text = HtmlCompat.fromHtml(s.body, HtmlCompat.FROM_HTML_MODE_LEGACY)
-            lView.textViewInLayout.setOnClickListener{listener?.showDetail(index)}
-            pLayout.addView(lView, pLayout.childCount)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_article, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.configFeedItem -> {
+                listener!!.configFeeds()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-    }*/
+    }
 
     interface ArticleFragmentListener {
         fun showDetail(article: Article)
+        fun configFeeds()
     }
 }

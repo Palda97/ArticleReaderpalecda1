@@ -9,6 +9,10 @@ class MainActivity : AppCompatActivity(), ArticleFragment.ArticleFragmentListene
         DetailActivity.start(this@MainActivity, article)
     }
 
+    override fun configFeeds() {
+        FeedActivity.start(this@MainActivity)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
