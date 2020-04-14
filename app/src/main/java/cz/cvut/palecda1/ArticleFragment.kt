@@ -75,6 +75,10 @@ class ArticleFragment : Fragment() {
                 listener!!.configFeeds()
                 true
             }
+            R.id.refreshItem -> {
+                viewModel.refreshArticles()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

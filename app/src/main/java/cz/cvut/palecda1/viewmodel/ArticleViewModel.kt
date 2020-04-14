@@ -31,6 +31,11 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
         observableArticles.addSource(articles) { observableArticles.value = it }
     }
 
+    fun refreshArticles(){
+        val articles = repository.downloadArticles()
+        observableArticles.addSource(articles) { observableArticles.value = it }
+    }
+
     fun loadArticleById(id: String) {
         //val article = repository.getArticleById(id)
         //observableRoomArticle.addSource(article) { observableRoomArticle.value = it }

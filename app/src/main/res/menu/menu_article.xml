@@ -5,5 +5,12 @@
         android:id="@+id/configFeedItem"
         android:title="Config feeds"
         app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_rss_feed_black_24dp"
+        />
+    <item
+        android:id="@+id/refreshItem"
+        android:title="Refresh feeds"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_refresh_black_24dp"
         />
 </menu>
