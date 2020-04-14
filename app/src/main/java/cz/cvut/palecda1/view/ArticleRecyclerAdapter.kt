@@ -6,39 +6,39 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import cz.cvut.palecda1.R
-import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.databinding.TextFieldInLayoutBinding
+import cz.cvut.palecda1.model.RoomArticle
 
-class ArticleRecyclerAdapter(private val listener: (Article) -> Unit): RecyclerView.Adapter<ArticleRecyclerAdapter.ArticleViewHolder>() {
-    var articleList: List<Article>? = null
+class ArticleRecyclerAdapter(private val listener: (RoomArticle) -> Unit): RecyclerView.Adapter<ArticleRecyclerAdapter.ArticleViewHolder>() {
+    var roomArticleList: List<RoomArticle>? = null
     init {
         setHasStableIds(true)
     }
-    fun updateArticleList(newArticleList: List<Article>){
-        if (articleList == null) {
-            articleList = newArticleList
-            notifyItemRangeInserted(0, newArticleList.size)
+    fun updateArticleList(newRoomArticleList: List<RoomArticle>){
+        if (roomArticleList == null) {
+            roomArticleList = newRoomArticleList
+            notifyItemRangeInserted(0, newRoomArticleList.size)
         } else {
             val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun getOldListSize(): Int {
-                    return articleList!!.size
+                    return roomArticleList!!.size
                 }
 
                 override fun getNewListSize(): Int {
-                    return newArticleList.size
+                    return newRoomArticleList.size
                 }
 
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    return articleList!![oldItemPosition].url == newArticleList[newItemPosition].url
+                    return roomArticleList!![oldItemPosition].url == newRoomArticleList[newItemPosition].url
                 }
 
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    val newIssue = newArticleList[newItemPosition]
-                    val oldIssue = articleList!![oldItemPosition]
+                    val newIssue = newRoomArticleList[newItemPosition]
+                    val oldIssue = roomArticleList!![oldItemPosition]
                     return newIssue.url == oldIssue.url
                 }
             })
-            articleList = newArticleList
+            roomArticleList = newRoomArticleList
             result.dispatchUpdatesTo(this)
         }
     }
@@ -54,11 +54,11 @@ class ArticleRecyclerAdapter(private val listener: (Article) -> Unit): RecyclerV
     }
 
     override fun getItemCount(): Int {
-        return articleList?.size ?: 0
+        return roomArticleList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        val article = articleList!![position]
+        val article = roomArticleList!![position]
 
         holder.binding.article = article
         holder.binding.executePendingBindings()

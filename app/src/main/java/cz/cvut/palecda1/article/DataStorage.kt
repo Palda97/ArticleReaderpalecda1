@@ -1,21 +1,22 @@
 package cz.cvut.palecda1.article
 
+import cz.cvut.palecda1.model.RoomArticle
 import java.util.*
 
 class DataStorage : ArticleSupplier {
-    val articleArray: Array<Article>
+    val articleArray: Array<RoomArticle>
     init {
         articleArray = Array(10) {
             val currentTime = Calendar.getInstance().time.toString()
-            Article("<h1>Article $it</h1>$currentTime<br>$LOREM", "http://www.example.com/article/$it/")
+            RoomArticle("http://www.example.com/article/$it/", "Article $it", "$currentTime<br>$LOREM")
         }
     }
 
-    override fun arrayOfArticles(): Array<Article> {
+    override fun arrayOfArticles(): Array<RoomArticle> {
         return articleArray
     }
 
-    override fun articleById(id: Int): Article {
+    override fun articleById(id: Int): RoomArticle {
         require(id < articleArray.size && id >= 0)
         return articleArray[id]
     }

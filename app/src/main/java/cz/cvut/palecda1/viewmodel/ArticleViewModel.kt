@@ -4,28 +4,26 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import cz.cvut.palecda1.MyInjector
-import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.article.MailPackage
-import cz.cvut.palecda1.repository.ArticleRepository
+import cz.cvut.palecda1.model.RoomArticle
 
 class ArticleViewModel(application: Application) : AndroidViewModel(application) {
 //class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() {
 
-    val repository = MyInjector.getArticleRepo(application)
+    val repository = MyInjector.getArticleRepo()
 
-    val observableArticles: MediatorLiveData<MailPackage<List<Article>>> = MediatorLiveData()
-    val observableArticle: MediatorLiveData<MailPackage<Article>> = MediatorLiveData()
+    val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
+    val observableRoomArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
 
-    val articlesLiveData: LiveData<MailPackage<List<Article>>>
+    val articlesLiveData: LiveData<MailPackage<List<RoomArticle>>>
         get() = observableArticles
-    val articleLiveData: LiveData<MailPackage<Article>>
-        get() = observableArticle
+    val roomArticleLiveData: LiveData<MailPackage<RoomArticle>>
+        get() = observableRoomArticle
 
     init {
         observableArticles.value = null
-        observableArticle.value = null
+        observableRoomArticle.value = null
     }
 
     fun loadArticles() {
@@ -35,6 +33,6 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     fun loadArticleById(id: String) {
         val article = repository.getArticleById(id)
-        observableArticle.addSource(article) { observableArticle.value = it }
+        observableRoomArticle.addSource(article) { observableRoomArticle.value = it }
     }
 }

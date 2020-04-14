@@ -1,16 +1,15 @@
 package cz.cvut.palecda1
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import cz.cvut.palecda1.article.Article
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import cz.cvut.palecda1.databinding.FragmentArticleBinding
+import cz.cvut.palecda1.model.RoomArticle
 import cz.cvut.palecda1.view.ArticleRecyclerAdapter
 import cz.cvut.palecda1.viewmodel.ArticleViewModel
 
@@ -81,7 +80,7 @@ class ArticleFragment : Fragment() {
     }
 
     interface ArticleFragmentListener {
-        fun showDetail(article: Article)
+        fun showDetail(roomArticle: RoomArticle)
         fun configFeeds()
     }
 

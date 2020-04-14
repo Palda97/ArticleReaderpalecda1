@@ -1,8 +1,8 @@
 package cz.cvut.palecda1.dao
 
-import cz.cvut.palecda1.article.Article
+import cz.cvut.palecda1.model.RoomArticle
 
 interface ArticleDao {
-    fun articleList(): List<Article>
-    fun articleById(url: String): Article?
+    fun articleList(): List<RoomArticle>
+    fun articleById(url: String): RoomArticle?
 }

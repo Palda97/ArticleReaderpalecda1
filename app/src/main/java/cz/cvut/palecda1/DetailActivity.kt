@@ -3,7 +3,7 @@ package cz.cvut.palecda1
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import cz.cvut.palecda1.article.Article
+import cz.cvut.palecda1.model.RoomArticle
 
 class DetailActivity : AppCompatActivity() {
 
@@ -25,9 +25,9 @@ class DetailActivity : AppCompatActivity() {
     companion object{
         const val ID = "ID"
 
-        fun start(act: AppCompatActivity, article: Article){
+        fun start(act: AppCompatActivity, roomArticle: RoomArticle){
             val intent = Intent(act, DetailActivity::class.java)
-            intent.putExtra(ID, article.url)
+            intent.putExtra(ID, roomArticle.url)
             act.startActivity(intent)
         }
     }

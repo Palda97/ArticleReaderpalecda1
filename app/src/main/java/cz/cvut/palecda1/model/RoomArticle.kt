@@ -5,4 +5,5 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class RoomArticle(@PrimaryKey(autoGenerate = false) val url: String,
+                       val title: String,
                        val body: String)

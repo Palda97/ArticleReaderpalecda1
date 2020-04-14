@@ -38,7 +38,7 @@ class DetailFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         viewModel.loadArticleById(articleId)
 
-        viewModel.articleLiveData.observe(this, Observer {
+        viewModel.roomArticleLiveData.observe(this, Observer {
             if (it != null && it.isOk){
                 binding.article = it.articles
             }

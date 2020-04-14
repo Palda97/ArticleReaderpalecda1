@@ -46,6 +46,7 @@ dependencies {
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
+    //
     //LifeCycle
     def version_lifecycle = '2.0.0'
     implementation "androidx.lifecycle:lifecycle-runtime:$version_lifecycle"

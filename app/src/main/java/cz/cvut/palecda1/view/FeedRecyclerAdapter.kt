@@ -6,9 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import cz.cvut.palecda1.R
-import cz.cvut.palecda1.article.Article
 import cz.cvut.palecda1.databinding.FeedFieldInLayoutBinding
-import cz.cvut.palecda1.databinding.TextFieldInLayoutBinding
 import cz.cvut.palecda1.model.RoomFeed
 
 class FeedRecyclerAdapter(private val listener: (RoomFeed) -> Unit): RecyclerView.Adapter<FeedRecyclerAdapter.FeedViewHolder>() {

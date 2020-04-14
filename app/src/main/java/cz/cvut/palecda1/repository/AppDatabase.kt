@@ -12,7 +12,7 @@ import cz.cvut.palecda1.model.RoomFeed
 /**
  * Application database implemented with Room
  */
-@Database(entities = [RoomFeed::class, RoomArticle::class], version = 2)
+@Database(entities = [RoomFeed::class, RoomArticle::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun articleDao(): ArticleDaoRoom
