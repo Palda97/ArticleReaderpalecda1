@@ -11,7 +11,7 @@ import cz.cvut.palecda1.model.RoomArticle
 class ArticleViewModel(application: Application) : AndroidViewModel(application) {
 //class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() {
 
-    val repository = MyInjector.getArticleRepo()
+    val repository = MyInjector.getArticleRepo(application)
 
     val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
     val observableRoomArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
@@ -32,7 +32,8 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun loadArticleById(id: String) {
-        val article = repository.getArticleById(id)
-        observableRoomArticle.addSource(article) { observableRoomArticle.value = it }
+        //val article = repository.getArticleById(id)
+        //observableRoomArticle.addSource(article) { observableRoomArticle.value = it }
+        TODO("loadArticleById uvnitr ArticleViewModel")
     }
 }

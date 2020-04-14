@@ -22,7 +22,6 @@
             android:visibility="@{mail.ok ? View.VISIBLE : View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         <LinearLayout
-            android:id="@+id/loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -33,6 +32,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="loading ..."/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="@{mail.error ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{mail.msg}"/>
 
         </LinearLayout>
     </LinearLayout>

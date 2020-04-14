@@ -4,4 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="eternal_emptiness">eternal emptiness</string>
     <string name="share">Share</string>
+    <string name="MalformedURL">MalformedURLException</string>
+    <string name="IllegalArgument">IllegalArgumentException</string>
+    <string name="FeedException">FeedException</string>
+    <string name="IOException">IOException</string>
 </resources>

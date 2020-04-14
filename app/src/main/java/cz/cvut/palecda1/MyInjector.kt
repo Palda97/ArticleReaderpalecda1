@@ -1,5 +1,6 @@
 package cz.cvut.palecda1
 
+import android.app.Application
 import cz.cvut.palecda1.dao.ArticleDaoRome
 import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.ArticleRepository
@@ -11,11 +12,11 @@ object MyInjector {
         get() = AppInit.db
 
     private var articleRepository: ArticleRepository? = null
-    fun getArticleRepo(): ArticleRepository {
+    fun getArticleRepo(application: Application): ArticleRepository {
         if (articleRepository == null) {
             synchronized(this) {
                 if (articleRepository == null) {
-                    articleRepository = ArticleRepository(ArticleDaoRome())
+                    articleRepository = ArticleRepository(db.articleDao(), ArticleDaoRome(), application)
                     //articleRepository = ArticleRepository(db.articleDao())
                 }
             }

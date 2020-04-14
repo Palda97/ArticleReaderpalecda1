@@ -1,7 +1,10 @@
 package cz.cvut.palecda1
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.os.AsyncTask
+import cz.cvut.palecda1.dao.FeedDao
 import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.FeedRepository
 import cz.cvut.palecda1.model.RoomFeed
@@ -25,19 +28,19 @@ class AppInit : Application() {
             sharedPreferences.edit().putBoolean(INIT_DATA_KEY, true).apply()
         }*/
         db = AppDatabase.getInstance(this)
-        clearFeeds()
-        fillFeeds()
+        asyncFeeds(db.feedDao())
+        Thread.sleep(1000)
     }
 
-    fun clearFeeds(){
-        val repo = FeedRepository(db.feedDao())
-        repo.deleteAll()
-        Thread.sleep(1000)
-    }
-    fun fillFeeds(){
-        val repo = FeedRepository(db.feedDao())
-        repo.addFeed(RoomFeed("https://www.viralpatel.net/feed", "android devs"))
-        Thread.sleep(1000)
+    @SuppressLint("StaticFieldLeak")
+    fun asyncFeeds(feedDao: FeedDao) {
+        object : AsyncTask<Void, Void, Void>() {
+            override fun doInBackground(vararg voids: Void): Void? {
+                feedDao.deleteAll()
+                feedDao.insertFeed(RoomFeed("https://www.viralpatel.net/feed", "android devs"))
+                return null
+            }
+        }.execute()
     }
 
     companion object {
