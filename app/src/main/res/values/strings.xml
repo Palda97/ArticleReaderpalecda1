@@ -8,4 +8,6 @@
     <string name="IllegalArgument">IllegalArgumentException</string>
     <string name="FeedException">FeedException</string>
     <string name="IOException">IOException</string>
+    <string name="title">Title</string>
+    <string name="example_url">https://www.example.com</string>
 </resources>

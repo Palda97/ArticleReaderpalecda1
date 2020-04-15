@@ -13,8 +13,8 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     val repository = MyInjector.getArticleRepo(application)
 
-    val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
-    val observableRoomArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
+    private val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
+    private val observableRoomArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
 
     val articlesLiveData: LiveData<MailPackage<List<RoomArticle>>>
         get() = observableArticles

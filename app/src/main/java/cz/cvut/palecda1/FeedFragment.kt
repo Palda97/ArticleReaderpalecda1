@@ -1,16 +1,20 @@
 package cz.cvut.palecda1
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.databinding.DialogNewFeedBinding
 import cz.cvut.palecda1.databinding.FragmentFeedBinding
 import cz.cvut.palecda1.model.RoomFeed
+import cz.cvut.palecda1.view.FeedDialogFragment
 import cz.cvut.palecda1.view.FeedRecyclerAdapter
 import cz.cvut.palecda1.viewmodel.FeedViewModel
 import java.util.Objects
@@ -64,10 +68,33 @@ class FeedFragment : Fragment() {
     fun editFeed(roomFeed: RoomFeed){
         TODO("editFeed has not been implemented yet")
     }
-    fun addFeed(){
+    /*fun addFeed(){
         viewModel.addFeed(RoomFeed("testurl/$counter", "bit $counter oof"))
         counter++
         viewModel.loadFeeds()
+    }*/
+    /*fun addFeed(){
+        if(dialogView.parent != null)
+            (dialogView.parent as ViewGroup).removeView(dialogView)
+        val dialogBuilder = AlertDialog.Builder(context!!)
+            .setView(dialogView)
+            .setTitle("Add Feed")
+            .setPositiveButton("ADD") { dialog, which ->
+                Log.d(TAG, "ADD")
+            }
+            .setNeutralButton("CANCEL") { dialogInterface: DialogInterface, i: Int ->
+                Log.d(TAG, "CANCEL")
+            }
+        alertDialog = dialogBuilder.show()
+    }
+    override fun onPause() {
+        super.onPause()
+        alertDialog?.dismiss()
+    }*/
+
+    fun addFeed(){
+        val newFragment = FeedDialogFragment(viewModel)
+        newFragment.show(fragmentManager!!, "newFeedDialog")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
