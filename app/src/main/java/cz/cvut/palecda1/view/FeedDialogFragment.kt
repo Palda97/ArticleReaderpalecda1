@@ -51,6 +51,8 @@ class FeedDialogFragment(val viewModel: FeedViewModel): DialogFragment() {
             .setNeutralButton(getString(R.string.cancel)) { _, _ ->
                 Log.d(TAG, getString(R.string.cancel))
             }
+        if(editMode)
+            builder.setTitle(getString(R.string.edit_feed))
         return builder.create()
     }
 

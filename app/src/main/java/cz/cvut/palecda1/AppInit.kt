@@ -21,9 +21,9 @@ class AppInit : Application() {
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
             val feedRepo = MyInjector.getFeedRepo()
             feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title)))
-            val articleRepo = MyInjector.getArticleRepo(this)
+            /*val articleRepo = MyInjector.getArticleRepo(this)
             articleRepo.downloadArticles()
-            Thread.sleep(2000)
+            Thread.sleep(2000)*/
             sharedPreferences.edit().putBoolean(INIT_DATA_KEY, true).apply()
         }
     }

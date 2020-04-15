@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentArticleBinding
 import cz.cvut.palecda1.model.RoomArticle
+import cz.cvut.palecda1.repository.MailPackage
 import cz.cvut.palecda1.view.ArticleRecyclerAdapter
 import cz.cvut.palecda1.viewmodel.ArticleViewModel
 
@@ -39,11 +40,16 @@ class ArticleFragment : Fragment() {
         viewModel.loadArticles()
 
         viewModel.articlesLiveData.observe(this, Observer {
+            var empty = false
             if (it != null && it.isOk){
                 articleRecyclerAdapter.updateArticleList(it.articles!!)
                 Log.d(TAG, "it.isOk = true")
+                if(it.articles.isEmpty())
+                    empty = true
             }
             binding.mail = it
+            if(empty)
+                binding.mail = MailPackage(null, MailPackage.ERROR, getString(R.string.refresh_or_add_feeds))
             binding.executePendingBindings()
         })
 
