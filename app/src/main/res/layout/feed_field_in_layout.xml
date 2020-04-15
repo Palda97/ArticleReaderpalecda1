@@ -12,10 +12,18 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewInLayout"
+            android:id="@+id/textViewForTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxHeight="100dp"
-            android:text="@{feed.url }"/>
+            android:text="@{feed.title}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/textViewForUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:text="@{feed.url}" />
     </LinearLayout>
 </layout>

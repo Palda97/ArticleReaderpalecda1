@@ -43,7 +43,7 @@ class FeedFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false)
         val view = binding.root
 
-        feedRecyclerAdapter = FeedRecyclerAdapter { editFeed(it) }
+        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it) }, {deleteFeed(it)})
         binding.insertFeedsHere.adapter = feedRecyclerAdapter
 
         //viewModel = ViewModelProviders.of(this, MyInjector.FEED_VIEW_MODEL_FACTORY).get(FeedViewModel::class.java)
@@ -66,31 +66,25 @@ class FeedFragment : Fragment() {
     }
 
     fun editFeed(roomFeed: RoomFeed){
-        TODO("editFeed has not been implemented yet")
+        val newFragment = FeedDialogFragment.editFeed(viewModel, roomFeed)
+        newFragment.show(fragmentManager!!, "editFeedDialog")
     }
-    /*fun addFeed(){
-        viewModel.addFeed(RoomFeed("testurl/$counter", "bit $counter oof"))
-        counter++
-        viewModel.loadFeeds()
-    }*/
-    /*fun addFeed(){
-        if(dialogView.parent != null)
-            (dialogView.parent as ViewGroup).removeView(dialogView)
+
+    fun deleteFeed(roomFeed: RoomFeed): Boolean {
         val dialogBuilder = AlertDialog.Builder(context!!)
-            .setView(dialogView)
-            .setTitle("Add Feed")
-            .setPositiveButton("ADD") { dialog, which ->
-                Log.d(TAG, "ADD")
+            .setTitle(getString(R.string.delete_feed) + "(${roomFeed.title})")
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                Log.d(TAG, getString(R.string.delete))
+                viewModel.deleteFeed(roomFeed)
+                viewModel.loadFeeds()
             }
-            .setNeutralButton("CANCEL") { dialogInterface: DialogInterface, i: Int ->
-                Log.d(TAG, "CANCEL")
+            .setNeutralButton(getString(R.string.cancel)) { _, _ ->
+                Log.d(TAG, getString(R.string.cancel))
             }
-        alertDialog = dialogBuilder.show()
+        //val alertDialog = dialogBuilder.show()
+        dialogBuilder.show()
+        return true
     }
-    override fun onPause() {
-        super.onPause()
-        alertDialog?.dismiss()
-    }*/
 
     fun addFeed(){
         val newFragment = FeedDialogFragment(viewModel)
@@ -106,6 +100,11 @@ class FeedFragment : Fragment() {
         return when (item.itemId) {
             R.id.addFeedItem -> {
                 addFeed()
+                true
+            }
+            R.id.resetFeedsItem -> {
+                viewModel.deleteAll()
+                viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title)))
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -9,7 +9,7 @@ import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FeedFieldInLayoutBinding
 import cz.cvut.palecda1.model.RoomFeed
 
-class FeedRecyclerAdapter(private val listener: (RoomFeed) -> Unit): RecyclerView.Adapter<FeedRecyclerAdapter.FeedViewHolder>() {
+class FeedRecyclerAdapter(private val editListener: (RoomFeed) -> Unit, private val deleteListener: (RoomFeed) -> Boolean): RecyclerView.Adapter<FeedRecyclerAdapter.FeedViewHolder>() {
     var feedList: List<RoomFeed>? = null
     init {
         setHasStableIds(true)
@@ -64,7 +64,11 @@ class FeedRecyclerAdapter(private val listener: (RoomFeed) -> Unit): RecyclerVie
         holder.binding.executePendingBindings()
 
         holder.itemView.setOnClickListener {
-            listener(feed)
+            editListener(feed)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            deleteListener(feed)
         }
     }
 

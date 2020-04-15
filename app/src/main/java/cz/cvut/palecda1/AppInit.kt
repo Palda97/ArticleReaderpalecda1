@@ -28,8 +28,8 @@ class AppInit : Application() {
             sharedPreferences.edit().putBoolean(INIT_DATA_KEY, true).apply()
         }*/
         db = AppDatabase.getInstance(this)
-        asyncFeeds(db.feedDao())
-        Thread.sleep(1000)
+        //asyncFeeds(db.feedDao())
+        //Thread.sleep(1000)
     }
 
     @SuppressLint("StaticFieldLeak")

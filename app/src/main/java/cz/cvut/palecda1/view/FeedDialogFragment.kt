@@ -13,34 +13,62 @@ import cz.cvut.palecda1.model.RoomFeed
 import cz.cvut.palecda1.viewmodel.FeedViewModel
 
 lateinit var binding: DialogNewFeedBinding
-//lateinit var viewModel: FeedViewModel
 
 class FeedDialogFragment(val viewModel: FeedViewModel): DialogFragment() {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         binding = DataBindingUtil.inflate(activity!!.layoutInflater, R.layout.dialog_new_feed, null, false)
         val view = binding.root
 
-        //viewModel = ViewModelProviders.of(this).get(FeedViewModel::class.java)
+        var editMode = false
+        var oldTitle = ""
+        var oldUrl = ""
+
+        if(arguments != null){
+            editMode = arguments!!.getBoolean(FEED, false)
+            if(editMode){
+                oldTitle = arguments!!.getString(TITLE, "")
+                oldUrl = arguments!!.getString(URL, "")
+                binding.editTitle.setText(oldTitle)
+                binding.editUrl.setText(oldUrl)
+            }
+        }
 
         val builder = AlertDialog.Builder(requireActivity())
-        //builder.setMessage("Message")
         builder.setView(view)
-            .setTitle("Add Feed")
-            .setPositiveButton("ADD") { dialog, which ->
-                Log.d(TAG, "ADD")
+            .setTitle(getString(R.string.add_feed))
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
+                if(editMode){
+                    viewModel.deleteFeed(RoomFeed(oldUrl, oldTitle))
+                    viewModel.loadFeeds()
+                }
                 val title: String = binding.editTitle.text.toString()
                 val url: String = binding.editUrl.text.toString()
                 viewModel.addFeed(RoomFeed(url, title))
                 viewModel.loadFeeds()
             }
-            .setNeutralButton("CANCEL") { dialog, which ->
-                Log.d(TAG, "CANCEL")
+            .setNeutralButton(getString(R.string.cancel)) { _, _ ->
+                Log.d(TAG, getString(R.string.cancel))
             }
         return builder.create()
     }
 
     companion object{
         const val TAG = "FeedDialogFragment"
+
+        const val URL = "URL"
+        const val TITLE = "TITLE"
+        const val FEED = "FEED"
+
+        fun editFeed(viewModel: FeedViewModel, roomFeed: RoomFeed): FeedDialogFragment {
+            val fragment = FeedDialogFragment(viewModel)
+            val args = Bundle()
+            args.putString(URL, roomFeed.url)
+            args.putString(TITLE, roomFeed.title)
+            args.putBoolean(FEED, true)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

@@ -29,4 +29,12 @@ class FeedViewModel(application: Application) : AndroidViewModel(application) {
     fun addFeed(roomFeed: RoomFeed){
         repository.addFeed(roomFeed)
     }
+
+    fun deleteFeed(roomFeed: RoomFeed){
+        repository.deleteFeed(roomFeed)
+    }
+
+    fun deleteAll(){
+        repository.deleteAll()
+    }
 }

@@ -19,10 +19,6 @@ class FeedRepository(val feedDao: FeedDao) {
         return data
     }
 
-    /*fun addFeed(roomFeed: RoomFeed){
-        feedDao.insertFeed(roomFeed)
-    }*/
-
     fun addFeed(feed: RoomFeed) {
         doAsync { feedDao.insertFeed(feed) }
     }

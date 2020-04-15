@@ -10,4 +10,11 @@
     <string name="IOException">IOException</string>
     <string name="title">Title</string>
     <string name="example_url">https://www.example.com</string>
+    <string name="add_feed">Add Feed</string>
+    <string name="add">ADD</string>
+    <string name="cancel">CANCEL</string>
+    <string name="delete_feed">Delete feed?</string>
+    <string name="delete">DELETE</string>
+    <string name="default_feed_url">https://www.viralpatel.net/feed</string>
+    <string name="default_feed_title">android devs</string>
 </resources>
