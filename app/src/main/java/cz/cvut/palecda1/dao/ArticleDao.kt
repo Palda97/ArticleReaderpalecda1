@@ -7,4 +7,5 @@ interface ArticleDao {
     fun articleById(url: String): RoomArticle?
     fun deleteAll()
     fun insertArticles(list: List<RoomArticle>)
+    fun clearAndInsertList(list: List<RoomArticle>)
 }

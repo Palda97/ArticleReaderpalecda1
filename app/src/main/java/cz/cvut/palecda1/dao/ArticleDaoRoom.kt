@@ -29,4 +29,9 @@ abstract class ArticleDaoRoom : ArticleDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract override fun insertArticles(list: List<RoomArticle>)
+
+    override fun clearAndInsertList(list: List<RoomArticle>) {
+        deleteAll()
+        insertArticles(list)
+    }
 }

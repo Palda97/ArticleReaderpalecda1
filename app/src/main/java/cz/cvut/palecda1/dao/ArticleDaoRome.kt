@@ -62,6 +62,10 @@ class ArticleDaoRome : ArticleDao {
         TODO("not implemented")
     }
 
+    override fun clearAndInsertList(list: List<RoomArticle>) {
+        TODO("not implemented")
+    }
+
     companion object {
         const val TAG = "ArticleDaoRome"
     }
