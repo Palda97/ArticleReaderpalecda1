@@ -1,9 +1,6 @@
 package cz.cvut.palecda1.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import cz.cvut.palecda1.model.RoomArticle
 
 @Dao
@@ -30,6 +27,7 @@ abstract class ArticleDaoRoom : ArticleDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract override fun insertArticles(list: List<RoomArticle>)
 
+    @Transaction
     override fun clearAndInsertList(list: List<RoomArticle>) {
         deleteAll()
         insertArticles(list)
