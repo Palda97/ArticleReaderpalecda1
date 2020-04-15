@@ -12,7 +12,7 @@ import cz.cvut.palecda1.model.RoomFeed
 class FeedRecyclerAdapter(private val editListener: (RoomFeed) -> Unit, private val deleteListener: (RoomFeed) -> Boolean): RecyclerView.Adapter<FeedRecyclerAdapter.FeedViewHolder>() {
     var feedList: List<RoomFeed>? = null
     init {
-        setHasStableIds(true)
+        //setHasStableIds(true)
     }
     fun updateFeedList(newFeedList: List<RoomFeed>){
         if (feedList == null) {
