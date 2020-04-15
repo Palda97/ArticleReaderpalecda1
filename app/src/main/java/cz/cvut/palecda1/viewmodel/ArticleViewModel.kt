@@ -37,8 +37,7 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun loadArticleById(id: String) {
-        //val article = repository.getArticleById(id)
-        //observableRoomArticle.addSource(article) { observableRoomArticle.value = it }
-        TODO("loadArticleById uvnitr ArticleViewModel")
+        val article = repository.getArticleById(id)
+        observableRoomArticle.addSource(article) { observableRoomArticle.value = it }
     }
 }

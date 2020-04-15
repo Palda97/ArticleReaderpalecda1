@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import cz.cvut.palecda1.databinding.FragmentDetailBinding
+import cz.cvut.palecda1.view.HtmlFactory
 import cz.cvut.palecda1.viewmodel.ArticleViewModel
 import java.util.Objects
 
@@ -40,8 +41,9 @@ class DetailFragment : Fragment() {
 
         viewModel.roomArticleLiveData.observe(this, Observer {
             if (it != null && it.isOk){
-                binding.article = it.articles
+                binding.article = HtmlFactory.toHtml(it.articles!!)
             }
+            binding.mail = it
             binding.executePendingBindings()
         })
 

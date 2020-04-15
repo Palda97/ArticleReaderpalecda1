@@ -2,7 +2,6 @@ package cz.cvut.palecda1.repository
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.res.Resources
 import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,7 +10,6 @@ import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedExcept
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.article.MailPackage
 import cz.cvut.palecda1.dao.ArticleDao
-import cz.cvut.palecda1.dao.ArticleDaoRoom
 import cz.cvut.palecda1.model.RoomArticle
 import java.io.IOException
 import java.net.MalformedURLException
@@ -23,6 +21,7 @@ class ArticleRepository(
 ) {
 
     fun downloadArticles(): LiveData<MailPackage<List<RoomArticle>>> {
+        Log.d(TAG, "downloadArticles")
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
         data.value = MailPackage(null, MailPackage.LOADING, "")
         asyncDownloadArticles(data)
@@ -30,10 +29,34 @@ class ArticleRepository(
     }
 
     fun getArticleList(): LiveData<MailPackage<List<RoomArticle>>> {
+        Log.d(TAG, "getArticleList")
         return downloadArticles()
     }
 
-    //fun getArticleById(id: String): LiveData<MailPackage<RoomArticle>>
+    fun saveToDb(list: List<RoomArticle>){
+        Log.d(TAG, "saveToDb")
+        doAsync { roomDao.insertArticles(list) }
+    }
+
+    fun getArticleById(url: String): LiveData<MailPackage<RoomArticle>> {
+        Log.d(TAG, "getArticleById")
+        val data = MutableLiveData<MailPackage<RoomArticle>>()
+        data.value = MailPackage(null, MailPackage.LOADING, "")
+        asyncGetById(data, url)
+        return data
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    fun asyncGetById(data: MutableLiveData<MailPackage<RoomArticle>>, url: String) {
+        object : AsyncTask<Void, Void, Void>() {
+            override fun doInBackground(vararg voids: Void): Void? {
+                val article = roomDao.articleById(url)
+                val mail: MailPackage<RoomArticle> = MailPackage(article, if (article == null) MailPackage.ERROR else MailPackage.OK, "")
+                data.postValue(mail)
+                return null
+            }
+        }.execute()
+    }
 
     @SuppressLint("StaticFieldLeak")
     fun doAsync(run: () -> Unit) {
@@ -53,13 +76,12 @@ class ArticleRepository(
                 var mail: MailPackage<List<RoomArticle>>
                 try {
                     val list = networkDao.articleList()
-                    Log.d(TAG, "It just continues lol")
                     mail = MailPackage(list, MailPackage.OK, "")
+                    //saveToDb(list)
                 } catch (e: MalformedURLException) {
                     mail = MailPackage(null, MailPackage.ERROR, application.getString(R.string.MalformedURL) +
                                 "\n${e.message}"
                     )
-                    Log.d(TAG, "MalformedURLException")
                     e.printStackTrace();
                 } catch (e: IllegalArgumentException) {
                     mail = MailPackage(null, MailPackage.ERROR, application.getString(R.string.IllegalArgument) +

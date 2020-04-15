@@ -54,6 +54,14 @@ class ArticleDaoRome : ArticleDao {
         return null
     }
 
+    override fun deleteAll() {
+        TODO("not implemented")
+    }
+
+    override fun insertArticles(list: List<RoomArticle>) {
+        TODO("not implemented")
+    }
+
     companion object {
         const val TAG = "ArticleDaoRome"
     }
