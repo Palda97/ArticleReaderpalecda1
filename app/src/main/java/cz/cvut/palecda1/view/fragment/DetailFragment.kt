@@ -1,10 +1,13 @@
 package cz.cvut.palecda1.view.fragment
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,7 +42,7 @@ class DetailFragment : Fragment() {
             R.layout.fragment_detail, container, false)
         val view = binding.root
 
-        //
+        binding.detailTextView.movementMethod = LinkMovementMethod.getInstance()
 
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         viewModel.loadArticleById(articleId)
@@ -76,7 +79,11 @@ class DetailFragment : Fragment() {
                 true
             }
             R.id.openLinkItem -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleId)))
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleId)))
+                }catch (e: ActivityNotFoundException){
+                    Toast.makeText(context!!, "<$articleId> " + getString(R.string.is_not_a_valid_url), Toast.LENGTH_SHORT).show()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

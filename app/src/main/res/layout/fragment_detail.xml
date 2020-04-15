@@ -7,6 +7,9 @@
         <variable
             name="article"
             type="android.text.Spanned" />
+        <!--<variable
+            name="article"
+            type="String" />-->
         <variable
             name="mail"
             type="cz.cvut.palecda1.repository.MailPackage" />
@@ -29,6 +32,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/detailTextView"
                     android:text="@{article}" />
             </LinearLayout>
         </ScrollView>

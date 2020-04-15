@@ -26,4 +26,5 @@
     <string name="add_feeds">Add Feeds</string>
     <string name="edit_feed">Edit Feed</string>
     <string name="refresh_or_add_feeds">Hello new user. There are no downloaded articles yet. Start by refreshing.</string>
+    <string name="is_not_a_valid_url">is not a valid url</string>
 </resources>
