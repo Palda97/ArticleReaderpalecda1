@@ -1,22 +1,28 @@
-package cz.cvut.palecda1
-//androidx.constraintlayout.widget.ConstraintLayout
+package cz.cvut.palecda1.view.activity
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import cz.cvut.palecda1.view.fragment.DetailFragment
+import cz.cvut.palecda1.R
+import cz.cvut.palecda1.model.RoomArticle
 
 class DetailActivity : AppCompatActivity() {
 
-    private var id: Int = 0
+    private lateinit var id: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        id = intent.getIntExtra(ID, 0)
+        id = intent.getStringExtra(ID) ?: ""
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
-                .add(R.id.container_detail_fragment, DetailFragment.newInstance(id))
+                .add(
+                    R.id.container_detail_fragment,
+                    DetailFragment.newInstance(id)
+                )
                 .commit()
         }
     }
@@ -24,9 +30,9 @@ class DetailActivity : AppCompatActivity() {
     companion object{
         const val ID = "ID"
 
-        fun start(act: AppCompatActivity, number: Int){
+        fun start(act: AppCompatActivity, roomArticle: RoomArticle){
             val intent = Intent(act, DetailActivity::class.java)
-            intent.putExtra(ID, number)
+            intent.putExtra(ID, roomArticle.url)
             act.startActivity(intent)
         }
     }

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="cz.cvut.palecda1.view.HtmlFactory" />
+        <variable
+            name="article"
+            type="cz.cvut.palecda1.model.RoomArticle" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-            android:text="@string/eternal_emptiness"
+        <TextView
+            android:id="@+id/textViewInLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewInLayout"
             android:maxHeight="100dp"
-    />
-</LinearLayout>
+            android:text="@{HtmlFactory.INSTANCE.toHtml(article)}"/>
+    </LinearLayout>
+</layout>
