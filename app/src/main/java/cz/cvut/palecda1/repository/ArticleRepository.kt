@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException
 import cz.cvut.palecda1.R
-import cz.cvut.palecda1.article.MailPackage
 import cz.cvut.palecda1.dao.ArticleDao
 import cz.cvut.palecda1.model.RoomArticle
 import java.io.IOException
@@ -23,7 +22,11 @@ class ArticleRepository(
     fun downloadArticles(): LiveData<MailPackage<List<RoomArticle>>> {
         Log.d(TAG, "downloadArticles")
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
-        data.value = MailPackage(null, MailPackage.LOADING, "")
+        data.value = MailPackage(
+            null,
+            MailPackage.LOADING,
+            ""
+        )
         asyncDownloadArticles(data)
         return data
     }
@@ -32,7 +35,11 @@ class ArticleRepository(
         Log.d(TAG, "getArticleList")
         //return downloadArticles()
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
-        data.value = MailPackage(null, MailPackage.LOADING, "")
+        data.value = MailPackage(
+            null,
+            MailPackage.LOADING,
+            ""
+        )
         asyncLoadArticles(data)
         return data
     }
@@ -45,7 +52,11 @@ class ArticleRepository(
     fun getArticleById(url: String): LiveData<MailPackage<RoomArticle>> {
         Log.d(TAG, "getArticleById")
         val data = MutableLiveData<MailPackage<RoomArticle>>()
-        data.value = MailPackage(null, MailPackage.LOADING, "")
+        data.value = MailPackage(
+            null,
+            MailPackage.LOADING,
+            ""
+        )
         asyncGetById(data, url)
         return data
     }
@@ -55,7 +66,11 @@ class ArticleRepository(
         object : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg voids: Void): Void? {
                 val list = roomDao.articleList()
-                val mail = MailPackage(list, MailPackage.OK, "")
+                val mail = MailPackage(
+                    list,
+                    MailPackage.OK,
+                    ""
+                )
                 data.postValue(mail)
                 return null
             }
@@ -67,7 +82,12 @@ class ArticleRepository(
         object : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg voids: Void): Void? {
                 val article = roomDao.articleById(url)
-                val mail: MailPackage<RoomArticle> = MailPackage(article, if (article == null) MailPackage.ERROR else MailPackage.OK, "")
+                val mail: MailPackage<RoomArticle> =
+                    MailPackage(
+                        article,
+                        if (article == null) MailPackage.ERROR else MailPackage.OK,
+                        ""
+                    )
                 data.postValue(mail)
                 return null
             }
@@ -92,25 +112,41 @@ class ArticleRepository(
                 var mail: MailPackage<List<RoomArticle>>
                 try {
                     val list = networkDao.articleList()
-                    mail = MailPackage(list, MailPackage.OK, "")
+                    mail = MailPackage(
+                        list,
+                        MailPackage.OK,
+                        ""
+                    )
                     saveToDb(list)
                 } catch (e: MalformedURLException) {
-                    mail = MailPackage(null, MailPackage.ERROR, application.getString(R.string.MalformedURL) +
+                    mail = MailPackage(
+                        null,
+                        MailPackage.ERROR,
+                        application.getString(R.string.MalformedURL) +
                                 "\n${e.message}"
                     )
                     e.printStackTrace();
                 } catch (e: IllegalArgumentException) {
-                    mail = MailPackage(null, MailPackage.ERROR, application.getString(R.string.IllegalArgument) +
+                    mail = MailPackage(
+                        null,
+                        MailPackage.ERROR,
+                        application.getString(R.string.IllegalArgument) +
                                 "\n${e.message}"
                     )
                     e.printStackTrace();
                 } catch (e: FeedException) {
-                    mail = MailPackage(null, MailPackage.ERROR, application.getString(R.string.FeedException) +
+                    mail = MailPackage(
+                        null,
+                        MailPackage.ERROR,
+                        application.getString(R.string.FeedException) +
                                 "\n${e.message}"
                     )
                     e.printStackTrace();
                 } catch (e: IOException) {
-                    mail = MailPackage(null, MailPackage.ERROR, application.getString(R.string.IOException) +
+                    mail = MailPackage(
+                        null,
+                        MailPackage.ERROR,
+                        application.getString(R.string.IOException) +
                                 "\n${e.message}"
                     )
                     e.printStackTrace();

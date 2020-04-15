@@ -1,24 +1,41 @@
-package cz.cvut.palecda1.article
+package cz.cvut.palecda1.dao
 
 import cz.cvut.palecda1.model.RoomArticle
 import java.util.*
+import kotlin.collections.HashMap
 
-class DataStorage : ArticleSupplier {
-    val articleArray: Array<RoomArticle>
+class ArticleDaoFake: ArticleDao {
+
+    val articleMap: MutableMap<String, RoomArticle> = HashMap()
     init {
-        articleArray = Array(10) {
+        for(it in 0 until 10){
             val currentTime = Calendar.getInstance().time.toString()
-            RoomArticle("http://www.example.com/article/$it/", "Article $it", "$currentTime<br>$LOREM")
+            val roomArticle = RoomArticle("https://www.example.com/article/$it/", "Article $it", "$currentTime<br>${LOREM}")
+            articleMap[roomArticle.url] = roomArticle
         }
     }
 
-    override fun arrayOfArticles(): Array<RoomArticle> {
-        return articleArray
+    override fun articleList(): List<RoomArticle> {
+        return articleMap.values.toList()
     }
 
-    override fun articleById(id: Int): RoomArticle {
-        require(id < articleArray.size && id >= 0)
-        return articleArray[id]
+    override fun articleById(url: String): RoomArticle? {
+        return articleMap[url]
+    }
+
+    override fun deleteAll() {
+        articleMap.clear()
+    }
+
+    override fun insertArticles(list: List<RoomArticle>) {
+        list.forEach {
+            articleMap[it.url] = it
+        }
+    }
+
+    override fun clearAndInsertList(list: List<RoomArticle>) {
+        deleteAll()
+        insertArticles(list)
     }
 
     companion object {

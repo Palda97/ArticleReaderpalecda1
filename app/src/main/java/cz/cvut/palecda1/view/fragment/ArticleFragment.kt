@@ -1,4 +1,4 @@
-package cz.cvut.palecda1
+package cz.cvut.palecda1.view.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentArticleBinding
 import cz.cvut.palecda1.model.RoomArticle
 import cz.cvut.palecda1.view.ArticleRecyclerAdapter
@@ -27,7 +28,8 @@ class ArticleFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_article, container, false)
         val view = binding.root
 
         articleRecyclerAdapter = ArticleRecyclerAdapter { listener!!.showDetail(it) }

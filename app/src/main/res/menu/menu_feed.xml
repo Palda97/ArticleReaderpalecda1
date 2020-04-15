@@ -3,12 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/resetFeedsItem"
-        android:title="reset feeds"
+        android:title="@string/reset_feeds"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_toys_black_24dp" />
     <item
         android:id="@+id/addFeedItem"
-        android:title="add feeds"
+        android:title="@string/add_feeds"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_add_black_24dp" />
 

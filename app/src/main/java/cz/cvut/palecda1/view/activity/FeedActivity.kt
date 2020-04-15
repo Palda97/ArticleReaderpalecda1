@@ -1,9 +1,10 @@
-package cz.cvut.palecda1
+package cz.cvut.palecda1.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import cz.cvut.palecda1.model.RoomFeed
+import cz.cvut.palecda1.view.fragment.FeedFragment
+import cz.cvut.palecda1.R
 
 class FeedActivity : AppCompatActivity() {
 
@@ -13,7 +14,10 @@ class FeedActivity : AppCompatActivity() {
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
-                .add(R.id.container_feed_fragment, FeedFragment.newInstance())
+                .add(
+                    R.id.container_feed_fragment,
+                    FeedFragment.newInstance()
+                )
                 .commit()
         }
     }

@@ -16,36 +16,21 @@ class AppInit : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        /*val sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-        if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
-            val dao = AppDatabase.getInstance(this)
-                .notesDao()
-            val notesRepository = NotesRepository(dao)
-
-            notesRepository.insertNote("First note", "First description")
-            notesRepository.insertNote("Second note", "Second description")
-            notesRepository.insertNote("Third note", "Third description")
-            sharedPreferences.edit().putBoolean(INIT_DATA_KEY, true).apply()
-        }*/
+        val sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
         db = AppDatabase.getInstance(this)
-        //asyncFeeds(db.feedDao())
-        //Thread.sleep(1000)
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    fun asyncFeeds(feedDao: FeedDao) {
-        object : AsyncTask<Void, Void, Void>() {
-            override fun doInBackground(vararg voids: Void): Void? {
-                feedDao.deleteAll()
-                feedDao.insertFeed(RoomFeed("https://www.viralpatel.net/feed", "android devs"))
-                return null
-            }
-        }.execute()
+        if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
+            val feedRepo = MyInjector.getFeedRepo()
+            feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title)))
+            val articleRepo = MyInjector.getArticleRepo(this)
+            articleRepo.downloadArticles()
+            Thread.sleep(2000)
+            sharedPreferences.edit().putBoolean(INIT_DATA_KEY, true).apply()
+        }
     }
 
     companion object {
         lateinit var db: AppDatabase
-        /*private const val INIT_DATA_KEY = "init_data"
-        private const val SP_NAME = "preferences.xml"*/
+        private const val INIT_DATA_KEY = "INIT_DATA_KEY"
+        private const val SP_NAME = "preferences.xml"
     }
 }

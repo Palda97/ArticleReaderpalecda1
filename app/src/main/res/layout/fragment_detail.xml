@@ -2,14 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="cz.cvut.palecda1.view.HtmlFactory" />
-        <import type="cz.cvut.palecda1.article.MailPackage" />
+        <import type="cz.cvut.palecda1.repository.MailPackage" />
         <import type="android.view.View" />
         <variable
             name="article"
             type="android.text.Spanned" />
         <variable
             name="mail"
-            type="cz.cvut.palecda1.article.MailPackage" />
+            type="cz.cvut.palecda1.repository.MailPackage" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="loading ..."/>
+                android:text="@string/loading"/>
 
         </LinearLayout>
         <LinearLayout
@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="yikes"/>
+                android:text="@string/yikes"/>
 
         </LinearLayout>
     </LinearLayout>

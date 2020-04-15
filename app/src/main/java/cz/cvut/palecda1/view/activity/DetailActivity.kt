@@ -1,8 +1,10 @@
-package cz.cvut.palecda1
+package cz.cvut.palecda1.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import cz.cvut.palecda1.view.fragment.DetailFragment
+import cz.cvut.palecda1.R
 import cz.cvut.palecda1.model.RoomArticle
 
 class DetailActivity : AppCompatActivity() {
@@ -17,7 +19,10 @@ class DetailActivity : AppCompatActivity() {
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
-                .add(R.id.container_detail_fragment, DetailFragment.newInstance(id))
+                .add(
+                    R.id.container_detail_fragment,
+                    DetailFragment.newInstance(id)
+                )
                 .commit()
         }
     }

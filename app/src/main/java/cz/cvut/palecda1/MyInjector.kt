@@ -1,7 +1,9 @@
 package cz.cvut.palecda1
 
 import android.app.Application
+import cz.cvut.palecda1.dao.ArticleDaoFake
 import cz.cvut.palecda1.dao.ArticleDaoRome
+import cz.cvut.palecda1.dao.FeedDaoFake
 import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.ArticleRepository
 import cz.cvut.palecda1.repository.FeedRepository
@@ -17,7 +19,7 @@ object MyInjector {
             synchronized(this) {
                 if (articleRepository == null) {
                     articleRepository = ArticleRepository(db.articleDao(), ArticleDaoRome(), application)
-                    //articleRepository = ArticleRepository(db.articleDao())
+                    //articleRepository = ArticleRepository(db.articleDao(), ArticleDaoFake(), application)
                 }
             }
         }
@@ -30,6 +32,7 @@ object MyInjector {
             synchronized(this) {
                 if (feedRepository == null) {
                     feedRepository = FeedRepository(db.feedDao())
+                    //feedRepository = FeedRepository(FeedDaoFake())
                 }
             }
         }

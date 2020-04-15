@@ -8,7 +8,7 @@
             type="cz.cvut.palecda1.viewmodel.FeedViewModel" />
         <variable
             name="mail"
-            type="cz.cvut.palecda1.article.MailPackage" />
+            type="cz.cvut.palecda1.repository.MailPackage" />
     </data>
     <LinearLayout
         android:orientation="vertical"

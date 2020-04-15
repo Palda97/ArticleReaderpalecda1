@@ -3,7 +3,6 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="eternal_emptiness">eternal emptiness</string>
-    <string name="share">Share</string>
     <string name="MalformedURL">MalformedURLException</string>
     <string name="IllegalArgument">IllegalArgumentException</string>
     <string name="FeedException">FeedException</string>
@@ -17,4 +16,12 @@
     <string name="delete">DELETE</string>
     <string name="default_feed_url">https://www.viralpatel.net/feed</string>
     <string name="default_feed_title">android devs</string>
+    <string name="yikes">yikes</string>
+    <string name="loading">loading ...</string>
+    <string name="open_link">Open Link</string>
+    <string name="share">Share</string>
+    <string name="config_feeds">Config Feeds</string>
+    <string name="refresh_feeds">Refresh Feeds</string>
+    <string name="reset_feeds">Reset Feeds</string>
+    <string name="add_feeds">Add Feeds</string>
 </resources>

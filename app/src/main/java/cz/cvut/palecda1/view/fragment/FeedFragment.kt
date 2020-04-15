@@ -1,23 +1,19 @@
-package cz.cvut.palecda1
+package cz.cvut.palecda1.view.fragment
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import cz.cvut.palecda1.databinding.DialogNewFeedBinding
+import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentFeedBinding
 import cz.cvut.palecda1.model.RoomFeed
 import cz.cvut.palecda1.view.FeedDialogFragment
 import cz.cvut.palecda1.view.FeedRecyclerAdapter
 import cz.cvut.palecda1.viewmodel.FeedViewModel
-import java.util.Objects
 
 class FeedFragment : Fragment() {
 
@@ -40,7 +36,8 @@ class FeedFragment : Fragment() {
 
         //MVVM init + databinding
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_feed, container, false)
         val view = binding.root
 
         feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it) }, {deleteFeed(it)})
@@ -74,12 +71,18 @@ class FeedFragment : Fragment() {
         val dialogBuilder = AlertDialog.Builder(context!!)
             .setTitle(getString(R.string.delete_feed) + "(${roomFeed.title})")
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                Log.d(TAG, getString(R.string.delete))
+                Log.d(
+                    TAG, getString(
+                        R.string.delete
+                    ))
                 viewModel.deleteFeed(roomFeed)
                 viewModel.loadFeeds()
             }
             .setNeutralButton(getString(R.string.cancel)) { _, _ ->
-                Log.d(TAG, getString(R.string.cancel))
+                Log.d(
+                    TAG, getString(
+                        R.string.cancel
+                    ))
             }
         //val alertDialog = dialogBuilder.show()
         dialogBuilder.show()
@@ -104,7 +107,10 @@ class FeedFragment : Fragment() {
             }
             R.id.resetFeedsItem -> {
                 viewModel.deleteAll()
-                viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title)))
+                viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(
+                    R.string.default_feed_title
+                )))
+                viewModel.loadFeeds()
                 true
             }
             else -> super.onOptionsItemSelected(item)

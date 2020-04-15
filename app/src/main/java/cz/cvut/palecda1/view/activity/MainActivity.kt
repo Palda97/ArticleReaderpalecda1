@@ -1,10 +1,13 @@
-package cz.cvut.palecda1
+package cz.cvut.palecda1.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import cz.cvut.palecda1.view.fragment.ArticleFragment
+import cz.cvut.palecda1.R
 import cz.cvut.palecda1.model.RoomArticle
 
-class MainActivity : AppCompatActivity(), ArticleFragment.ArticleFragmentListener {
+class MainActivity : AppCompatActivity(),
+    ArticleFragment.ArticleFragmentListener {
     override fun showDetail(roomArticle: RoomArticle) {
         DetailActivity.start(this@MainActivity, roomArticle)
     }

@@ -1,4 +1,4 @@
-package cz.cvut.palecda1.article
+package cz.cvut.palecda1.repository
 
 class MailPackage<content>(val articles: content?, private val status: Int, val msg: String) {
     val isLoading: Boolean

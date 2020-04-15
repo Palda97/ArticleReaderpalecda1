@@ -5,9 +5,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".view.activity.MainActivity">
     <fragment
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:name="cz.cvut.palecda1.ArticleFragment" android:id="@+id/fragment_a"
+            android:layout_height="match_parent" android:name="cz.cvut.palecda1.view.fragment.ArticleFragment" android:id="@+id/fragment_a"
             android:layout_weight="1"/>
 </LinearLayout>

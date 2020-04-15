@@ -1,6 +1,7 @@
-package cz.cvut.palecda1
+package cz.cvut.palecda1.view.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -8,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentDetailBinding
 import cz.cvut.palecda1.view.HtmlFactory
 import cz.cvut.palecda1.viewmodel.ArticleViewModel
@@ -33,8 +35,11 @@ class DetailFragment : Fragment() {
 
         //MVVM init + databinding
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_detail, container, false)
         val view = binding.root
+
+        //
 
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         viewModel.loadArticleById(articleId)
@@ -61,12 +66,17 @@ class DetailFragment : Fragment() {
         return when (item.itemId) {
             R.id.shareItem -> {
                 val sharingIntent = Intent(Intent.ACTION_SEND)
-                sharingIntent.type = TEXT_PLAIN
+                sharingIntent.type =
+                    TEXT_PLAIN
                 val body = articleId
                 //val subject = ""
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
                 //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
                 startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)))
+                true
+            }
+            R.id.openLinkItem -> {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleId)))
                 true
             }
             else -> super.onOptionsItemSelected(item)
