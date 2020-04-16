@@ -16,7 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@{HtmlFactory.INSTANCE.toHtml(article.title, article.description)}"/>
+            android:text="@{HtmlFactory.INSTANCE.toHtml(article.title, article.description)}"
+            />
+        <!--<TextView
+            android:id="@+id/textViewInLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@{article.description}"
+            />-->
 
         <View
             android:id="@+id/divider"
