@@ -12,7 +12,7 @@ import cz.cvut.palecda1.model.RoomArticle
 class ArticleRecyclerAdapter(private val listener: (RoomArticle) -> Unit): RecyclerView.Adapter<ArticleRecyclerAdapter.ArticleViewHolder>() {
     var roomArticleList: List<RoomArticle>? = null
     init {
-        setHasStableIds(true)
+        //setHasStableIds(true)
     }
     fun updateArticleList(newRoomArticleList: List<RoomArticle>){
         if (roomArticleList == null) {
