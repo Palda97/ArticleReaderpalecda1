@@ -63,7 +63,7 @@ class FeedFragment : Fragment() {
     }
 
     fun editFeed(roomFeed: RoomFeed){
-        val newFragment = FeedDialogFragment.editFeed(viewModel, roomFeed)
+        val newFragment = FeedDialogFragment.editFeed(roomFeed)
         newFragment.show(fragmentManager!!, "editFeedDialog")
     }
 
@@ -90,7 +90,7 @@ class FeedFragment : Fragment() {
     }
 
     fun addFeed(){
-        val newFragment = FeedDialogFragment(viewModel)
+        val newFragment = FeedDialogFragment()
         newFragment.show(fragmentManager!!, "newFeedDialog")
     }
 
@@ -109,7 +109,7 @@ class FeedFragment : Fragment() {
                 viewModel.deleteAll()
                 viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(
                     R.string.default_feed_title
-                )))
+                ), true))
                 viewModel.loadFeeds()
                 true
             }

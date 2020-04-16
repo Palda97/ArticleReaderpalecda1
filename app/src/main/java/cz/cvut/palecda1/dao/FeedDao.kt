@@ -8,4 +8,5 @@ interface FeedDao {
     fun insertFeed(roomFeed: RoomFeed)
     fun deleteFeed(roomFeed: RoomFeed)
     fun deleteAll()
+    fun activeFeedsOnly(): List<RoomFeed>
 }

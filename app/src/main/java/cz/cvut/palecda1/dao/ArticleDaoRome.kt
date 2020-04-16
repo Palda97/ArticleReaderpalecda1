@@ -18,13 +18,13 @@ class ArticleDaoRome : ArticleDao {
     val feedDao = MyInjector.getFeedRepo().feedDao
 
     override fun articleList(): List<RoomArticle> {
-        val listOfFeeds = feedDao.feedList()
+        val listOfFeeds = feedDao.activeFeedsOnly()
         val listOfSyndFeeds = feedsToSyndFeeds(listOfFeeds)
         val listOfSyndEntries = syndFeedsToSyndEntries(listOfSyndFeeds)
         return ArticleFactory().syndEntryList(listOfSyndEntries)
     }
 
-    fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>): List<SyndEntry> {
+    private fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>): List<SyndEntry> {
         val listOfSyndEntries = mutableListOf<SyndEntry>()
         listOfSyndFeeds.forEach {
             @Suppress("UNCHECKED_CAST")
@@ -33,7 +33,7 @@ class ArticleDaoRome : ArticleDao {
         return listOfSyndEntries
     }
 
-    fun feedsToSyndFeeds(listOfFeeds: List<RoomFeed>): List<SyndFeed> {
+    private fun feedsToSyndFeeds(listOfFeeds: List<RoomFeed>): List<SyndFeed> {
         val listOfSyndFeeds = mutableListOf<SyndFeed>()
         listOfFeeds.forEach {
             val url: URL = URL(it.url)

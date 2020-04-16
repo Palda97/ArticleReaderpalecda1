@@ -28,4 +28,5 @@
     <string name="refresh_or_add_feeds">Hello new user. There are no downloaded articles yet. Start by refreshing.</string>
     <string name="is_not_a_valid_url">is not a valid url</string>
     <string name="toggle_night_mode">Toggle Night Mode</string>
+    <string name="active">Active</string>
 </resources>

@@ -10,7 +10,7 @@ class FeedDaoFake: FeedDao {
         for (i in 0 until 10){
             val url = "www.link$i.cz"
             val title = "Link $i"
-            map[url] = RoomFeed(url, title)
+            map[url] = RoomFeed(url, title, i % 2 == 0)
         }
     }
 
@@ -28,5 +28,9 @@ class FeedDaoFake: FeedDao {
 
     override fun deleteAll() {
         map.clear()
+    }
+
+    override fun activeFeedsOnly(): List<RoomFeed> {
+        return feedList().filter { it.active }
     }
 }

@@ -15,6 +15,7 @@
             android:id="@+id/textViewForTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="@{feed.active}"
             android:maxHeight="100dp"
             android:text="@{feed.title}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />

@@ -19,7 +19,7 @@ class AppInit : Application() {
         db = AppDatabase.getInstance(this)
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
             val feedRepo = MyInjector.getFeedRepo()
-            feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title)))
+            feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title), true))
             /*val articleRepo = MyInjector.getArticleRepo(this)
             articleRepo.downloadArticles()
             Thread.sleep(2000)*/

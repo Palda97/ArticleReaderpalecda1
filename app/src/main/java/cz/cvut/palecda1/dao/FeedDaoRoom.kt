@@ -16,4 +16,7 @@ abstract class FeedDaoRoom: FeedDao {
 
     @Query("delete from roomfeed")
     abstract override fun deleteAll()
+
+    @Query("select * from roomfeed where active = 1")
+    abstract override fun activeFeedsOnly(): List<RoomFeed>
 }
