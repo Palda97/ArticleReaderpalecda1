@@ -49,7 +49,7 @@ class DetailFragment : Fragment() {
 
         viewModel.roomArticleLiveData.observe(this, Observer {
             if (it != null && it.isOk){
-                binding.article = HtmlFactory.toHtml(it.articles!!)
+                binding.article = HtmlFactory.toHtml(it.articles!!.title, it.articles.body)
             }
             binding.mail = it
             binding.executePendingBindings()

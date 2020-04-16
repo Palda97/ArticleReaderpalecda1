@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentArticleBinding
 import cz.cvut.palecda1.model.RoomArticle
@@ -85,6 +86,10 @@ class ArticleFragment : Fragment() {
             }
             R.id.refreshItem -> {
                 viewModel.refreshArticles()
+                true
+            }
+            R.id.toggleNightModeItem -> {
+                AppInit.toggleNightMode()
                 true
             }
             else -> super.onOptionsItemSelected(item)

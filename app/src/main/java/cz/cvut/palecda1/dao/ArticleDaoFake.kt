@@ -10,7 +10,10 @@ class ArticleDaoFake: ArticleDao {
     init {
         for(it in 0 until 10){
             val currentTime = Calendar.getInstance().time.toString()
-            val roomArticle = RoomArticle("https://www.example.com/article/$it/", "Article $it", "$currentTime<br>${LOREM}")
+            val roomArticle = RoomArticle("https://www.example.com/article/$it/",
+                "Article $it",
+                "$currentTime<br>${LOREM}",
+                "description ($it)")
             articleMap[roomArticle.url] = roomArticle
         }
     }

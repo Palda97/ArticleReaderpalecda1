@@ -1,12 +1,10 @@
 package cz.cvut.palecda1
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.os.AsyncTask
-import cz.cvut.palecda1.dao.FeedDao
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import cz.cvut.palecda1.repository.AppDatabase
-import cz.cvut.palecda1.repository.FeedRepository
 import cz.cvut.palecda1.model.RoomFeed
 
 /**
@@ -16,7 +14,8 @@ class AppInit : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        toggleNightMode(true)
         db = AppDatabase.getInstance(this)
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
             val feedRepo = MyInjector.getFeedRepo()
@@ -32,5 +31,18 @@ class AppInit : Application() {
         lateinit var db: AppDatabase
         private const val INIT_DATA_KEY = "INIT_DATA_KEY"
         private const val SP_NAME = "preferences.xml"
+        lateinit var sharedPreferences: SharedPreferences
+        private const val DAYNIGHT = "DAYNIGHT"
+
+        fun toggleNightMode(dont: Boolean = false){
+            val night = sharedPreferences.getBoolean(DAYNIGHT, false)
+            if(night == dont){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            if(!dont)
+                sharedPreferences.edit().putBoolean(DAYNIGHT, !night).apply()
+        }
     }
 }
