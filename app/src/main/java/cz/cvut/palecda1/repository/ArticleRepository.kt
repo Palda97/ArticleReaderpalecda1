@@ -108,7 +108,7 @@ class ArticleRepository(
     fun asyncDownloadArticles(data: MutableLiveData<MailPackage<List<RoomArticle>>>) {
         object : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg voids: Void): Void? {
-                Thread.sleep(5000)
+                //Thread.sleep(5000)
                 var mail: MailPackage<List<RoomArticle>>
                 try {
                     val list = networkDao.articleList()
