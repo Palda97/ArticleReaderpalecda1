@@ -21,6 +21,7 @@ class FeedFragment : Fragment() {
     internal lateinit var binding: FragmentFeedBinding
     internal lateinit var viewModel: FeedViewModel
     internal lateinit var feedRecyclerAdapter: FeedRecyclerAdapter
+    var deleteDialog: AlertDialog? = null
 
     var counter = 0
 
@@ -62,6 +63,13 @@ class FeedFragment : Fragment() {
         return view
     }
 
+    override fun onPause() {
+        super.onPause()
+        if(deleteDialog != null && deleteDialog?.isShowing == true){
+            deleteDialog?.dismiss()
+        }
+    }
+
     fun editFeed(roomFeed: RoomFeed){
         val newFragment = FeedDialogFragment.editFeed(roomFeed)
         newFragment.show(fragmentManager!!, "editFeedDialog")
@@ -84,8 +92,38 @@ class FeedFragment : Fragment() {
                         R.string.cancel
                     ))
             }
-        //val alertDialog = dialogBuilder.show()
-        dialogBuilder.show()
+        deleteDialog = dialogBuilder.show()
+        return true
+    }
+
+    fun reset() {
+        viewModel.deleteAll()
+        viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(
+            R.string.default_feed_title
+        ), true))
+        viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url2), getString(
+            R.string.default_feed_title2
+        ), true))
+        viewModel.loadFeeds()
+    }
+
+    fun resetDialog(): Boolean {
+        val dialogBuilder = AlertDialog.Builder(context!!)
+            .setTitle("Reset Feeds?")
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                Log.d(
+                    TAG, getString(
+                        R.string.delete
+                    ))
+                reset()
+            }
+            .setNeutralButton(getString(R.string.cancel)) { _, _ ->
+                Log.d(
+                    TAG, getString(
+                        R.string.cancel
+                    ))
+            }
+        deleteDialog = dialogBuilder.show()
         return true
     }
 
@@ -106,11 +144,7 @@ class FeedFragment : Fragment() {
                 true
             }
             R.id.resetFeedsItem -> {
-                viewModel.deleteAll()
-                viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(
-                    R.string.default_feed_title
-                ), true))
-                viewModel.loadFeeds()
+                resetDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
