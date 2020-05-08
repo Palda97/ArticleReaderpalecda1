@@ -38,4 +38,6 @@ object MyInjector {
         }
         return feedRepository!!
     }
+
+    const val COLOR_FAKE_LINKS = "#9C27B0"
 }

@@ -1,12 +1,11 @@
 package cz.cvut.palecda1
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.os.AsyncTask
-import cz.cvut.palecda1.dao.FeedDao
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import cz.cvut.palecda1.repository.AppDatabase
-import cz.cvut.palecda1.repository.FeedRepository
 import cz.cvut.palecda1.model.RoomFeed
 
 /**
@@ -16,11 +15,13 @@ class AppInit : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        toggleNightMode(true)
         db = AppDatabase.getInstance(this)
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
             val feedRepo = MyInjector.getFeedRepo()
-            feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title)))
+            feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title), true))
+            feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url2), getString(R.string.default_feed_title2), true))
             /*val articleRepo = MyInjector.getArticleRepo(this)
             articleRepo.downloadArticles()
             Thread.sleep(2000)*/
@@ -32,5 +33,19 @@ class AppInit : Application() {
         lateinit var db: AppDatabase
         private const val INIT_DATA_KEY = "INIT_DATA_KEY"
         private const val SP_NAME = "preferences.xml"
+        lateinit var sharedPreferences: SharedPreferences
+        private const val DAYNIGHT = "DAYNIGHT"
+        fun toggleNightMode(dont: Boolean = false){
+            val night = sharedPreferences.getBoolean(DAYNIGHT, false)
+            if(night == dont){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            if(!dont)
+                sharedPreferences.edit().putBoolean(DAYNIGHT, !night).apply()
+        }
+        /*val colorFakeLinks
+            get() = ContextCompat.getColor(context, R.color.colorFakeLinks)*/
     }
 }

@@ -12,18 +12,20 @@ class FeedViewModel(application: Application) : AndroidViewModel(application) {
 //class FeedViewModel(private val repository: FeedRepository) : ViewModel() {
     val repository = MyInjector.getFeedRepo()
 
-    private val observableFeeds: MediatorLiveData<MailPackage<List<RoomFeed>>> = MediatorLiveData()
+    //private val observableFeeds: MediatorLiveData<MailPackage<List<RoomFeed>>> = MediatorLiveData()
 
     val feedsLiveData: LiveData<MailPackage<List<RoomFeed>>>
-        get() = observableFeeds
+        //get() = observableFeeds
+        get() = repository.observableFeeds
 
     init {
-        observableFeeds.value = null
+        //observableFeeds.value = null
     }
 
     fun loadFeeds() {
-        val feeds = repository.getFeedList()
-        observableFeeds.addSource(feeds) { observableFeeds.value = it }
+        //val feeds = repository.getFeedList()
+        repository.getFeedList()
+        //observableFeeds.addSource(feeds) { observableFeeds.value = it }
     }
 
     fun addFeed(roomFeed: RoomFeed){

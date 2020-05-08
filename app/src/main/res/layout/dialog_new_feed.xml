@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <EditText
             android:id="@+id/edit_title"
@@ -21,5 +22,14 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/example_url"/>
+
+        <Switch
+            android:id="@+id/switchActive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/active"
+            android:layout_margin="5dp"/>
+
     </LinearLayout>
 </layout>

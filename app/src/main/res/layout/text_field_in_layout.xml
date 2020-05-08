@@ -15,7 +15,21 @@
             android:id="@+id/textViewInLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="100dp"
-            android:text="@{HtmlFactory.INSTANCE.toHtml(article)}"/>
+            android:layout_margin="5dp"
+            android:text="@{HtmlFactory.INSTANCE.toHtml(article.title, article.description, article.feed)}"
+            />
+        <!--<TextView
+            android:id="@+id/textViewInLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@{article.description}"
+            />-->
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
     </LinearLayout>
 </layout>

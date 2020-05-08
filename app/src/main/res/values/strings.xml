@@ -15,7 +15,9 @@
     <string name="delete_feed">Delete feed?</string>
     <string name="delete">DELETE</string>
     <string name="default_feed_url">https://www.viralpatel.net/feed</string>
-    <string name="default_feed_title">android devs</string>
+    <string name="default_feed_title">Android Devs</string>
+    <string name="default_feed_url2">https://www.reddit.com/r/stories.rss</string>
+    <string name="default_feed_title2">Reddit Stories</string>
     <string name="yikes">yikes</string>
     <string name="loading">loading ...</string>
     <string name="open_link">Open Link</string>
@@ -26,4 +28,9 @@
     <string name="add_feeds">Add Feeds</string>
     <string name="edit_feed">Edit Feed</string>
     <string name="refresh_or_add_feeds">Hello new user. There are no downloaded articles yet. Start by refreshing.</string>
+    <string name="is_not_a_valid_url">is not a valid url</string>
+    <string name="toggle_night_mode">Toggle Night Mode</string>
+    <string name="active">Active</string>
+    <string name="not_active">Not Active</string>
+    <string name="reset">RESET</string>
 </resources>

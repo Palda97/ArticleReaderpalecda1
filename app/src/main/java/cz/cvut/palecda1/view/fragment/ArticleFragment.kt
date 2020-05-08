@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentArticleBinding
 import cz.cvut.palecda1.model.RoomArticle
@@ -21,6 +22,8 @@ class ArticleFragment : Fragment() {
     internal lateinit var binding: FragmentArticleBinding
     internal lateinit var viewModel: ArticleViewModel
     internal lateinit var articleRecyclerAdapter: ArticleRecyclerAdapter
+    internal lateinit var refreshItem: MenuItem
+    internal lateinit var progressBar: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,8 @@ class ArticleFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         viewModel.loadArticles()
 
+        progressBar = inflater.inflate(R.layout.progressbar, null)
+
         viewModel.articlesLiveData.observe(this, Observer {
             var empty = false
             if (it != null && it.isOk){
@@ -50,6 +55,9 @@ class ArticleFragment : Fragment() {
             binding.mail = it
             if(empty)
                 binding.mail = MailPackage(null, MailPackage.ERROR, getString(R.string.refresh_or_add_feeds))
+
+            showProgressbar(it)
+
             binding.executePendingBindings()
         })
 
@@ -57,6 +65,17 @@ class ArticleFragment : Fragment() {
 
 
         return view
+    }
+
+    private fun showProgressbar(mailPackage: MailPackage<List<RoomArticle>>?){
+        //val mailPackage = viewModel.articlesLiveData.value
+        if(this::refreshItem.isInitialized){
+            if(mailPackage != null && mailPackage.isLoading)
+                refreshItem.setActionView(progressBar)
+                //refreshItem.setActionView(R.layout.progressbar)
+            else
+                refreshItem.setActionView(null)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -74,6 +93,8 @@ class ArticleFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_article, menu)
+        refreshItem = menu.findItem(R.id.refreshItem)
+        showProgressbar(viewModel.articlesLiveData.value)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -84,7 +105,12 @@ class ArticleFragment : Fragment() {
                 true
             }
             R.id.refreshItem -> {
+                //.setActionView(R.layout.progressbar)
                 viewModel.refreshArticles()
+                true
+            }
+            R.id.toggleNightModeItem -> {
+                AppInit.toggleNightMode()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -3,37 +3,57 @@ package cz.cvut.palecda1.dao
 import android.util.Log
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntry
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndFeed
-import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.SyndFeedInput
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.XmlReader
 import cz.cvut.palecda1.MyInjector
 import cz.cvut.palecda1.article.ArticleFactory
 import cz.cvut.palecda1.model.RoomArticle
 import cz.cvut.palecda1.model.RoomFeed
-import java.io.IOException
-import java.net.MalformedURLException
 import java.net.URL
 
 class ArticleDaoRome : ArticleDao {
     val feedDao = MyInjector.getFeedRepo().feedDao
 
     override fun articleList(): List<RoomArticle> {
-        val listOfFeeds = feedDao.feedList()
+        val listOfFeeds = feedDao.activeFeedsOnly()
         val listOfSyndFeeds = feedsToSyndFeeds(listOfFeeds)
-        val listOfSyndEntries = syndFeedsToSyndEntries(listOfSyndFeeds)
+        val listOfSyndEntries = syndFeedsToSyndEntries(listOfSyndFeeds, listOfFeeds)
         return ArticleFactory().syndEntryList(listOfSyndEntries)
     }
 
-    fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>): List<SyndEntry> {
+    /*private fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>): List<SyndEntry> {
         val listOfSyndEntries = mutableListOf<SyndEntry>()
         listOfSyndFeeds.forEach {
             @Suppress("UNCHECKED_CAST")
             listOfSyndEntries.addAll(it.entries.toList() as List<SyndEntry>)
         }
         return listOfSyndEntries
+    }*/
+    private fun meltSyndEntryLists(list: MutableList<Pair<List<SyndEntry>, String>>): List<Pair<SyndEntry, String>> {
+        tailrec fun melt(list: MutableList<Pair<List<SyndEntry>, String>>, level: Int, acc: MutableList<Pair<SyndEntry, String>>): MutableList<Pair<SyndEntry, String>> {
+            if (list.isEmpty())
+                return acc
+            val newList = mutableListOf<Pair<List<SyndEntry>, String>>()
+            list.forEach {
+                if(it.first.size > level){
+                    newList.add(it)
+                    acc.add(Pair(it.first[level], it.second))
+                }
+            }
+            return melt(newList, level +1, acc)
+        }
+        return melt(list, 0, mutableListOf<Pair<SyndEntry, String>>())
+    }
+    private fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>, listOfFeeds: List<RoomFeed>): List<Pair<SyndEntry, String>> {
+        val listOfLists = mutableListOf<Pair<List<SyndEntry>, String>>()
+        listOfSyndFeeds.forEachIndexed {i, it ->
+            @Suppress("UNCHECKED_CAST")
+            listOfLists.add(Pair(it.entries.toList() as List<SyndEntry>, listOfFeeds[i].title))
+        }
+        return meltSyndEntryLists(listOfLists)
     }
 
-    fun feedsToSyndFeeds(listOfFeeds: List<RoomFeed>): List<SyndFeed> {
+    private fun feedsToSyndFeeds(listOfFeeds: List<RoomFeed>): List<SyndFeed> {
         val listOfSyndFeeds = mutableListOf<SyndFeed>()
         listOfFeeds.forEach {
             val url: URL = URL(it.url)

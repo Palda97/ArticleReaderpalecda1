@@ -21,6 +21,7 @@ class FeedFragment : Fragment() {
     internal lateinit var binding: FragmentFeedBinding
     internal lateinit var viewModel: FeedViewModel
     internal lateinit var feedRecyclerAdapter: FeedRecyclerAdapter
+    var deleteDialog: AlertDialog? = null
 
     var counter = 0
 
@@ -40,7 +41,7 @@ class FeedFragment : Fragment() {
             R.layout.fragment_feed, container, false)
         val view = binding.root
 
-        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it) }, {deleteFeed(it)})
+        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it)}, {deleteFeed(it)}, {a, b -> feedActiveChanged(a, b)})
         binding.insertFeedsHere.adapter = feedRecyclerAdapter
 
         //viewModel = ViewModelProviders.of(this, MyInjector.FEED_VIEW_MODEL_FACTORY).get(FeedViewModel::class.java)
@@ -62,8 +63,15 @@ class FeedFragment : Fragment() {
         return view
     }
 
+    override fun onPause() {
+        super.onPause()
+        if(deleteDialog != null && deleteDialog?.isShowing == true){
+            deleteDialog?.dismiss()
+        }
+    }
+
     fun editFeed(roomFeed: RoomFeed){
-        val newFragment = FeedDialogFragment.editFeed(viewModel, roomFeed)
+        val newFragment = FeedDialogFragment.editFeed(roomFeed)
         newFragment.show(fragmentManager!!, "editFeedDialog")
     }
 
@@ -84,13 +92,48 @@ class FeedFragment : Fragment() {
                         R.string.cancel
                     ))
             }
-        //val alertDialog = dialogBuilder.show()
-        dialogBuilder.show()
+        deleteDialog = dialogBuilder.show()
+        return true
+    }
+
+    fun feedActiveChanged(roomFeed: RoomFeed, active: Boolean) {
+        roomFeed.active = active
+        viewModel.addFeed(roomFeed)
+    }
+
+    fun reset() {
+        viewModel.deleteAll()
+        viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(
+            R.string.default_feed_title
+        ), true))
+        viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url2), getString(
+            R.string.default_feed_title2
+        ), true))
+        viewModel.loadFeeds()
+    }
+
+    fun resetDialog(): Boolean {
+        val dialogBuilder = AlertDialog.Builder(context!!)
+            .setTitle("Reset Feeds?")
+            .setPositiveButton(getString(R.string.reset)) { _, _ ->
+                Log.d(
+                    TAG, getString(
+                        R.string.reset
+                    ))
+                reset()
+            }
+            .setNeutralButton(getString(R.string.cancel)) { _, _ ->
+                Log.d(
+                    TAG, getString(
+                        R.string.cancel
+                    ))
+            }
+        deleteDialog = dialogBuilder.show()
         return true
     }
 
     fun addFeed(){
-        val newFragment = FeedDialogFragment(viewModel)
+        val newFragment = FeedDialogFragment()
         newFragment.show(fragmentManager!!, "newFeedDialog")
     }
 
@@ -106,11 +149,7 @@ class FeedFragment : Fragment() {
                 true
             }
             R.id.resetFeedsItem -> {
-                viewModel.deleteAll()
-                viewModel.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(
-                    R.string.default_feed_title
-                )))
-                viewModel.loadFeeds()
+                resetDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
