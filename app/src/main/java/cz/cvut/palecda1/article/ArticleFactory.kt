@@ -9,9 +9,10 @@ import cz.cvut.palecda1.view.HtmlFactory.stripTags
 
 class ArticleFactory {
 
-    fun syndEntryList(syndEntryList: List<SyndEntry>): List<RoomArticle> = syndEntryList.map { syndEntry(it) }
+    fun syndEntryList(syndEntryList: List<Pair<SyndEntry, String>>): List<RoomArticle> = syndEntryList.map { syndEntry(it) }
 
-    fun syndEntry(syndEntry: SyndEntry): RoomArticle {
+    fun syndEntry(syndEntryPair: Pair<SyndEntry, String>): RoomArticle {
+        val syndEntry = syndEntryPair.first
         val url = syndEntry.link ?: "void"
         val title = syndEntry.title ?: ""
         @Suppress("UNCHECKED_CAST")
@@ -29,7 +30,8 @@ class ArticleFactory {
             else
                 "${tmpDescription.substring(0, MAX_CUSTOM_DESCRIPTION_LENGTH -1)}..."
         }
-        return RoomArticle(url, title, body, description)
+        val feed = syndEntryPair.second
+        return RoomArticle(url, title, body, description, feed)
     }
 
     companion object{

@@ -7,4 +7,5 @@ import androidx.room.PrimaryKey
 data class RoomArticle(@PrimaryKey(autoGenerate = false) val url: String,
                        val title: String,
                        val body: String,
-                       val description: String)
+                       val description: String,
+                       val feed: String)

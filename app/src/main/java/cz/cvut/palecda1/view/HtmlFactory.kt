@@ -11,6 +11,11 @@ object HtmlFactory {
         val text = "<h3>${title}</h3>${body}"
         return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
+    fun toHtml(title: String, body: String, feed: String): Spanned {
+        //val text = "<h3>${title}</h3><font color=\"${MyInjector.COLOR_FAKE_LINKS}\">[$feed]</font><br>${body}"
+        val text = "<h3>${title}</h3><font color=\"${MyInjector.COLOR_FAKE_LINKS}\">[$feed]</font><br>${body}"
+        return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
 
     //private const val IMG_REPLACEMENT = "&lt;img&gt;"
     private const val IMG_REPLACEMENT = ""

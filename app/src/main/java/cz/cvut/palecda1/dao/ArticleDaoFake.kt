@@ -13,7 +13,8 @@ class ArticleDaoFake: ArticleDao {
             val roomArticle = RoomArticle("https://www.example.com/article/$it/",
                 "Article $it",
                 "$currentTime<br>${LOREM}",
-                "description ($it)")
+                "description ($it)",
+                "Example Feed")
             articleMap[roomArticle.url] = roomArticle
         }
     }
