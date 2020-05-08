@@ -115,10 +115,10 @@ class FeedFragment : Fragment() {
     fun resetDialog(): Boolean {
         val dialogBuilder = AlertDialog.Builder(context!!)
             .setTitle("Reset Feeds?")
-            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+            .setPositiveButton(getString(R.string.reset)) { _, _ ->
                 Log.d(
                     TAG, getString(
-                        R.string.delete
+                        R.string.reset
                     ))
                 reset()
             }
