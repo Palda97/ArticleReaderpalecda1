@@ -40,4 +40,5 @@ object MyInjector {
     }
 
     const val COLOR_FAKE_LINKS = "#9C27B0"
+    const val COLOR_CUSTOM_TOKENS = "#FF5722"
 }

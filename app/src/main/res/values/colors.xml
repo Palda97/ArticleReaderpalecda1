@@ -7,4 +7,5 @@
     <color name="colorMenuItems">#FF5722</color>
 
     <!-- <color name="colorFakeLinks">#9C27B0</color> -->
+    <!-- <color name="colorCustomTokens">@color/colorMenuItems</color> -->
 </resources>
