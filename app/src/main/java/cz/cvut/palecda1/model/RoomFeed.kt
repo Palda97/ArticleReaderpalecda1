@@ -6,4 +6,4 @@ import androidx.room.PrimaryKey
 @Entity
 data class RoomFeed(@PrimaryKey(autoGenerate = false) val url: String,
                     val title: String,
-                    val active: Boolean)
+                    var active: Boolean)

@@ -41,7 +41,7 @@ class FeedFragment : Fragment() {
             R.layout.fragment_feed, container, false)
         val view = binding.root
 
-        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it) }, {deleteFeed(it)})
+        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it)}, {deleteFeed(it)}, {a, b -> feedActiveChanged(a, b)})
         binding.insertFeedsHere.adapter = feedRecyclerAdapter
 
         //viewModel = ViewModelProviders.of(this, MyInjector.FEED_VIEW_MODEL_FACTORY).get(FeedViewModel::class.java)
@@ -94,6 +94,11 @@ class FeedFragment : Fragment() {
             }
         deleteDialog = dialogBuilder.show()
         return true
+    }
+
+    fun feedActiveChanged(roomFeed: RoomFeed, active: Boolean) {
+        roomFeed.active = active
+        viewModel.addFeed(roomFeed)
     }
 
     fun reset() {
