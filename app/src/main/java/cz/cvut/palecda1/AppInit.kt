@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.model.RoomFeed
 
@@ -33,7 +34,6 @@ class AppInit : Application() {
         private const val SP_NAME = "preferences.xml"
         lateinit var sharedPreferences: SharedPreferences
         private const val DAYNIGHT = "DAYNIGHT"
-
         fun toggleNightMode(dont: Boolean = false){
             val night = sharedPreferences.getBoolean(DAYNIGHT, false)
             if(night == dont){
@@ -44,5 +44,7 @@ class AppInit : Application() {
             if(!dont)
                 sharedPreferences.edit().putBoolean(DAYNIGHT, !night).apply()
         }
+        /*val colorFakeLinks
+            get() = ContextCompat.getColor(context, R.color.colorFakeLinks)*/
     }
 }

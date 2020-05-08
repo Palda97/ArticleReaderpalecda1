@@ -2,6 +2,7 @@ package cz.cvut.palecda1.view
 
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
+import cz.cvut.palecda1.MyInjector
 import cz.cvut.palecda1.model.RoomArticle
 
 object HtmlFactory {
@@ -10,7 +11,33 @@ object HtmlFactory {
         val text = "<h3>${title}</h3>${body}"
         return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
-    fun stripImg(text: String): String {
-        return text.replace(Regex("<img [^>]*>"), "&lt;img&gt;")
+
+    //private const val IMG_REPLACEMENT = "&lt;img&gt;"
+    private const val IMG_REPLACEMENT = ""
+    fun String.stripImg(): String {
+        return this.replace(Regex("<img [^>]*>"), IMG_REPLACEMENT)
+    }
+
+    private val LINK_REPLACEMENT = arrayOf("<p style=\"color:${MyInjector.COLOR_FAKE_LINKS}\">", "</p>")
+    fun String.stripLinks(): String {
+        require(LINK_REPLACEMENT.size == 2)
+        return this
+            .replace(Regex("<a [^>]*>"), LINK_REPLACEMENT[0])
+            .replace(Regex("</a>"), LINK_REPLACEMENT[1])
+    }
+
+    fun String.removeTags(except: String? = null): String {
+        var tmp = ""
+        if(except != null)
+            tmp = "[^$except]"
+        val regex = "</?$tmp[^>]*>"
+        return this.replace(Regex(regex),"" )
+    }
+
+    fun String.stripTags(except: String? = null): String {
+        return this
+            .stripImg()
+            .stripLinks()
+            .removeTags(except)
     }
 }
