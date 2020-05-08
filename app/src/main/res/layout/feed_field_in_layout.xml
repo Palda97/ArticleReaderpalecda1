@@ -46,8 +46,9 @@
                 android:id="@+id/feedActiveToggle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/active"
-                android:checked="@{feed.active}" />
+                android:text="@{feed.active ? @string/active : @string/not_active}"
+                android:checked="@{feed.active}"
+                android:textAlignment="textEnd"/>
         </LinearLayout>
     </LinearLayout>
 </layout>
