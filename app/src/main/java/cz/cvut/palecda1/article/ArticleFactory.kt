@@ -25,7 +25,7 @@ class ArticleFactory {
         val description = if(syndEntry.description != null && syndEntry.description.value != null)
             syndEntry.description.value
         else {
-            var res = ""
+            var res: String
             val tmpDescription = body.stripTags()
             res = if(tmpDescription.length < MAX_CUSTOM_DESCRIPTION_LENGTH)
                 tmpDescription
