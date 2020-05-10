@@ -22,11 +22,7 @@ class ArticleRepository(
     fun downloadArticles(): LiveData<MailPackage<List<RoomArticle>>> {
         Log.d(TAG, "downloadArticles")
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
-        data.value = MailPackage(
-            null,
-            MailPackage.LOADING,
-            ""
-        )
+        data.value = MailPackage.loadingPackage()
         asyncDownloadArticles(data)
         return data
     }
@@ -35,11 +31,7 @@ class ArticleRepository(
         Log.d(TAG, "getArticleList")
         //return downloadArticles()
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
-        data.value = MailPackage(
-            null,
-            MailPackage.LOADING,
-            ""
-        )
+        data.value = MailPackage.loadingPackage()
         asyncLoadArticles(data)
         return data
     }
@@ -52,11 +44,7 @@ class ArticleRepository(
     fun getArticleById(url: String): LiveData<MailPackage<RoomArticle>> {
         Log.d(TAG, "getArticleById")
         val data = MutableLiveData<MailPackage<RoomArticle>>()
-        data.value = MailPackage(
-            null,
-            MailPackage.LOADING,
-            ""
-        )
+        data.value = MailPackage.loadingPackage()
         asyncGetById(data, url)
         return data
     }

@@ -8,9 +8,10 @@ class MailPackage<content>(val articles: content?, private val status: Int, val 
     val isError: Boolean
         get() = status == ERROR
 
-    companion object{
+    companion object {
         const val LOADING = 0
         const val OK = 1
         const val ERROR = 2
+        fun <dummy> loadingPackage() = MailPackage<dummy>(null, LOADING,"")
     }
 }
