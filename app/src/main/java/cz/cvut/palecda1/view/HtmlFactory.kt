@@ -2,7 +2,7 @@ package cz.cvut.palecda1.view
 
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
-import cz.cvut.palecda1.MyInjector
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.model.RoomArticle
 
 object HtmlFactory {
@@ -13,7 +13,8 @@ object HtmlFactory {
     }
     fun toHtml(title: String, body: String, feed: String): Spanned {
         //val text = "<h3>${title}</h3><font color=\"${MyInjector.COLOR_FAKE_LINKS}\">[$feed]</font><br>${body}"
-        val text = "<h3>${title}</h3><font color=\"${MyInjector.COLOR_FAKE_LINKS}\">[$feed]</font><br>${body}"
+        //val text = "<h3>${title}</h3><font color=\"${AppInit.injector.colorFakeLinks}\">[$feed]</font><br>${body}"
+        val text = "<h3>${title}</h3>${coloredText("[$feed]", AppInit.injector.colorFakeLinks)}<br>${body}"
         return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
@@ -23,7 +24,7 @@ object HtmlFactory {
         return this.replace(Regex("<img [^>]*>"), IMG_REPLACEMENT)
     }
 
-    private val LINK_REPLACEMENT = arrayOf("<p style=\"color:${MyInjector.COLOR_FAKE_LINKS}\">", "</p>")
+    private val LINK_REPLACEMENT = arrayOf("<p style=\"color:${AppInit.injector.colorFakeLinks}\">", "</p>")
     fun String.stripLinks(): String {
         require(LINK_REPLACEMENT.size == 2)
         return this
@@ -45,4 +46,6 @@ object HtmlFactory {
             .stripLinks()
             .removeTags(except)
     }
+
+    fun coloredText(text: String, color: String): String = "<font color=\"${color}\">${text}</font>"
 }

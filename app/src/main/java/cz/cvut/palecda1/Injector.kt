@@ -1,17 +1,12 @@
 package cz.cvut.palecda1
 
 import android.app.Application
-import cz.cvut.palecda1.dao.ArticleDaoFake
 import cz.cvut.palecda1.dao.ArticleDaoRome
-import cz.cvut.palecda1.dao.FeedDaoFake
 import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.ArticleRepository
 import cz.cvut.palecda1.repository.FeedRepository
 
-object MyInjector {
-
-    val db: AppDatabase
-        get() = AppInit.db
+class Injector(val db: AppDatabase, val colorFakeLinks: String, val colorCustomTokens: String) {
 
     private var articleRepository: ArticleRepository? = null
     fun getArticleRepo(application: Application): ArticleRepository {
@@ -38,7 +33,4 @@ object MyInjector {
         }
         return feedRepository!!
     }
-
-    const val COLOR_FAKE_LINKS = "#9C27B0"
-    const val COLOR_CUSTOM_TOKENS = "#FF5722"
 }

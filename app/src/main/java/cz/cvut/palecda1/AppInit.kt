@@ -3,6 +3,7 @@ package cz.cvut.palecda1
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import cz.cvut.palecda1.repository.AppDatabase
@@ -18,8 +19,13 @@ class AppInit : Application() {
         sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
         toggleNightMode(true)
         db = AppDatabase.getInstance(this)
+
+        val colorFakeLinks: Int = ContextCompat.getColor(this, R.color.colorFakeLinks)
+        val colorCustomTokens: Int = ContextCompat.getColor(this, R.color.colorCustomTokens)
+        injector = Injector(db, colorToHexString(colorFakeLinks), colorToHexString(colorCustomTokens))
+
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
-            val feedRepo = MyInjector.getFeedRepo()
+            val feedRepo = injector.getFeedRepo()
             feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title), true))
             feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url2), getString(R.string.default_feed_title2), true))
             /*val articleRepo = MyInjector.getArticleRepo(this)
@@ -30,6 +36,7 @@ class AppInit : Application() {
     }
 
     companion object {
+        lateinit var injector: Injector
         lateinit var db: AppDatabase
         private const val INIT_DATA_KEY = "INIT_DATA_KEY"
         private const val SP_NAME = "preferences.xml"
@@ -47,5 +54,11 @@ class AppInit : Application() {
         }
         /*val colorFakeLinks
             get() = ContextCompat.getColor(context, R.color.colorFakeLinks)*/
+        const val TAG = "AppInit"
+        fun colorToHexString(color: Int): String {
+            val str = Integer.toHexString(color)
+            require(str.length == 8 && str.startsWith("ff", true))
+            return "#" + str.substring(2)
+        }
     }
 }

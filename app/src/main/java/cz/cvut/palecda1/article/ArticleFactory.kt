@@ -1,9 +1,11 @@
 package cz.cvut.palecda1.article
 
+import android.util.Log
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndContent
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntry
-import cz.cvut.palecda1.MyInjector
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.model.RoomArticle
+import cz.cvut.palecda1.view.HtmlFactory
 
 import cz.cvut.palecda1.view.HtmlFactory.stripImg
 import cz.cvut.palecda1.view.HtmlFactory.stripTags
@@ -42,16 +44,18 @@ class ArticleFactory {
             }
         }
         val feed = syndEntryPair.second
+        //Log.d(TAG, description)
         return RoomArticle(url, title, body, description, feed)
     }
 
     companion object {
         const val MAX_CUSTOM_DESCRIPTION_LENGTH = 200
         const val STRIP_IMGS = true
-        const val CUSTOM_DESCRIPTION_TOKEN_VALUE = "<font color=\"${MyInjector.COLOR_CUSTOM_TOKENS}\">[~]</font> "
+        val CUSTOM_DESCRIPTION_TOKEN_VALUE = HtmlFactory.coloredText("[~]", AppInit.injector.colorCustomTokens)
         const val CUSTOM_DESCRIPTION_TOKEN = true
         const val CUSTOM_BODY_TOKEN = true
-        const val CUSTOM_BODY_TOKEN_VALUE = "<font color=\"${MyInjector.COLOR_CUSTOM_TOKENS}\">[just description again]</font><br>"
+        val CUSTOM_BODY_TOKEN_VALUE = HtmlFactory.coloredText("[just description again]<br>", AppInit.injector.colorCustomTokens)
+        const val TAG = "ArticleFactory"
     }
 }
 
