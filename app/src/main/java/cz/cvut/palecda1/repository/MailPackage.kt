@@ -1,10 +1,10 @@
 package cz.cvut.palecda1.repository
 
-class MailPackage<content>(val articles: content?, private val status: Int, val msg: String) {
+class MailPackage<content>(val mailContent: content?, private val status: Int, val msg: String) {
     val isLoading: Boolean
         get() = status == LOADING
     val isOk: Boolean
-        get() = status == OK && articles != null
+        get() = status == OK && mailContent != null
     val isError: Boolean
         get() = status == ERROR
 

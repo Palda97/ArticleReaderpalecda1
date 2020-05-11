@@ -50,7 +50,7 @@ class FeedFragment : Fragment() {
 
         viewModel.feedsLiveData.observe(this, Observer {
             if (it != null && it.isOk){
-                feedRecyclerAdapter.updateFeedList(it.articles!!)
+                feedRecyclerAdapter.updateFeedList(it.mailContent!!)
                 Log.d(TAG, "it.isOk = true")
             }
             binding.mail = it

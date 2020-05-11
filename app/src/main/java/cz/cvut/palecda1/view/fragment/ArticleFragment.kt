@@ -47,9 +47,9 @@ class ArticleFragment : Fragment() {
         viewModel.articlesLiveData.observe(this, Observer {
             var empty = false
             if (it != null && it.isOk){
-                articleRecyclerAdapter.updateArticleList(it.articles!!)
+                articleRecyclerAdapter.updateArticleList(it.mailContent!!)
                 Log.d(TAG, "it.isOk = true")
-                if(it.articles.isEmpty())
+                if(it.mailContent.isEmpty())
                     empty = true
             }
             binding.mail = it
