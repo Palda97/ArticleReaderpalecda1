@@ -63,4 +63,8 @@ dependencies {
 
     //Material
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+
+    def corutine_version = '1.3.6'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$corutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corutine_version"
 }
