@@ -13,6 +13,29 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     val repository = AppInit.injector.getArticleRepo(application)
 
+    val articlesLiveData: LiveData<MailPackage<List<RoomArticle>>>
+        get() = repository.observableArticles
+    val roomArticleLiveData: LiveData<MailPackage<RoomArticle>>
+        get() = repository.observableArticle
+
+    fun loadArticles() {
+        repository.getArticleList()
+    }
+
+    fun refreshArticles(){
+        repository.downloadArticles()
+    }
+
+    fun loadArticleById(id: String) {
+        repository.getArticleById(id)
+    }
+}
+
+/*class ArticleViewModel(application: Application) : AndroidViewModel(application) {
+//class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() {
+
+    val repository = AppInit.injector.getArticleRepo(application)
+
     private val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
     private val observableRoomArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
 
@@ -40,4 +63,4 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
         val article = repository.getArticleById(id)
         observableRoomArticle.addSource(article) { observableRoomArticle.value = it }
     }
-}
+}*/

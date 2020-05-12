@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException
 import cz.cvut.palecda1.R
@@ -19,11 +20,22 @@ class ArticleRepository(
     val application: Application
 ) {
 
+    val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
+    val observableArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
+
+    fun addSourceList(data: MutableLiveData<MailPackage<List<RoomArticle>>>){
+        observableArticles.addSource(data) { observableArticles.value = it }
+    }
+    fun addSourceSingle(data: MutableLiveData<MailPackage<RoomArticle>>){
+        observableArticle.addSource(data) { observableArticle.value = it }
+    }
+
     fun downloadArticles(): LiveData<MailPackage<List<RoomArticle>>> {
         Log.d(TAG, "downloadArticles")
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
         data.value = MailPackage.loadingPackage()
         asyncDownloadArticles(data)
+        addSourceList(data)
         return data
     }
 
@@ -33,6 +45,7 @@ class ArticleRepository(
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
         data.value = MailPackage.loadingPackage()
         asyncLoadArticles(data)
+        addSourceList(data)
         return data
     }
 
@@ -46,6 +59,7 @@ class ArticleRepository(
         val data = MutableLiveData<MailPackage<RoomArticle>>()
         data.value = MailPackage.loadingPackage()
         asyncGetById(data, url)
+        addSourceSingle(data)
         return data
     }
 
@@ -113,7 +127,7 @@ class ArticleRepository(
                         application.getString(R.string.MalformedURL) +
                                 "\n${e.message}"
                     )
-                    e.printStackTrace();
+                    e.printStackTrace()
                 } catch (e: IllegalArgumentException) {
                     mail = MailPackage(
                         null,
@@ -121,7 +135,7 @@ class ArticleRepository(
                         application.getString(R.string.IllegalArgument) +
                                 "\n${e.message}"
                     )
-                    e.printStackTrace();
+                    e.printStackTrace()
                 } catch (e: FeedException) {
                     mail = MailPackage(
                         null,
@@ -129,7 +143,7 @@ class ArticleRepository(
                         application.getString(R.string.FeedException) +
                                 "\n${e.message}"
                     )
-                    e.printStackTrace();
+                    e.printStackTrace()
                 } catch (e: IOException) {
                     mail = MailPackage(
                         null,
@@ -137,7 +151,7 @@ class ArticleRepository(
                         application.getString(R.string.IOException) +
                                 "\n${e.message}"
                     )
-                    e.printStackTrace();
+                    e.printStackTrace()
                 }
                 data.postValue(mail)
                 return null
