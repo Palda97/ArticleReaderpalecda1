@@ -1,19 +1,21 @@
 package cz.cvut.palecda1
 
 import android.app.Application
+import android.content.Context
+import androidx.core.content.ContextCompat
 import cz.cvut.palecda1.dao.ArticleDaoRome
 import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.ArticleRepository
 import cz.cvut.palecda1.repository.FeedRepository
 
-class Injector(val db: AppDatabase, val colorFakeLinks: String, val colorCustomTokens: String) {
+class Injector (val db: AppDatabase, val colorFakeLinks: String, val colorCustomTokens: String) {
 
     private var articleRepository: ArticleRepository? = null
-    fun getArticleRepo(application: Application): ArticleRepository {
+    fun getArticleRepo(context: Context): ArticleRepository {
         if (articleRepository == null) {
             synchronized(this) {
                 if (articleRepository == null) {
-                    articleRepository = ArticleRepository(db.articleDao(), ArticleDaoRome(), application)
+                    articleRepository = ArticleRepository(db.articleDao(), ArticleDaoRome(), context)
                     //articleRepository = ArticleRepository(db.articleDao(), ArticleDaoFake(), application)
                 }
             }
@@ -34,5 +36,14 @@ class Injector(val db: AppDatabase, val colorFakeLinks: String, val colorCustomT
             }
         }
         return feedRepository!!
+    }
+
+    companion object {
+        fun generate(context: Context): Injector {
+            val db = AppDatabase.getInstance(context)
+            val colorFakeLinks: Int = ContextCompat.getColor(context, R.color.colorFakeLinks)
+            val colorCustomTokens: Int = ContextCompat.getColor(context, R.color.colorCustomTokens)
+            return Injector(db, AppInit.colorToHexString(colorFakeLinks), AppInit.colorToHexString(colorCustomTokens))
+        }
     }
 }

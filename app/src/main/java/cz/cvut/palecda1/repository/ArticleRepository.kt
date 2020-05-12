@@ -23,7 +23,7 @@ import java.net.MalformedURLException
 class ArticleRepository(
     val roomDao: ArticleDao,
     val networkDao: ArticleDao,
-    val application: Application
+    val application: Context
 ) {
 
     val observableArticles: MediatorLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
@@ -31,18 +31,14 @@ class ArticleRepository(
     /*val observableArticles: MutableLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
     val observableArticle: MutableLiveData<MailPackage<RoomArticle>> = MediatorLiveData()*/
 
-    private val handler: Handler = Handler()
+    private val handler: Handler
     init {
+        handler = Handler()
         getArticleList()
     }
 
     fun useArticleDownloader() {
-        val jobScheduler = application.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        val componentName: ComponentName = ComponentName(application, ArticleDownloader::class.java)
-        val info = JobInfo.Builder(JOB_ID, componentName)
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-            .build()
-        jobScheduler.schedule(info)
+        ArticleDownloader.makeMePeriodic(application)
     }
 
     private fun addSourceList(data: MutableLiveData<MailPackage<List<RoomArticle>>>){

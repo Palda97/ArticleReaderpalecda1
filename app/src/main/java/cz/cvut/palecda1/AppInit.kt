@@ -20,9 +20,10 @@ class AppInit : Application() {
         toggleNightMode(true)
         db = AppDatabase.getInstance(this)
 
-        val colorFakeLinks: Int = ContextCompat.getColor(this, R.color.colorFakeLinks)
+        /*val colorFakeLinks: Int = ContextCompat.getColor(this, R.color.colorFakeLinks)
         val colorCustomTokens: Int = ContextCompat.getColor(this, R.color.colorCustomTokens)
-        injector = Injector(db, colorToHexString(colorFakeLinks), colorToHexString(colorCustomTokens))
+        injector = Injector(db, colorToHexString(colorFakeLinks), colorToHexString(colorCustomTokens))*/
+        contextForInjector(this)
 
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
             val feedRepo = injector.getFeedRepo()
@@ -37,6 +38,10 @@ class AppInit : Application() {
 
     companion object {
         lateinit var injector: Injector
+        fun contextForInjector(context: Context) {
+            if(!this::injector.isInitialized)
+                injector = Injector.generate(context)
+        }
         lateinit var db: AppDatabase
         private const val INIT_DATA_KEY = "INIT_DATA_KEY"
         private const val SP_NAME = "preferences.xml"
