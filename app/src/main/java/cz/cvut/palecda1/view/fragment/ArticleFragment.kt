@@ -40,7 +40,7 @@ class ArticleFragment : Fragment() {
         binding.insertArticlesHere.adapter = articleRecyclerAdapter
 
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-        viewModel.loadArticles()
+        //viewModel.loadArticles()
 
         progressBar = inflater.inflate(R.layout.progressbar, null)
 

@@ -21,6 +21,8 @@ class Injector(val db: AppDatabase, val colorFakeLinks: String, val colorCustomT
         return articleRepository!!
     }
 
+    fun getArticleRepo(): ArticleRepository? = articleRepository
+
     private var feedRepository: FeedRepository? = null
     fun getFeedRepo(): FeedRepository {
         if (feedRepository == null) {
