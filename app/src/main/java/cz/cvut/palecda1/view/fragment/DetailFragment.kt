@@ -21,7 +21,7 @@ import java.util.Objects
 class DetailFragment : Fragment() {
 
     private lateinit var articleTextView: TextView
-    private lateinit var articleId: String
+    private var articleId: String? = null
 
     internal lateinit var binding: FragmentDetailBinding
     internal lateinit var viewModel: ArticleViewModel
@@ -34,7 +34,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
-        articleId = Objects.requireNonNull<Bundle>(arguments).getString(ID, "")
+        articleId = arguments?.getString(ID, null)
 
         //MVVM init + databinding
 
@@ -45,7 +45,7 @@ class DetailFragment : Fragment() {
         binding.detailTextView.movementMethod = LinkMovementMethod.getInstance()
 
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-        viewModel.loadArticleById(articleId)
+        articleId?.let { viewModel.loadArticleById(it) }
 
         viewModel.roomArticleLiveData.observe(this, Observer {
             if (it != null && it.isOk){
@@ -65,25 +65,40 @@ class DetailFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun shareCurrentArticle() {
+        if(articleId == null) {
+            Toast.makeText(context, getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+            return
+        }
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = TEXT_PLAIN
+        val body = articleId
+        //val subject = ""
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
+        //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)))
+    }
+
+    private fun openLink() {
+        if(articleId == null){
+            Toast.makeText(context, getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+            return
+        }
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleId)))
+        }catch (e: ActivityNotFoundException){
+            Toast.makeText(context!!, "<$articleId> " + getString(R.string.is_not_a_valid_url), Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.shareItem -> {
-                val sharingIntent = Intent(Intent.ACTION_SEND)
-                sharingIntent.type =
-                    TEXT_PLAIN
-                val body = articleId
-                //val subject = ""
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, body)
-                //sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)))
+                shareCurrentArticle()
                 true
             }
             R.id.openLinkItem -> {
-                try {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleId)))
-                }catch (e: ActivityNotFoundException){
-                    Toast.makeText(context!!, "<$articleId> " + getString(R.string.is_not_a_valid_url), Toast.LENGTH_SHORT).show()
-                }
+                openLink()
                 true
             }
             else -> super.onOptionsItemSelected(item)

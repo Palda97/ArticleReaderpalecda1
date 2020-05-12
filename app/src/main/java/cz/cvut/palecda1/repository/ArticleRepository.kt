@@ -35,6 +35,7 @@ class ArticleRepository(
     init {
         handler = Handler()
         getArticleList()
+        observableArticle.value = MailPackage(null, MailPackage.ERROR, application.getString(R.string.no_article_selected))
     }
 
     fun useArticleDownloader() {
