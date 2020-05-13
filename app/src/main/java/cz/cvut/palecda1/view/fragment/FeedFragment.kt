@@ -156,7 +156,7 @@ class FeedFragment : Fragment() {
             }
             R.id.cancelSyncItem -> {
                 if(ArticleDownloader.stop(context!!)){
-                    Toast.makeText(context, "synchronization canceled", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.synchronization_canceled), Toast.LENGTH_SHORT).show()
                 }
                 true
             }
