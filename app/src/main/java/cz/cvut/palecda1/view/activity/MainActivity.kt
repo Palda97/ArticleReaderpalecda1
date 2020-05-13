@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import cz.cvut.palecda1.AppInit
+import cz.cvut.palecda1.Injector
 import cz.cvut.palecda1.view.fragment.ArticleFragment
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.model.RoomArticle
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(),
             R.id.detailItem -> {
                 val article: RoomArticle? = AppInit.injector.getArticleRepo(this).observableArticle.value?.mailContent
                 if(article == null){
-                    Toast.makeText(this, getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+                    Injector.noArticleSelectedToast(this)
                     return true
                 }
                 DetailActivity.start(this, article)

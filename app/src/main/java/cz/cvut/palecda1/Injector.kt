@@ -2,6 +2,7 @@ package cz.cvut.palecda1
 
 import android.app.Application
 import android.content.Context
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import cz.cvut.palecda1.dao.ArticleDaoRome
 import cz.cvut.palecda1.repository.AppDatabase
@@ -45,5 +46,6 @@ class Injector (val db: AppDatabase, val colorFakeLinks: String, val colorCustom
             val colorCustomTokens: Int = ContextCompat.getColor(context, R.color.colorCustomTokens)
             return Injector(db, AppInit.colorToHexString(colorFakeLinks), AppInit.colorToHexString(colorCustomTokens))
         }
+        fun noArticleSelectedToast(context: Context) = Toast.makeText(context, context.resources.getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
     }
 }

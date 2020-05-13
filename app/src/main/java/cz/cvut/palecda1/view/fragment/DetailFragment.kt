@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.Injector
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentDetailBinding
 import cz.cvut.palecda1.view.HtmlFactory
@@ -67,7 +68,7 @@ class DetailFragment : Fragment() {
 
     private fun shareCurrentArticle() {
         if(articleId == null) {
-            Toast.makeText(context, getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+            context?.let { Injector.noArticleSelectedToast(it) }
             return
         }
         val sharingIntent = Intent(Intent.ACTION_SEND)
@@ -81,7 +82,7 @@ class DetailFragment : Fragment() {
 
     private fun openLink() {
         if(articleId == null){
-            Toast.makeText(context, getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+            context?.let { Injector.noArticleSelectedToast(it) }
             return
         }
         try {
