@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import cz.cvut.palecda1.MyInjector
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.repository.MailPackage
 import cz.cvut.palecda1.model.RoomFeed
 
 class FeedViewModel(application: Application) : AndroidViewModel(application) {
 //class FeedViewModel(private val repository: FeedRepository) : ViewModel() {
-    val repository = MyInjector.getFeedRepo()
+    val repository = AppInit.injector.getFeedRepo()
 
     //private val observableFeeds: MediatorLiveData<MailPackage<List<RoomFeed>>> = MediatorLiveData()
 

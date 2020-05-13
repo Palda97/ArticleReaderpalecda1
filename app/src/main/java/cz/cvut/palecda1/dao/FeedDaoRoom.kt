@@ -5,7 +5,7 @@ import cz.cvut.palecda1.model.RoomFeed
 
 @Dao
 abstract class FeedDaoRoom: FeedDao {
-    @Query("select * from roomfeed")
+    @Query("select * from roomfeed order by url asc")
     abstract override fun feedList(): List<RoomFeed>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -17,6 +17,6 @@ abstract class FeedDaoRoom: FeedDao {
     @Query("delete from roomfeed")
     abstract override fun deleteAll()
 
-    @Query("select * from roomfeed where active = 1")
+    @Query("select * from roomfeed where active = 1 order by url asc")
     abstract override fun activeFeedsOnly(): List<RoomFeed>
 }

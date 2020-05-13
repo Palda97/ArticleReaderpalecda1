@@ -40,16 +40,16 @@ class ArticleFragment : Fragment() {
         binding.insertArticlesHere.adapter = articleRecyclerAdapter
 
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-        viewModel.loadArticles()
+        //viewModel.loadArticles()
 
         progressBar = inflater.inflate(R.layout.progressbar, null)
 
         viewModel.articlesLiveData.observe(this, Observer {
             var empty = false
             if (it != null && it.isOk){
-                articleRecyclerAdapter.updateArticleList(it.articles!!)
+                articleRecyclerAdapter.updateArticleList(it.mailContent!!)
                 Log.d(TAG, "it.isOk = true")
-                if(it.articles.isEmpty())
+                if(it.mailContent.isEmpty())
                     empty = true
             }
             binding.mail = it

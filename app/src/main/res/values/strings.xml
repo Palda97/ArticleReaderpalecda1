@@ -33,4 +33,6 @@
     <string name="active">Active</string>
     <string name="not_active">Not Active</string>
     <string name="reset">RESET</string>
+    <string name="no_article_selected">No article selected</string>
+    <string name="read_in_fullscreen">Read in fullscreen</string>
 </resources>

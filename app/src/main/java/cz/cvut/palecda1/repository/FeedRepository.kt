@@ -14,11 +14,7 @@ class FeedRepository(val feedDao: FeedDao) {
 
     fun getFeedList(): LiveData<MailPackage<List<RoomFeed>>> {
         val data = MutableLiveData<MailPackage<List<RoomFeed>>>()
-        data.value = MailPackage(
-            null,
-            MailPackage.LOADING,
-            ""
-        )
+        data.value = MailPackage.loadingPackage()
         /*val list = feedDao.feedList()
         data.value = MailPackage(list, MailPackage.OK, "")*/
         asyncGetFeeds(data)
@@ -40,11 +36,7 @@ class FeedRepository(val feedDao: FeedDao) {
 
     fun activeOnly(): LiveData<MailPackage<List<RoomFeed>>> {
         val data = MutableLiveData<MailPackage<List<RoomFeed>>>()
-        data.value = MailPackage(
-            null,
-            MailPackage.LOADING,
-            ""
-        )
+        data.value = MailPackage.loadingPackage()
         asyncGetFeeds(data, true)
         observableFeeds.addSource(data) { observableFeeds.value = it }
         return data

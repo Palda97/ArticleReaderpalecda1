@@ -5,14 +5,14 @@ import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.Syn
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndFeed
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.SyndFeedInput
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.XmlReader
-import cz.cvut.palecda1.MyInjector
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.article.ArticleFactory
 import cz.cvut.palecda1.model.RoomArticle
 import cz.cvut.palecda1.model.RoomFeed
 import java.net.URL
 
 class ArticleDaoRome : ArticleDao {
-    val feedDao = MyInjector.getFeedRepo().feedDao
+    val feedDao = AppInit.injector.getFeedRepo().feedDao
 
     override fun articleList(): List<RoomArticle> {
         val listOfFeeds = feedDao.activeFeedsOnly()

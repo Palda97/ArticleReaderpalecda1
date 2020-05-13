@@ -1,8 +1,11 @@
 package cz.cvut.palecda1.article
 
+import android.util.Log
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndContent
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntry
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.model.RoomArticle
+import cz.cvut.palecda1.view.HtmlFactory
 
 import cz.cvut.palecda1.view.HtmlFactory.stripImg
 import cz.cvut.palecda1.view.HtmlFactory.stripTags
@@ -20,23 +23,39 @@ class ArticleFactory {
         var body = contents.map { it.value }.joinToString(separator = "<br>")
         if (STRIP_IMGS)
             body = body.stripImg()
-        //val body = syndEntry.toString()
+        //body = syndEntry.toString()
         val description = if(syndEntry.description != null && syndEntry.description.value != null)
             syndEntry.description.value
         else {
+            var res: String
             val tmpDescription = body.stripTags()
-            if(tmpDescription.length < MAX_CUSTOM_DESCRIPTION_LENGTH)
+            res = if(tmpDescription.length < MAX_CUSTOM_DESCRIPTION_LENGTH)
                 tmpDescription
             else
                 "${tmpDescription.substring(0, MAX_CUSTOM_DESCRIPTION_LENGTH -1)}..."
+            if(CUSTOM_DESCRIPTION_TOKEN)
+                res = "$CUSTOM_DESCRIPTION_TOKEN_VALUE$res"
+            res
+        }
+        if(body.isEmpty()){
+            body = description
+            if(CUSTOM_BODY_TOKEN){
+                body = "$CUSTOM_BODY_TOKEN_VALUE$body"
+            }
         }
         val feed = syndEntryPair.second
+        //Log.d(TAG, description)
         return RoomArticle(url, title, body, description, feed)
     }
 
-    companion object{
+    companion object {
         const val MAX_CUSTOM_DESCRIPTION_LENGTH = 200
         const val STRIP_IMGS = true
+        val CUSTOM_DESCRIPTION_TOKEN_VALUE = HtmlFactory.coloredText("[~]", AppInit.injector.colorCustomTokens)
+        const val CUSTOM_DESCRIPTION_TOKEN = true
+        const val CUSTOM_BODY_TOKEN = true
+        val CUSTOM_BODY_TOKEN_VALUE = HtmlFactory.coloredText("[just description again]<br>", AppInit.injector.colorCustomTokens)
+        const val TAG = "ArticleFactory"
     }
 }
 
