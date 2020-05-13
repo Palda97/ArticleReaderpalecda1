@@ -8,7 +8,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.util.Log
 import cz.cvut.palecda1.AppInit
-import cz.cvut.palecda1.repository.AppDatabase
 import cz.cvut.palecda1.repository.ArticleRepository
 
 class ArticleDownloader : JobService() {
@@ -31,7 +30,7 @@ class ArticleDownloader : JobService() {
         Thread(Runnable { run() }).start()
     }
 
-    private fun run(){
+    private fun run() {
         repository.downloadArticles()
         jobFinished(params, false)
     }
@@ -45,13 +44,17 @@ class ArticleDownloader : JobService() {
         private const val JOB_ID = 420
         private const val INTERVAL: Long = 60 * 60 * 1000
         private const val TAG = "ArticleDownloader"
+
         private data class SchedPrep(val jobScheduler: JobScheduler, val builder: JobInfo.Builder)
-        private fun schedulePrep(application: Context): SchedPrep {
-            val jobScheduler = application.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-            val componentName = ComponentName(application, this::class.java.declaringClass!!)
+
+        private fun schedulePrep(context: Context): SchedPrep {
+            val jobScheduler =
+                context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+            val componentName = ComponentName(context, this::class.java.declaringClass!!)
             val builder = JobInfo.Builder(JOB_ID, componentName)
             return SchedPrep(jobScheduler, builder)
         }
+
         fun wifiReqStart(application: Context) {
             val (jobScheduler, builder) = schedulePrep(application)
             val info = builder
@@ -59,13 +62,27 @@ class ArticleDownloader : JobService() {
                 .build()
             jobScheduler.schedule(info)
         }
-        fun makeMePeriodic(application: Context) {
-            val (jobScheduler, builder) = schedulePrep(application)
+
+        fun makeMePeriodic(context: Context) {
+            val (jobScheduler, builder) = schedulePrep(context)
             val info = builder
                 .setPersisted(true)
                 .setPeriodic(INTERVAL)
                 .build()
             jobScheduler.schedule(info)
+        }
+
+        fun stop(context: Context): Boolean {
+            val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+            var ret = false
+            jobScheduler.allPendingJobs.forEach {
+                if (it.id == JOB_ID) {
+                    Log.d(TAG, "job stopped")
+                    ret = true
+                }
+            }
+            jobScheduler.cancel(JOB_ID)
+            return ret
         }
     }
 }

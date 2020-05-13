@@ -3,6 +3,7 @@ package cz.cvut.palecda1.view.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FragmentFeedBinding
 import cz.cvut.palecda1.model.RoomFeed
+import cz.cvut.palecda1.services.ArticleDownloader
 import cz.cvut.palecda1.view.FeedDialogFragment
 import cz.cvut.palecda1.view.FeedRecyclerAdapter
 import cz.cvut.palecda1.viewmodel.FeedViewModel
@@ -150,6 +152,12 @@ class FeedFragment : Fragment() {
             }
             R.id.resetFeedsItem -> {
                 resetDialog()
+                true
+            }
+            R.id.cancelSyncItem -> {
+                if(ArticleDownloader.stop(context!!)){
+                    Toast.makeText(context, "synchronization canceled", Toast.LENGTH_SHORT).show()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

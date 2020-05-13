@@ -35,4 +35,5 @@
     <string name="reset">RESET</string>
     <string name="no_article_selected">No article selected</string>
     <string name="read_in_fullscreen">Read in fullscreen</string>
+    <string name="cancel_sync">Cancel Sync</string>
 </resources>
