@@ -38,4 +38,6 @@
     <string name="cancel_sync">Cancel Sync</string>
     <string name="synchronization_canceled">synchronization canceled</string>
     <string name="exit_fullscreen">Exit fullscreen</string>
+    <string name="notification_channel_name">Article Reader Channel</string>
+    <string name="notification_title">New articles!</string>
 </resources>

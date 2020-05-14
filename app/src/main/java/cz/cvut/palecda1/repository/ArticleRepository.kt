@@ -56,15 +56,22 @@ class ArticleRepository(
 
     //private fun livingList()
 
-    fun downloadArticles() {
+    fun getDiff(list: List<RoomArticle>): List<RoomArticle> {
+        val old = roomDao.articleList()
+        return list - old
+    }
+
+    fun downloadArticles(): List<RoomArticle>? {
         Log.d(TAG, "downloadArticles")
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
         data.postValue(MailPackage.loadingPackage())
         //asyncDownloadArticles(data)
         addSourceList(data)
         var mail: MailPackage<List<RoomArticle>>
+        var diff: List<RoomArticle>? = null
         try {
             val list = networkDao.articleList()
+            diff = getDiff(list)
             mail = MailPackage(
                 list,
                 MailPackage.OK,
@@ -105,6 +112,7 @@ class ArticleRepository(
             e.printStackTrace()
         }
         data.postValue(mail)
+        return diff
     }
     /*fun downloadArticles(): LiveData<MailPackage<List<RoomArticle>>> {
         Log.d(TAG, "downloadArticles")

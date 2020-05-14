@@ -37,9 +37,11 @@ class ArticleDaoFake: ArticleDao {
         }
     }
 
-    override fun clearAndInsertList(list: List<RoomArticle>) {
+    override fun clearAndInsertList(list: List<RoomArticle>): List<RoomArticle> {
+        val oldList = articleList()
         deleteAll()
         insertArticles(list)
+        return list.minus(oldList)
     }
 
     companion object {

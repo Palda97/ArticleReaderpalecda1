@@ -1,8 +1,11 @@
 package cz.cvut.palecda1
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -19,24 +22,38 @@ class AppInit : Application() {
         sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
         toggleNightMode(true)
         db = AppDatabase.getInstance(this)
-
-        /*val colorFakeLinks: Int = ContextCompat.getColor(this, R.color.colorFakeLinks)
-        val colorCustomTokens: Int = ContextCompat.getColor(this, R.color.colorCustomTokens)
-        injector = Injector(db, colorToHexString(colorFakeLinks), colorToHexString(colorCustomTokens))*/
         contextForInjector(this)
+        setupDefaultFeeds()
+        notificationChannel()
+    }
 
+    private fun notificationChannel(){
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.notification_channel_name)
+            //val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                //description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun setupDefaultFeeds(){
         if (!sharedPreferences.getBoolean(INIT_DATA_KEY, false)) {
             val feedRepo = injector.getFeedRepo()
             feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url), getString(R.string.default_feed_title), true))
             feedRepo.addFeed(RoomFeed(getString(R.string.default_feed_url2), getString(R.string.default_feed_title2), true))
-            /*val articleRepo = MyInjector.getArticleRepo(this)
-            articleRepo.downloadArticles()
-            Thread.sleep(2000)*/
             sharedPreferences.edit().putBoolean(INIT_DATA_KEY, true).apply()
         }
     }
 
     companion object {
+        const val CHANNEL_ID = "article_diff_notification_channel"
         lateinit var injector: Injector
         fun contextForInjector(context: Context) {
             if(!this::injector.isInitialized)

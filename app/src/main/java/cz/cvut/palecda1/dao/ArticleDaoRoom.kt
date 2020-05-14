@@ -4,7 +4,7 @@ import androidx.room.*
 import cz.cvut.palecda1.model.RoomArticle
 
 @Dao
-abstract class ArticleDaoRoom : ArticleDao{
+abstract class ArticleDaoRoom : ArticleDao {
 
     @Query("SELECT * from roomarticle")
     abstract override fun articleList(): List<RoomArticle>
@@ -28,8 +28,10 @@ abstract class ArticleDaoRoom : ArticleDao{
     abstract override fun insertArticles(list: List<RoomArticle>)
 
     @Transaction
-    override fun clearAndInsertList(list: List<RoomArticle>) {
+    override fun clearAndInsertList(list: List<RoomArticle>): List<RoomArticle> {
+        val oldList = articleList()
         deleteAll()
         insertArticles(list)
+        return list.minus(oldList)
     }
 }

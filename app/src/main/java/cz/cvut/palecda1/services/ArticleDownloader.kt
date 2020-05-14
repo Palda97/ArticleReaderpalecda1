@@ -1,14 +1,21 @@
 package cz.cvut.palecda1.services
 
+import android.app.PendingIntent
 import android.app.job.JobInfo
 import android.app.job.JobParameters
 import android.app.job.JobScheduler
 import android.app.job.JobService
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import cz.cvut.palecda1.AppInit
+import cz.cvut.palecda1.R
+import cz.cvut.palecda1.model.RoomArticle
 import cz.cvut.palecda1.repository.ArticleRepository
+import cz.cvut.palecda1.view.activity.MainActivity
 
 class ArticleDownloader : JobService() {
 
@@ -30,8 +37,55 @@ class ArticleDownloader : JobService() {
         Thread(Runnable { run() }).start()
     }
 
+    private fun makeNotification(list: List<RoomArticle>) {
+        if(list.isEmpty() || repository.observableLoading.value == true)
+            return
+        val feedMap: MutableMap<String, Int> = HashMap()
+        list.forEach {
+            feedMap[it.feed] = feedMap[it.feed]?.plus(1) ?: 1
+        }
+        val stringBuilder = StringBuilder()
+        var first = true
+        feedMap.forEach{
+            if(!first){
+                stringBuilder.append(", ")
+            } else {
+                first = false
+            }
+            stringBuilder.append("${it.key} (${it.value})")
+        }
+        val smallText = stringBuilder.toString()
+        Log.d(TAG, "notification small text: $smallText")
+        buildNotification(smallText, smallText)
+    }
+
+    private fun buildNotification(smallText: String, bigText: String) {
+        // Create an explicit intent for an Activity in your app
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+
+        val builder = NotificationCompat.Builder(this, AppInit.CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_rss_feed_black_24dp)
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(smallText)
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText(bigText))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            // Set the intent that will fire when the user taps the notification
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        //startForeground(NOTIFICATION_ID, builder.build())
+        with(NotificationManagerCompat.from(this)) {
+            notify(NOTIFICATION_ID, builder.build())
+        }
+    }
+
     private fun run() {
-        repository.downloadArticles()
+        val diff = repository.downloadArticles()
+        diff?.let { makeNotification(it) }
         repository.observableLoading.postValue(false)
         jobFinished(params, false)
     }
@@ -45,6 +99,7 @@ class ArticleDownloader : JobService() {
         private const val JOB_ID = 420
         private const val INTERVAL: Long = 60 * 60 * 1000
         private const val TAG = "ArticleDownloader"
+        private const val NOTIFICATION_ID = 420
 
         private data class SchedPrep(val jobScheduler: JobScheduler, val builder: JobInfo.Builder)
 
