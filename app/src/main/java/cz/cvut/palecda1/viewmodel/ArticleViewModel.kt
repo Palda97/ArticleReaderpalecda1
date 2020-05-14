@@ -18,12 +18,16 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
     val roomArticleLiveData: LiveData<MailPackage<RoomArticle>>
         get() = repository.observableArticle
 
+    val observableLoading: LiveData<Boolean>
+        get() = repository.observableLoading
+
     /*fun loadArticles() {
         repository.getArticleList()
     }*/
 
     fun refreshArticles(){
         //repository.downloadArticles()
+        repository.observableLoading.value = true
         repository.useArticleDownloader()
     }
 

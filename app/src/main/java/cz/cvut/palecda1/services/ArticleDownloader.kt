@@ -32,6 +32,7 @@ class ArticleDownloader : JobService() {
 
     private fun run() {
         repository.downloadArticles()
+        repository.observableLoading.postValue(false)
         jobFinished(params, false)
     }
 

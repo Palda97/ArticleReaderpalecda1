@@ -30,12 +30,14 @@ class ArticleRepository(
     val observableArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
     /*val observableArticles: MutableLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
     val observableArticle: MutableLiveData<MailPackage<RoomArticle>> = MediatorLiveData()*/
+    val observableLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     private val handler: Handler
     init {
         handler = Handler()
         getArticleList()
         observableArticle.value = MailPackage(null, MailPackage.ERROR, application.getString(R.string.no_article_selected))
+        observableLoading.value = false
     }
 
     fun useArticleDownloader() {
