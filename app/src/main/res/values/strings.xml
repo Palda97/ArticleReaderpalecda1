@@ -37,4 +37,5 @@
     <string name="read_in_fullscreen">Read in fullscreen</string>
     <string name="cancel_sync">Cancel Sync</string>
     <string name="synchronization_canceled">synchronization canceled</string>
+    <string name="exit_fullscreen">Exit fullscreen</string>
 </resources>
