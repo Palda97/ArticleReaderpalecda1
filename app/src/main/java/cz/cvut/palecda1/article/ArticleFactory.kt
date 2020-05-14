@@ -9,6 +9,7 @@ import cz.cvut.palecda1.view.HtmlFactory
 
 import cz.cvut.palecda1.view.HtmlFactory.stripImg
 import cz.cvut.palecda1.view.HtmlFactory.stripTags
+import cz.cvut.palecda1.view.HtmlFactory.justify
 
 class ArticleFactory {
 
@@ -51,7 +52,7 @@ class ArticleFactory {
     companion object {
         const val MAX_CUSTOM_DESCRIPTION_LENGTH = 200
         const val STRIP_IMGS = true
-        val CUSTOM_DESCRIPTION_TOKEN_VALUE = HtmlFactory.coloredText("[~]", AppInit.injector.colorCustomTokens)
+        val CUSTOM_DESCRIPTION_TOKEN_VALUE = HtmlFactory.coloredText("[~] ", AppInit.injector.colorCustomTokens)
         const val CUSTOM_DESCRIPTION_TOKEN = true
         const val CUSTOM_BODY_TOKEN = true
         val CUSTOM_BODY_TOKEN_VALUE = HtmlFactory.coloredText("[just description again]<br>", AppInit.injector.colorCustomTokens)

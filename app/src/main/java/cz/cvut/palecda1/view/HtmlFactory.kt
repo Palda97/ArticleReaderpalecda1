@@ -47,5 +47,7 @@ object HtmlFactory {
             .removeTags(except)
     }
 
+    fun String.justify(element: String = "div") = "<$element align=\"justify\">$this</$element>"
+
     fun coloredText(text: String, color: String): String = "<font color=\"${color}\">${text}</font>"
 }
