@@ -30,6 +30,7 @@ class DetailFragment : Fragment() {
 
     internal lateinit var binding: FragmentDetailBinding
     internal lateinit var viewModel: ArticleViewModel
+    private var shouldScroll = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +62,9 @@ class DetailFragment : Fragment() {
         viewModel.roomArticleLiveData.observe(this, Observer {
             if (it != null && it.isOk) {
                 binding.article = HtmlFactory.toHtml(it.mailContent!!.title, it.mailContent.body)
-                scrollAfter(200)
+                if(shouldScroll)
+                    scrollAfter(200)
+                shouldScroll = true
             }
             binding.mail = it
             binding.executePendingBindings()
