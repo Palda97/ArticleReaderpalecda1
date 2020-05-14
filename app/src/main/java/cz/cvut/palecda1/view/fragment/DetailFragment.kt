@@ -59,6 +59,8 @@ class DetailFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
         articleId?.let { viewModel.loadArticleById(it) }
 
+        shouldScroll = false
+
         viewModel.roomArticleLiveData.observe(this, Observer {
             if (it != null && it.isOk) {
                 binding.article = HtmlFactory.toHtml(it.mailContent!!.title, it.mailContent.body)
