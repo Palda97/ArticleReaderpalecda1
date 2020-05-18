@@ -1,6 +1,7 @@
 package cz.cvut.palecda1.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -12,6 +13,11 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 //class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() {
 
     val repository = AppInit.injector.getArticleRepo(application)
+
+    init {
+        Log.d(TAG, "init")
+        AppInit.resetAlreadyNew()
+    }
 
     val articlesLiveData: LiveData<MailPackage<List<RoomArticle>>>
         get() = repository.observableArticles
@@ -33,6 +39,10 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     fun loadArticleById(id: String) {
         repository.getArticleById(id)
+    }
+
+    companion object {
+        private const val TAG = "ArticleViewModel"
     }
 }
 

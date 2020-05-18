@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import cz.cvut.palecda1.AppInit
+import cz.cvut.palecda1.NotificationTextFactory
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.model.RoomArticle
 import cz.cvut.palecda1.repository.ArticleRepository
@@ -25,7 +26,7 @@ class ArticleDownloader : JobService() {
 
     override fun onStartJob(params: JobParameters?): Boolean {
         Log.d(TAG, "checking injector")
-        AppInit.contextForInjector(this)
+        AppInit.importantInits(this)
         repository = AppInit.injector.getArticleRepo(this)
         Log.d(TAG, "onStartJob")
         this.params = params
@@ -40,21 +41,12 @@ class ArticleDownloader : JobService() {
     private fun makeNotification(list: List<RoomArticle>) {
         if(list.isEmpty() || repository.observableLoading.value == true)
             return
-        val feedMap: MutableMap<String, Int> = HashMap()
-        list.forEach {
-            feedMap[it.feed] = feedMap[it.feed]?.plus(1) ?: 1
-        }
-        val stringBuilder = StringBuilder()
-        var first = true
-        feedMap.forEach{
-            if(!first){
-                stringBuilder.append(", ")
-            } else {
-                first = false
-            }
-            stringBuilder.append("${it.key} (${it.value})")
-        }
-        val smallText = stringBuilder.toString()
+        val ntf = NotificationTextFactory()
+        val currentlyDownloaded = ntf.fromArticleListToMap(list)
+        val alreadyNew = ntf.fromJsonToMap(AppInit.getAlreadyNew())
+        val mix = ntf.mergeMaps(currentlyDownloaded, alreadyNew)
+        val smallText = ntf.fromMapToString(mix)
+        AppInit.setAlreadyNew(smallText)
         Log.d(TAG, "notification small text: $smallText")
         buildNotification(smallText, smallText)
     }
@@ -97,7 +89,7 @@ class ArticleDownloader : JobService() {
 
     companion object {
         private const val JOB_ID = 420
-        private const val INTERVAL: Long = 60 * 60 * 1000
+        private const val INTERVAL: Long = 15 * 60 * 1000
         private const val TAG = "ArticleDownloader"
         private const val NOTIFICATION_ID = 420
 

@@ -19,7 +19,7 @@ class AppInit : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        sharedPreferences = getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        contextForSharedPreferences(this)
         toggleNightMode(true)
         db = AppDatabase.getInstance(this)
         contextForInjector(this)
@@ -63,6 +63,14 @@ class AppInit : Application() {
         private const val INIT_DATA_KEY = "INIT_DATA_KEY"
         private const val SP_NAME = "preferences.xml"
         lateinit var sharedPreferences: SharedPreferences
+        fun contextForSharedPreferences(context: Context) {
+            if(!this::sharedPreferences.isInitialized)
+                sharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        }
+        fun importantInits(context: Context) {
+            contextForInjector(context)
+            contextForSharedPreferences(context)
+        }
         private const val DAYNIGHT = "DAYNIGHT"
         fun toggleNightMode(dont: Boolean = false){
             val night = sharedPreferences.getBoolean(DAYNIGHT, false)
@@ -81,6 +89,16 @@ class AppInit : Application() {
             val str = Integer.toHexString(color)
             require(str.length == 8 && str.startsWith("ff", true))
             return "#" + str.substring(2)
+        }
+        private const val ALREADY_NEW_KEY = "ALREADY_NEW_KEY"
+        fun getAlreadyNew(): String {
+            return sharedPreferences.getString(ALREADY_NEW_KEY, "") ?: ""
+        }
+        fun setAlreadyNew(str: String) {
+            sharedPreferences.edit().putString(ALREADY_NEW_KEY, str).apply()
+        }
+        fun resetAlreadyNew() {
+            sharedPreferences.edit().putString(ALREADY_NEW_KEY, "").apply()
         }
     }
 }
