@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "d01a82eb65fc9ae44989466eb504b382",
+    "identityHash": "9e97b67438f26d1c25619b5a9af91edb",
     "entities": [
       {
         "tableName": "RoomFeed",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "RoomArticle",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `title` TEXT NOT NULL, `body` TEXT NOT NULL, `description` TEXT NOT NULL, `feed` TEXT NOT NULL, PRIMARY KEY(`url`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `title` TEXT NOT NULL, `body` TEXT NOT NULL, `description` TEXT NOT NULL, `feed` TEXT NOT NULL, `date` TEXT NOT NULL, PRIMARY KEY(`url`))",
         "fields": [
           {
             "fieldPath": "url",
@@ -69,6 +69,12 @@
             "columnName": "feed",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -84,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd01a82eb65fc9ae44989466eb504b382')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9e97b67438f26d1c25619b5a9af91edb')"
     ]
   }
 }

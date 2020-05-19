@@ -45,8 +45,9 @@ class ArticleFactory {
             }
         }
         val feed = syndEntryPair.second
+        val date: String = syndEntry.publishedDate?.toString() ?: ""
         //Log.d(TAG, description)
-        return RoomArticle(url, title, body, description, feed)
+        return RoomArticle(url, title, body, description, feed, date)
     }
 
     companion object {

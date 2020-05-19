@@ -17,6 +17,10 @@ object HtmlFactory {
         val text = "<h3>${title}</h3>${coloredText("[$feed]", AppInit.injector.colorFakeLinks)}<br>${body}"
         return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
+    fun toHtml(title: String, body: String, feed: String, date: String): Spanned {
+        val text = "<h3>${title}</h3>${date}<br>${coloredText("[$feed]", AppInit.injector.colorFakeLinks)}<br>${body}"
+        return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
 
     //private const val IMG_REPLACEMENT = "&lt;img&gt;"
     private const val IMG_REPLACEMENT = ""
