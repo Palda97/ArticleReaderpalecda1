@@ -46,8 +46,10 @@ class ArticleDownloader : JobService() {
         val alreadyNew = ntf.fromJsonToMap(AppInit.getAlreadyNew())
         val mix = ntf.mergeMaps(currentlyDownloaded, alreadyNew)
         val smallText = ntf.fromMapToString(mix)
-        AppInit.setAlreadyNew(smallText)
+        val json = ntf.fromMapToJson(mix)
+        AppInit.setAlreadyNew(json)
         Log.d(TAG, "notification small text: $smallText")
+        Log.d(TAG, "json for already new:\n$json")
         buildNotification(smallText, smallText)
     }
 

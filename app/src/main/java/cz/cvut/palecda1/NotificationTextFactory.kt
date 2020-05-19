@@ -30,7 +30,7 @@ class NotificationTextFactory {
     }
 
     fun fromJsonToMap(str: String): Map<String, Int> {
-        val gsonsStupidDoubleMap = gson.fromJson<Map<String, Double>>(str, MutableMap::class.java) ?: HashMap()
+        val gsonsStupidDoubleMap = gson.fromJson<Map<String, Double>>(str, Map::class.java) ?: HashMap()
         return gsonsStupidDoubleMap.mapValues { it.value.toInt() }
     }
 
