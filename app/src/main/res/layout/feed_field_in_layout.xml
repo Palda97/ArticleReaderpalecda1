@@ -57,6 +57,13 @@
                     android:checked="@{feed.active}"
                     android:text="@{feed.active ? @string/active : @string/not_active}"
                     android:textAlignment="textEnd" />
+                <Switch
+                    android:id="@+id/feedHideToggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{feed.hide}"
+                    android:text="@{feed.hide ? @string/hide : @string/do_not_hide}"
+                    android:textAlignment="textEnd" />
             </LinearLayout>
 
         </LinearLayout>

@@ -9,12 +9,19 @@ import cz.cvut.palecda1.R
 import cz.cvut.palecda1.databinding.FeedFieldInLayoutBinding
 import cz.cvut.palecda1.model.RoomFeed
 
-class FeedRecyclerAdapter(private val editListener: (RoomFeed) -> Unit, private val deleteListener: (RoomFeed) -> Boolean, private val onChange: (RoomFeed, Boolean) -> Unit): RecyclerView.Adapter<FeedRecyclerAdapter.FeedViewHolder>() {
+class FeedRecyclerAdapter(
+    private val editListener: (RoomFeed) -> Unit,
+    private val deleteListener: (RoomFeed) -> Boolean,
+    private val onChange: (RoomFeed, Boolean) -> Unit,
+    private val onHide: (RoomFeed, Boolean) -> Unit
+    ) : RecyclerView.Adapter<FeedRecyclerAdapter.FeedViewHolder>() {
     var feedList: List<RoomFeed>? = null
+
     init {
         //setHasStableIds(true)
     }
-    fun updateFeedList(newFeedList: List<RoomFeed>){
+
+    fun updateFeedList(newFeedList: List<RoomFeed>) {
         if (feedList == null) {
             feedList = newFeedList
             notifyItemRangeInserted(0, newFeedList.size)
@@ -32,7 +39,10 @@ class FeedRecyclerAdapter(private val editListener: (RoomFeed) -> Unit, private 
                     return feedList!![oldItemPosition].url == newFeedList[newItemPosition].url
                 }
 
-                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                override fun areContentsTheSame(
+                    oldItemPosition: Int,
+                    newItemPosition: Int
+                ): Boolean {
                     val newIssue = newFeedList[newItemPosition]
                     val oldIssue = feedList!![oldItemPosition]
                     return newIssue.url == oldIssue.url
@@ -43,13 +53,15 @@ class FeedRecyclerAdapter(private val editListener: (RoomFeed) -> Unit, private 
         }
     }
 
-    class FeedViewHolder(val binding: FeedFieldInLayoutBinding): RecyclerView.ViewHolder(binding.root)
+    class FeedViewHolder(val binding: FeedFieldInLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         val binding = DataBindingUtil
             .inflate<FeedFieldInLayoutBinding>(
                 LayoutInflater.from(parent.context), R.layout.feed_field_in_layout,
-                parent, false)
+                parent, false
+            )
         return FeedViewHolder(binding)
     }
 
@@ -61,8 +73,13 @@ class FeedRecyclerAdapter(private val editListener: (RoomFeed) -> Unit, private 
         val feed = feedList!![position]
 
         holder.binding.feed = feed
-        holder.binding.feedActiveToggle.setOnCheckedChangeListener{_, it ->
+        holder.binding.feedActiveToggle.setOnCheckedChangeListener { _, it ->
             onChange(feed, it)
+            holder.binding.feed = feed
+            holder.binding.executePendingBindings()
+        }
+        holder.binding.feedHideToggle.setOnCheckedChangeListener { _, it ->
+            onHide(feed, it)
             holder.binding.feed = feed
             holder.binding.executePendingBindings()
         }

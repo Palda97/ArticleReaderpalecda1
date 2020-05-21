@@ -9,6 +9,10 @@ abstract class ArticleDaoRoom : ArticleDao {
     @Query("SELECT * from roomarticle")
     abstract override fun articleList(): List<RoomArticle>
 
+    @Query("SELECT * from roomarticle join roomfeed on roomarticle.feedUrl = roomfeed.url where roomfeed.hide = 0")
+    abstract override fun articleListNotHiding(): List<RoomArticle>
+
+
     @Query("SELECT * from roomarticle WHERE url = :url")
     abstract fun articleByIdSafe(url: String): List<RoomArticle>
 
