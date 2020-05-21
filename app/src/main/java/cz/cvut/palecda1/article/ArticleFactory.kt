@@ -5,6 +5,7 @@ import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.Syn
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntry
 import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.model.RoomArticle
+import cz.cvut.palecda1.model.RoomFeed
 import cz.cvut.palecda1.view.HtmlFactory
 
 import cz.cvut.palecda1.view.HtmlFactory.stripImg
@@ -13,9 +14,9 @@ import cz.cvut.palecda1.view.HtmlFactory.justify
 
 class ArticleFactory {
 
-    fun syndEntryList(syndEntryList: List<Pair<SyndEntry, String>>): List<RoomArticle> = syndEntryList.map { syndEntry(it) }
+    fun syndEntryList(syndEntryList: List<Pair<SyndEntry, RoomFeed>>): List<RoomArticle> = syndEntryList.map { syndEntry(it) }
 
-    fun syndEntry(syndEntryPair: Pair<SyndEntry, String>): RoomArticle {
+    fun syndEntry(syndEntryPair: Pair<SyndEntry, RoomFeed>): RoomArticle {
         val syndEntry = syndEntryPair.first
         val url = syndEntry.link ?: "void"
         val title = syndEntry.title ?: ""
@@ -45,9 +46,11 @@ class ArticleFactory {
             }
         }
         val feed = syndEntryPair.second
+        val feedTitle = feed.title
+        val feedUrl = feed.url
         val date: String = syndEntry.publishedDate?.toString() ?: ""
         //Log.d(TAG, description)
-        return RoomArticle(url, title, body, description, feed, date)
+        return RoomArticle(url, title, body, description, feedTitle, feedUrl, date)
     }
 
     companion object {

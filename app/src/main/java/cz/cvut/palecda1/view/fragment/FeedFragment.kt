@@ -43,7 +43,7 @@ class FeedFragment : Fragment() {
             R.layout.fragment_feed, container, false)
         val view = binding.root
 
-        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it)}, {deleteFeed(it)}, {a, b -> feedActiveChanged(a, b)})
+        feedRecyclerAdapter = FeedRecyclerAdapter ({editFeed(it)}, {deleteFeed(it)}, {a, b -> feedActiveChanged(a, b)}, {a, b -> feedHideChanged(a, b)})
         binding.insertFeedsHere.adapter = feedRecyclerAdapter
 
         //viewModel = ViewModelProviders.of(this, MyInjector.FEED_VIEW_MODEL_FACTORY).get(FeedViewModel::class.java)
@@ -101,6 +101,10 @@ class FeedFragment : Fragment() {
     fun feedActiveChanged(roomFeed: RoomFeed, active: Boolean) {
         roomFeed.active = active
         viewModel.addFeed(roomFeed)
+    }
+    fun feedHideChanged(roomFeed: RoomFeed, hide: Boolean) {
+        roomFeed.hide = hide
+        viewModel.hideChange(roomFeed)
     }
 
     fun reset() {

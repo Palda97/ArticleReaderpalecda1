@@ -27,6 +27,9 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
     val observableLoading: LiveData<Boolean>
         get() = repository.observableLoading
 
+    val observableDownloading: LiveData<Boolean>
+        get() = repository.observableLoading
+
     /*fun loadArticles() {
         repository.getArticleList()
     }*/
@@ -35,6 +38,15 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
         //repository.downloadArticles()
         repository.observableLoading.value = true
         repository.useArticleDownloader()
+    }
+
+    fun loadFromLocalDb() {
+        Log.d(TAG, "loadFromLocalDb")
+        if (observableDownloading.value != false) {
+            Log.d(TAG, "cancel loadFromLocalDb")
+            return
+        }
+        repository.getArticleList()
     }
 
     fun loadArticleById(id: String) {

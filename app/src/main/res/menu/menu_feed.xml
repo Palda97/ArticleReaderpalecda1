@@ -9,7 +9,7 @@
     <item
         android:id="@+id/resetFeedsItem"
         android:title="@string/reset_feeds"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:icon="@drawable/ic_toys_black_24dp" />
 
     <item

@@ -71,8 +71,12 @@ class ArticleFragment : Fragment() {
 
         binding.viewmodel = viewModel
 
-
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadFromLocalDb()
     }
 
     private fun showProgressbar(){
