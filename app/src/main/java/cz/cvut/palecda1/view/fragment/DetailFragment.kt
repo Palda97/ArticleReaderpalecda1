@@ -116,12 +116,13 @@ class DetailFragment : Fragment() {
     }
 
     private fun openLink() {
-        if (articleId == null) {
+        val articleUrl = viewModel.roomArticleLiveData.value?.mailContent?.url
+        if (articleUrl == null) {
             context?.let { Injector.noArticleSelectedToast(it) }
             return
         }
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleId)))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(articleUrl)))
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(
                 context!!,
