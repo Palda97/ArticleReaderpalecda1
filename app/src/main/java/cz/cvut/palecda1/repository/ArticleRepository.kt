@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.dao.ArticleDao
 import cz.cvut.palecda1.model.RoomArticle
@@ -33,12 +34,16 @@ class ArticleRepository(
     val observableLoading: MutableLiveData<Boolean> = MutableLiveData()
     val observableDownloading: MutableLiveData<Boolean> = MutableLiveData()
 
+    val deleteOldArticles: MutableLiveData<Boolean> = MutableLiveData()
+
     private val handler: Handler
     init {
         handler = Handler()
         getArticleList()
         observableArticle.value = MailPackage(null, MailPackage.ERROR, application.getString(R.string.no_article_selected))
         observableLoading.value = false
+        AppInit.contextForSharedPreferences(application)
+        deleteOldArticles.value = AppInit.deleteOldArticles
         observableDownloading.value = false
     }
 
@@ -143,7 +148,7 @@ class ArticleRepository(
     }
     fun saveToDbAndReturn(list: List<RoomArticle>): List<RoomArticle>{
         Log.d(TAG, "saveToDbAndReturn")
-        roomDao.clearAndInsertList(list)
+        roomDao.clearAndInsertList(list, deleteOldArticles.value!!)
         return roomDao.articleListNotHiding()
     }
 

@@ -86,7 +86,7 @@ class ArticleDaoRome : ArticleDao {
         TODO("not implemented")
     }
 
-    override fun clearAndInsertList(list: List<RoomArticle>): List<RoomArticle> {
+    override fun clearAndInsertList(list: List<RoomArticle>, delete: Boolean): List<RoomArticle> {
         TODO("not implemented")
     }
 

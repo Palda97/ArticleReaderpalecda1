@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.repository.MailPackage
 import cz.cvut.palecda1.model.RoomArticle
@@ -14,9 +15,13 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     val repository = AppInit.injector.getArticleRepo(application)
 
+    val deleteOld: LiveData<Boolean>
+        get() = repository.deleteOldArticles
+
     init {
         Log.d(TAG, "init")
         AppInit.resetAlreadyNew()
+        AppInit.contextForSharedPreferences(application)
     }
 
     val articlesLiveData: LiveData<MailPackage<List<RoomArticle>>>
@@ -51,6 +56,11 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     fun loadArticleById(id: String) {
         repository.getArticleById(id)
+    }
+
+    fun setDeleteOld(value: Boolean) {
+        AppInit.deleteOldArticles = value
+        repository.deleteOldArticles.postValue(value)
     }
 
     companion object {

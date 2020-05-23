@@ -42,9 +42,10 @@ class ArticleDaoFake: ArticleDao {
         }
     }
 
-    override fun clearAndInsertList(list: List<RoomArticle>): List<RoomArticle> {
+    override fun clearAndInsertList(list: List<RoomArticle>, delete: Boolean): List<RoomArticle> {
         val oldList = articleList()
-        deleteAll()
+        if (delete)
+            deleteAll()
         insertArticles(list)
         return list.minus(oldList)
     }

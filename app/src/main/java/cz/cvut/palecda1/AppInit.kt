@@ -100,5 +100,10 @@ class AppInit : Application() {
         fun resetAlreadyNew() {
             sharedPreferences.edit().putString(ALREADY_NEW_KEY, "").apply()
         }
+
+        private const val DELETE_OLD_ARTICLES_KEY = "DELETE_OLD_ARTICLES_KEY"
+        var deleteOldArticles: Boolean
+            get() = sharedPreferences.getBoolean(DELETE_OLD_ARTICLES_KEY, true)
+            set(value) = sharedPreferences.edit().putBoolean(DELETE_OLD_ARTICLES_KEY, value).apply()
     }
 }
