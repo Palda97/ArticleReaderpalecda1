@@ -18,7 +18,7 @@ class ArticleDaoRome : ArticleDao {
         val listOfFeeds = feedDao.activeFeedsOnly()
         val listOfSyndFeeds = feedsToSyndFeeds(listOfFeeds)
         val listOfSyndEntries = syndFeedsToSyndEntries(listOfSyndFeeds, listOfFeeds)
-        return ArticleFactory().syndEntryList(listOfSyndEntries)
+        return ArticleFactory().syndEntryList(listOfSyndEntries).reversed()
     }
 
     override fun articleListNotHiding(): List<RoomArticle> {

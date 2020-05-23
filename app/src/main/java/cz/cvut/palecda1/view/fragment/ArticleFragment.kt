@@ -50,7 +50,7 @@ class ArticleFragment : Fragment() {
             mailPackageOfList = it
             var empty = false
             if (it != null && it.isOk){
-                articleRecyclerAdapter.updateArticleList(it.mailContent!!)
+                articleRecyclerAdapter.updateArticleList(it.mailContent!!.reversed())
                 Log.d(TAG, "it.isOk = true")
                 if(it.mailContent.isEmpty())
                     empty = true
