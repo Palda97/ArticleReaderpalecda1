@@ -42,7 +42,7 @@ Uživatel otevře aplikaci. Při prvním otevření se automaticky nastaví 2 p�
 
 ## Snímky obrazovky
 
-![screanshot 1](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr1)
-![screanshot 2](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr2)
-![screanshot 3](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr3)
-![screanshot 4](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr4)
+![screanshot 1](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr1.jpeg)
+![screanshot 2](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr2.jpeg)
+![screanshot 3](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr3.jpeg)
+![screanshot 4](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr4.jpeg)
