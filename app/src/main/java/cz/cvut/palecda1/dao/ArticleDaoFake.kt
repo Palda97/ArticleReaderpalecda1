@@ -14,13 +14,18 @@ class ArticleDaoFake: ArticleDao {
                 "Article $it",
                 "$currentTime<br>${LOREM}",
                 "description ($it)",
-                "Example Feed")
+                "Example Feed",
+                "https://www.example.com/feed.rss")
             articleMap[roomArticle.url] = roomArticle
         }
     }
 
     override fun articleList(): List<RoomArticle> {
         return articleMap.values.toList()
+    }
+
+    override fun articleListNotHiding(): List<RoomArticle> {
+        return articleList()
     }
 
     override fun articleById(url: String): RoomArticle? {
@@ -37,9 +42,12 @@ class ArticleDaoFake: ArticleDao {
         }
     }
 
-    override fun clearAndInsertList(list: List<RoomArticle>) {
-        deleteAll()
+    override fun clearAndInsertList(list: List<RoomArticle>, delete: Boolean): List<RoomArticle> {
+        val oldList = articleList()
+        if (delete)
+            deleteAll()
         insertArticles(list)
+        return list.minus(oldList)
     }
 
     companion object {

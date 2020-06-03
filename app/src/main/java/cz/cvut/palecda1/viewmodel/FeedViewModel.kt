@@ -11,6 +11,7 @@ import cz.cvut.palecda1.model.RoomFeed
 class FeedViewModel(application: Application) : AndroidViewModel(application) {
 //class FeedViewModel(private val repository: FeedRepository) : ViewModel() {
     val repository = AppInit.injector.getFeedRepo()
+    //val articleRepo = AppInit.injector.getArticleRepo(application)
 
     //private val observableFeeds: MediatorLiveData<MailPackage<List<RoomFeed>>> = MediatorLiveData()
 
@@ -30,6 +31,11 @@ class FeedViewModel(application: Application) : AndroidViewModel(application) {
 
     fun addFeed(roomFeed: RoomFeed){
         repository.addFeed(roomFeed)
+    }
+
+    fun hideChange(roomFeed: RoomFeed){
+        //repository.hideChange(roomFeed)
+        addFeed(roomFeed)
     }
 
     fun deleteFeed(roomFeed: RoomFeed){

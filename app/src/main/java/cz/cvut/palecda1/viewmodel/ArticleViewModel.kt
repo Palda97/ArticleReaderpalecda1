@@ -1,9 +1,11 @@
 package cz.cvut.palecda1.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.repository.MailPackage
 import cz.cvut.palecda1.model.RoomArticle
@@ -13,10 +15,25 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     val repository = AppInit.injector.getArticleRepo(application)
 
+    val deleteOld: LiveData<Boolean>
+        get() = repository.deleteOldArticles
+
+    init {
+        Log.d(TAG, "init")
+        AppInit.resetAlreadyNew()
+        AppInit.contextForSharedPreferences(application)
+    }
+
     val articlesLiveData: LiveData<MailPackage<List<RoomArticle>>>
         get() = repository.observableArticles
     val roomArticleLiveData: LiveData<MailPackage<RoomArticle>>
         get() = repository.observableArticle
+
+    val observableLoading: LiveData<Boolean>
+        get() = repository.observableLoading
+
+    val observableDownloading: LiveData<Boolean>
+        get() = repository.observableLoading
 
     /*fun loadArticles() {
         repository.getArticleList()
@@ -24,11 +41,30 @@ class ArticleViewModel(application: Application) : AndroidViewModel(application)
 
     fun refreshArticles(){
         //repository.downloadArticles()
+        repository.observableLoading.value = true
         repository.useArticleDownloader()
+    }
+
+    fun loadFromLocalDb() {
+        Log.d(TAG, "loadFromLocalDb")
+        if (observableDownloading.value != false) {
+            Log.d(TAG, "cancel loadFromLocalDb")
+            return
+        }
+        repository.getArticleList()
     }
 
     fun loadArticleById(id: String) {
         repository.getArticleById(id)
+    }
+
+    fun setDeleteOld(value: Boolean) {
+        AppInit.deleteOldArticles = value
+        repository.deleteOldArticles.postValue(value)
+    }
+
+    companion object {
+        private const val TAG = "ArticleViewModel"
     }
 }
 

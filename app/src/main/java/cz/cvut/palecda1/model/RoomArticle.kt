@@ -8,4 +8,6 @@ data class RoomArticle(@PrimaryKey(autoGenerate = false) val url: String,
                        val title: String,
                        val body: String,
                        val description: String,
-                       val feed: String)
+                       val feed: String,
+                       val feedUrl: String,
+                       val date: String = "")

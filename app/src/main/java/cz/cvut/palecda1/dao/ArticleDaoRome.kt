@@ -18,7 +18,11 @@ class ArticleDaoRome : ArticleDao {
         val listOfFeeds = feedDao.activeFeedsOnly()
         val listOfSyndFeeds = feedsToSyndFeeds(listOfFeeds)
         val listOfSyndEntries = syndFeedsToSyndEntries(listOfSyndFeeds, listOfFeeds)
-        return ArticleFactory().syndEntryList(listOfSyndEntries)
+        return ArticleFactory().syndEntryList(listOfSyndEntries).reversed()
+    }
+
+    override fun articleListNotHiding(): List<RoomArticle> {
+        TODO("not implemented")
     }
 
     /*private fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>): List<SyndEntry> {
@@ -29,11 +33,11 @@ class ArticleDaoRome : ArticleDao {
         }
         return listOfSyndEntries
     }*/
-    private fun meltSyndEntryLists(list: MutableList<Pair<List<SyndEntry>, String>>): List<Pair<SyndEntry, String>> {
-        tailrec fun melt(list: MutableList<Pair<List<SyndEntry>, String>>, level: Int, acc: MutableList<Pair<SyndEntry, String>>): MutableList<Pair<SyndEntry, String>> {
+    private fun meltSyndEntryLists(list: MutableList<Pair<List<SyndEntry>, RoomFeed>>): List<Pair<SyndEntry, RoomFeed>> {
+        tailrec fun melt(list: MutableList<Pair<List<SyndEntry>, RoomFeed>>, level: Int, acc: MutableList<Pair<SyndEntry, RoomFeed>>): MutableList<Pair<SyndEntry, RoomFeed>> {
             if (list.isEmpty())
                 return acc
-            val newList = mutableListOf<Pair<List<SyndEntry>, String>>()
+            val newList = mutableListOf<Pair<List<SyndEntry>, RoomFeed>>()
             list.forEach {
                 if(it.first.size > level){
                     newList.add(it)
@@ -42,13 +46,13 @@ class ArticleDaoRome : ArticleDao {
             }
             return melt(newList, level +1, acc)
         }
-        return melt(list, 0, mutableListOf<Pair<SyndEntry, String>>())
+        return melt(list, 0, mutableListOf<Pair<SyndEntry, RoomFeed>>())
     }
-    private fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>, listOfFeeds: List<RoomFeed>): List<Pair<SyndEntry, String>> {
-        val listOfLists = mutableListOf<Pair<List<SyndEntry>, String>>()
+    private fun syndFeedsToSyndEntries(listOfSyndFeeds: List<SyndFeed>, listOfFeeds: List<RoomFeed>): List<Pair<SyndEntry, RoomFeed>> {
+        val listOfLists = mutableListOf<Pair<List<SyndEntry>, RoomFeed>>()
         listOfSyndFeeds.forEachIndexed {i, it ->
             @Suppress("UNCHECKED_CAST")
-            listOfLists.add(Pair(it.entries.toList() as List<SyndEntry>, listOfFeeds[i].title))
+            listOfLists.add(Pair(it.entries.toList() as List<SyndEntry>, listOfFeeds[i]))
         }
         return meltSyndEntryLists(listOfLists)
     }
@@ -82,7 +86,7 @@ class ArticleDaoRome : ArticleDao {
         TODO("not implemented")
     }
 
-    override fun clearAndInsertList(list: List<RoomArticle>) {
+    override fun clearAndInsertList(list: List<RoomArticle>, delete: Boolean): List<RoomArticle> {
         TODO("not implemented")
     }
 

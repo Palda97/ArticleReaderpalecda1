@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.R
 import cz.cvut.palecda1.dao.ArticleDao
 import cz.cvut.palecda1.model.RoomArticle
@@ -30,12 +31,20 @@ class ArticleRepository(
     val observableArticle: MediatorLiveData<MailPackage<RoomArticle>> = MediatorLiveData()
     /*val observableArticles: MutableLiveData<MailPackage<List<RoomArticle>>> = MediatorLiveData()
     val observableArticle: MutableLiveData<MailPackage<RoomArticle>> = MediatorLiveData()*/
+    val observableLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val observableDownloading: MutableLiveData<Boolean> = MutableLiveData()
+
+    val deleteOldArticles: MutableLiveData<Boolean> = MutableLiveData()
 
     private val handler: Handler
     init {
         handler = Handler()
         getArticleList()
         observableArticle.value = MailPackage(null, MailPackage.ERROR, application.getString(R.string.no_article_selected))
+        observableLoading.value = false
+        AppInit.contextForSharedPreferences(application)
+        deleteOldArticles.value = AppInit.deleteOldArticles
+        observableDownloading.value = false
     }
 
     fun useArticleDownloader() {
@@ -54,21 +63,29 @@ class ArticleRepository(
 
     //private fun livingList()
 
-    fun downloadArticles() {
+    fun getDiff(list: List<RoomArticle>): List<RoomArticle> {
+        val old = roomDao.articleList()
+        return list - old
+    }
+
+    fun downloadArticles(): List<RoomArticle>? {
         Log.d(TAG, "downloadArticles")
+        observableDownloading.postValue(true)
         val data = MutableLiveData<MailPackage<List<RoomArticle>>>()
         data.postValue(MailPackage.loadingPackage())
         //asyncDownloadArticles(data)
         addSourceList(data)
         var mail: MailPackage<List<RoomArticle>>
+        var diff: List<RoomArticle>? = null
         try {
             val list = networkDao.articleList()
+            diff = getDiff(list)
+            val noHidingList = saveToDbAndReturn(list)
             mail = MailPackage(
-                list,
+                noHidingList,
                 MailPackage.OK,
                 ""
             )
-            saveToDb(list)
         } catch (e: MalformedURLException) {
             mail = MailPackage(
                 null,
@@ -103,6 +120,8 @@ class ArticleRepository(
             e.printStackTrace()
         }
         data.postValue(mail)
+        observableDownloading.postValue(false)
+        return diff
     }
     /*fun downloadArticles(): LiveData<MailPackage<List<RoomArticle>>> {
         Log.d(TAG, "downloadArticles")
@@ -127,6 +146,11 @@ class ArticleRepository(
         Log.d(TAG, "saveToDb")
         doAsync { roomDao.clearAndInsertList(list) }
     }
+    fun saveToDbAndReturn(list: List<RoomArticle>): List<RoomArticle>{
+        Log.d(TAG, "saveToDbAndReturn")
+        roomDao.clearAndInsertList(list, deleteOldArticles.value!!)
+        return roomDao.articleListNotHiding()
+    }
 
     fun getArticleById(url: String): LiveData<MailPackage<RoomArticle>> {
         Log.d(TAG, "getArticleById")
@@ -141,7 +165,7 @@ class ArticleRepository(
     fun asyncLoadArticles(data: MutableLiveData<MailPackage<List<RoomArticle>>>) {
         object : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg voids: Void): Void? {
-                val list = roomDao.articleList()
+                val list = roomDao.articleListNotHiding()
                 val mail = MailPackage(
                     list,
                     MailPackage.OK,
@@ -235,6 +259,5 @@ class ArticleRepository(
 
     companion object {
         const val TAG = "ArticleRepository"
-        const val JOB_ID = 420
     }
 }

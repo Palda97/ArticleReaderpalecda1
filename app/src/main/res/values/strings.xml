@@ -35,4 +35,12 @@
     <string name="reset">RESET</string>
     <string name="no_article_selected">No article selected</string>
     <string name="read_in_fullscreen">Read in fullscreen</string>
+    <string name="cancel_sync">Cancel Sync</string>
+    <string name="synchronization_canceled">synchronization canceled</string>
+    <string name="exit_fullscreen">Exit fullscreen</string>
+    <string name="notification_channel_name">Article Reader Channel</string>
+    <string name="notification_title">New articles!</string>
+    <string name="hide">Hide</string>
+    <string name="do_not_hide">Don\'t Hide</string>
+    <string name="keep_old_articles">Keep old articles</string>
 </resources>

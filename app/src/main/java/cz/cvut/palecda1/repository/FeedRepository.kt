@@ -5,10 +5,13 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.dao.FeedDao
 import cz.cvut.palecda1.model.RoomFeed
 
 class FeedRepository(val feedDao: FeedDao) {
+
+    //val articleRepository = AppInit.injector.getArticleRepo()
 
     val observableFeeds: MediatorLiveData<MailPackage<List<RoomFeed>>> = MediatorLiveData()
 
@@ -25,6 +28,13 @@ class FeedRepository(val feedDao: FeedDao) {
     fun addFeed(feed: RoomFeed) {
         doAsync { feedDao.insertFeed(feed) }
     }
+
+    /*fun hideChange(feed: RoomFeed) {
+        doAsync {
+            feedDao.insertFeed(feed)
+            articleRepository?.getArticleList()
+        }
+    }*/
 
     fun deleteFeed(feed: RoomFeed) {
         doAsync { feedDao.deleteFeed(feed) }

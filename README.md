@@ -1,29 +1,18 @@
 # ArticleReader by palecda1
 
-## Rychlozasvětsení do UI
+## Architecture
 
-### Hlavní obrazovka
-V menu (zprava) je ikona obnovení, která po kliknutí způsobí, že se začnou stahovat články z feedů a v telefonu se uloží do databáze, pro pozdější čtení.  
-Následuje ikonka ve tvaru rss, tou se uživatel dostane do nastavení feedů.  
-Po kliknutí na náhled článku se uživatel dostane na detail článku.
-### Nastavení feedů
-V menu (zprava) je ikona "+", kterou se přidávají nové feedy.  
-Tím větrníčkem, co je vedle, se seznam feedů vrátí do původního stavu, v jakém byl po instalaci.  
-Kliknutím na feed ho můžete upravit a dlouhým stiskem ho můžete vymazat.  
-Po změně feedů se články na hlavní obrazovce nezmění do doby, než uživatel stiskne ikonku pro obnovení.
-### Detail článku
-Na obrazovce s detailem článku ho můžete sdílet, nebo kliknout na ikonu zeměkoule a otevře se webová stránka článku.
+![architecture]()
 
-## Rychlozasvětsení do balíčku Article
+Aplikace používá architekturu **MVVM** (Model-View-ViewModel)
 
-### Article
-Reprezentuje jeden článek. Obsahuje tělo a adresu.
+Následující vrstvy používají tyto technologie:
 
-### ArticleSupplier
-Je interface pro kontejner poskytující články. Obsahuje proto metody arrayOfArticles a articleById.
+- View
+  - [Data Binding](https://developer.android.com/topic/libraries/data-binding)
+- ViewModel
 
-### DataStorage
-Implementuje ArticleSupplier. Poskytne 10 hardcodovaných článků.
-
-### MyStorage
-Singleton ukazující na implementaci ArticleSupplieru.
+- Repository
+  - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+  - [Retrofit](https://github.com/square/retrofit)
+  - [Room](https://developer.android.com/training/data-storage/room)

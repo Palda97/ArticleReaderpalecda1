@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.Injector
 import cz.cvut.palecda1.view.fragment.ArticleFragment
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(isLand)
-            menuInflater.inflate(R.menu.menu_landscape, menu)
+            menuInflater.inflate(R.menu.menu_article_landscape, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -4,10 +4,14 @@ import androidx.room.*
 import cz.cvut.palecda1.model.RoomArticle
 
 @Dao
-abstract class ArticleDaoRoom : ArticleDao{
+abstract class ArticleDaoRoom : ArticleDao {
 
     @Query("SELECT * from roomarticle")
     abstract override fun articleList(): List<RoomArticle>
+
+    @Query("SELECT * from roomarticle join roomfeed on roomarticle.feedUrl = roomfeed.url where roomfeed.hide = 0")
+    abstract override fun articleListNotHiding(): List<RoomArticle>
+
 
     @Query("SELECT * from roomarticle WHERE url = :url")
     abstract fun articleByIdSafe(url: String): List<RoomArticle>
@@ -28,8 +32,11 @@ abstract class ArticleDaoRoom : ArticleDao{
     abstract override fun insertArticles(list: List<RoomArticle>)
 
     @Transaction
-    override fun clearAndInsertList(list: List<RoomArticle>) {
-        deleteAll()
+    override fun clearAndInsertList(list: List<RoomArticle>, delete: Boolean): List<RoomArticle> {
+        val oldList = articleList()
+        if (delete)
+            deleteAll()
         insertArticles(list)
+        return list.minus(oldList)
     }
 }

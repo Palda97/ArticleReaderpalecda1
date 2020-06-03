@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import cz.cvut.palecda1.view.fragment.FeedFragment
 import cz.cvut.palecda1.R
+import cz.cvut.palecda1.view.fragment.SettingsFragment
 
 class FeedActivity : AppCompatActivity() {
 
@@ -12,20 +13,24 @@ class FeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.container_feed_fragment,
                     FeedFragment.newInstance()
                 )
+                .add(
+                    R.id.container_settings_fragment,
+                    SettingsFragment.newInstance()
+                )
                 .commit()
         }
     }
 
-    companion object{
+    companion object {
         //const val ID = "ID"
 
-        fun start(act: AppCompatActivity){
+        fun start(act: AppCompatActivity) {
             val intent = Intent(act, FeedActivity::class.java)
             //intent.putExtra(ID, article.url)
             act.startActivity(intent)
