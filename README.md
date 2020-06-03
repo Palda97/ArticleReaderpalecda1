@@ -2,7 +2,7 @@
 
 ## Architecture
 
-![architecture]()
+![architecture](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/articleReader.png)
 
 Aplikace používá architekturu **MVVM** (Model-View-ViewModel)
 
