@@ -6,7 +6,7 @@ Aplikace Article Reader je čtečka RSS feedů. Dokáže sama periodicky stahova
 
 ## Architektura
 
-![architecture](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/articleReader.png)
+![architecture](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/articleReader.png)
 
 Aplikace používá architekturu **MVVM** (Model-View-ViewModel)
 
@@ -40,3 +40,9 @@ Kompilovat v [Android Studiu](https://developer.android.com/studio/). Aplikace b
 
 Uživatel otevře aplikaci. Při prvním otevření se automaticky nastaví 2 předdefinované zdroje pro RSS feedy. Uživatel může kliknout na refresh ikonku vpravo nahoře v action baru, nebo může kliknout na ikonu RSS a otevře se mu nastavení RSS feedů. Zde si může nastavit, z jakých zdrojů se budou stahovat články. Šipkou zpět se opět dostane na seznam článků. Při zobrazení na výšku se po vybrání článku otevře nová obrazovka s vybraným článkem. Při zobrazení na šířku se po vybrání článku článek otevře na stejné obrazovce vlevo. Při prohlížení článku lze pomocí ikonu globusu přejít na webovou stránku s článkem, nebo pomocí ikony pro sdílení sdílet url článku.
 
+## Snímky obrazovky
+
+![screanshot 1](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr1)
+![screanshot 2](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr2)
+![screanshot 3](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr3)
+![screanshot 4](https://raw.githubusercontent.com/Palda97/ArticleReaderpalecda1/master/pics/scre/scr4)
