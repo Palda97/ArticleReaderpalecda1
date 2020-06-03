@@ -34,7 +34,7 @@ Následující vrstvy používají tyto technologie:
 
 ## Kompilace a spuštění
 
-Kompilovat v [Android Studiu](https://developer.android.com/studio/). Aplikace by měla běžet na všech mobilních zařízení s verzí androidu 5.0.
+Kompilovat v [Android Studiu](https://developer.android.com/studio/). Aplikace by měla běžet na všech mobilních zařízení s verzí androidu 5.0 a vyšší.
 
 ## Příklad použití
 
