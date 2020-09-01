@@ -91,7 +91,8 @@ class ArticleDownloader : JobService() {
 
     companion object {
         private const val JOB_ID = 420
-        private const val INTERVAL: Long = 15 * 60 * 1000
+        //-------------------------------- h -> m -> s ->  ms
+        private const val INTERVAL: Long = 6 * 60 * 60 * 1000
         private const val TAG = "ArticleDownloader"
         private const val NOTIFICATION_ID = 420
 
