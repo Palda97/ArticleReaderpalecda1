@@ -9,12 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import cz.cvut.palecda1.AppInit
 import cz.cvut.palecda1.R
+import cz.cvut.palecda1.databinding.DialogEdittextBinding
 import cz.cvut.palecda1.databinding.FragmentFeedBinding
 import cz.cvut.palecda1.model.RoomFeed
 import cz.cvut.palecda1.services.ArticleDownloader
 import cz.cvut.palecda1.view.FeedDialogFragment
 import cz.cvut.palecda1.view.FeedRecyclerAdapter
+import cz.cvut.palecda1.viewmodel.ArticleViewModel
 import cz.cvut.palecda1.viewmodel.FeedViewModel
 
 class FeedFragment : Fragment() {
@@ -143,6 +146,38 @@ class FeedFragment : Fragment() {
         newFragment.show(fragmentManager!!, "newFeedDialog")
     }
 
+    fun writeDownUpdateInterval(intervalInMinutes: Long) {
+        if (intervalInMinutes < 15) {
+            Toast.makeText(requireContext(), "Can not set interval less than 15 minutes!", Toast.LENGTH_LONG).show()
+            return
+        }
+        val interval = intervalInMinutes * 60 * 1000
+        AppInit.sharedPreferences.edit().putLong(ArticleDownloader.SERVICE_INTERVAL_KEY, interval).apply()
+        ViewModelProviders.of(this).get(ArticleViewModel::class.java).refreshArticles()
+    }
+
+    fun setUpdateTimer() {
+        val dialogBinding: DialogEdittextBinding = DataBindingUtil.inflate(layoutInflater,
+            R.layout.dialog_edittext, null, false)
+        val dialogBuilder = AlertDialog.Builder(context!!)
+            .setView(dialogBinding.root)
+            .setTitle(getString(R.string.set_update_interval))
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                Log.d(
+                    TAG, getString(
+                        R.string.ok
+                    ))
+                writeDownUpdateInterval(dialogBinding.editTextNumber.text.toString().toLong())
+            }
+            .setNeutralButton(getString(R.string.cancel)) { _, _ ->
+                Log.d(
+                    TAG, getString(
+                        R.string.cancel
+                    ))
+            }
+        deleteDialog = dialogBuilder.show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_feed, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -162,6 +197,10 @@ class FeedFragment : Fragment() {
                 if(ArticleDownloader.stop(context!!)){
                     Toast.makeText(context, getString(R.string.synchronization_canceled), Toast.LENGTH_SHORT).show()
                 }
+                true
+            }
+            R.id.setTimerItem -> {
+                setUpdateTimer()
                 true
             }
             else -> super.onOptionsItemSelected(item)

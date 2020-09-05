@@ -43,4 +43,7 @@
     <string name="hide">Hide</string>
     <string name="do_not_hide">Don\'t Hide</string>
     <string name="keep_old_articles">Keep old articles</string>
+    <string name="set_update_interval">Set Update Interval</string>
+    <string name="ok">OK</string>
+    <string name="interval_in_minutes">interval in minutes</string>
 </resources>

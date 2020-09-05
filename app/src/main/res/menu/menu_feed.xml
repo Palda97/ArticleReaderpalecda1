@@ -17,4 +17,10 @@
         android:title="@string/cancel_sync"
         app:showAsAction="never"
         android:icon="@drawable/ic_block_black_24dp" />
+
+    <item
+        android:id="@+id/setTimerItem"
+        android:title="@string/set_update_interval"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_baseline_timer_24" />
 </menu>

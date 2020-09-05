@@ -92,7 +92,11 @@ class ArticleDownloader : JobService() {
     companion object {
         private const val JOB_ID = 420
         //-------------------------------- h -> m -> s ->  ms
-        private const val INTERVAL: Long = 6 * 60 * 60 * 1000
+        //private const val INTERVAL: Long = 1 * 15 * 60 * 1000
+        //private const val INTERVAL: Long = 6 * 60 * 60 * 1000
+        private const val DEFAULT_INTERVAL: Long = 6 * 60 * 60 * 1000
+        const val SERVICE_INTERVAL_KEY = "SERVICE_INTERVAL_KEY"
+        private fun getInterval(): Long = AppInit.sharedPreferences.getLong(SERVICE_INTERVAL_KEY, DEFAULT_INTERVAL)
         private const val TAG = "ArticleDownloader"
         private const val NOTIFICATION_ID = 420
 
@@ -118,7 +122,7 @@ class ArticleDownloader : JobService() {
             val (jobScheduler, builder) = schedulePrep(context)
             val info = builder
                 .setPersisted(true)
-                .setPeriodic(INTERVAL)
+                .setPeriodic(getInterval())
                 .build()
             jobScheduler.schedule(info)
         }
